@@ -37,8 +37,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss",
-              "node_modules/bulma/bulma.sass"
+              "src/styles.scss"
             ],
             "scripts": []
           },
@@ -101,8 +100,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss",
-              "node_modules/bulma/bulma.sass"
+              "src/styles.scss"
             ],
             "scripts": []
           }

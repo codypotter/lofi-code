@@ -1,1 +1,8 @@
-/* You can add global styles to this file, and also import other style files */
+// styles.scss
+@import 'custom-variables'; // Import custom variables first
+
+// Import Bulma after your custom variables
+@import 'node_modules/bulma/sass/utilities/initial-variables';
+@import 'node_modules/bulma/sass/utilities/functions';
+@import 'node_modules/bulma/sass/utilities/derived-variables';
+@import 'node_modules/bulma/bulma.sass';
