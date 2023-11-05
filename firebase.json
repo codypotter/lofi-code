@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "dist/loficode",
+    "public": "dist/lofi-code",
     "ignore": [
       "firebase.json",
       "**/.*",
