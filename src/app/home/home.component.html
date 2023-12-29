@@ -1,13 +1,13 @@
-<section class="hero is-primary is-large">
-  <div class="hero-body is-flex">
-    <img src="assets/cody.jpg">
-    <div class="is-flex is-flex-direction-column is-justify-content-center">
-      <p class="title is-family-monospace">
-        lofi code
-      </p>
-      <p class="subtitle">
-        nourishing your mind with byte-sized code
-      </p>
-    </div>
+<section id="intro" class="hero is-primary is-medium">
+  <div class="hero-body is-flex is-flex-direction-column">
+    <img src="../../assets/logo-white.svg">
+    <p class="subtitle">
+      Learn to code in byte-size pieces
+    </p>
   </div>
 </section>
+<ul>
+  <li *ngFor="let post of posts">
+    <app-post-preview [post]="post"></app-post-preview>
+  </li>
+</ul>

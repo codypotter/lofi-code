@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "lofi-code"
+  },
+  "targets": {
+    "lofi-code": {
+      "hosting": {
+        "lofi-code": [
+          "lofi-code"
+        ]
+      }
+    }
   }
 }
