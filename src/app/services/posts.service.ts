@@ -1,13 +1,14 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Query } from '@angular/core';
 import { Firestore, collection, collectionData, orderBy, query, where } from '@angular/fire/firestore';
-import { limit } from 'firebase/firestore';
-import { Observable } from 'rxjs';
+import { DocumentData, DocumentSnapshot, QueryDocumentSnapshot, Timestamp, getDocs, limit, startAfter } from 'firebase/firestore';
+import { Observable, map } from 'rxjs';
 
 export interface Post {
   name: string;
+  slug: string;
   tags: string[];
-  publish_date: { seconds: number; nanoseconds: number };
-  created_on: { seconds: number; nanoseconds: number };
+  publish_date: Timestamp;
+  created_on: Timestamp;
   status: string;
   reviewed: boolean;
   header_image: string | null;
@@ -18,15 +19,35 @@ export interface Post {
   providedIn: 'root'
 })
 export class PostsService {
-  constructor(private firestore: Firestore) {}
+  constructor(private firestore: Firestore) { }
 
-  getTopTen(): Observable<Post[]> {
-    const postsCollection = query(
-      collection(this.firestore, 'blog'),
-      orderBy('publish_date', 'desc'),
-      where('status', '==', 'published'),
-      limit(10),
-    );
+  getTopTen(lastPublishDate?: Date): Observable<Post[]> {
+    let postsCollection;
+    if (lastPublishDate) {
+      postsCollection = query(
+        collection(this.firestore, 'blog'),
+        orderBy('publish_date', 'desc'),
+        where('status', '==', 'published'),
+        limit(2),
+        startAfter(lastPublishDate),
+      );
+    } else { 
+      postsCollection = query(
+        collection(this.firestore, 'blog'),
+        orderBy('publish_date', 'desc'),
+        where('status', '==', 'published'),
+        limit(2),
+      );
+    }
     return collectionData(postsCollection) as Observable<Post[]>;
+  }
+
+  getPostBySlug(slug: string): Observable<Post> {
+    const postCollection = query(
+      collection(this.firestore, 'blog'),
+      where('slug', '==', slug),
+      limit(1),
+    );
+    return collectionData(postCollection).pipe(map(posts => posts[0])) as Observable<Post>;
   }
 }

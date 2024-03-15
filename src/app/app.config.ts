@@ -1,14 +1,21 @@
-import { ApplicationConfig, importProvidersFrom } from '@angular/core';
+import { ApplicationConfig, CUSTOM_ELEMENTS_SCHEMA, importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { getStorage, provideStorage } from '@angular/fire/storage';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BreadcrumbService } from './services/breadcrumb.service';
+import { PostsService } from './services/posts.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
+    importProvidersFrom(BrowserAnimationsModule),
+    importProvidersFrom(NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' })),
     importProvidersFrom(
       provideFirebaseApp(() => initializeApp({
         apiKey: "AIzaSyBkk1syx5c5qVmPKFoLrOXkDwctSozfeL4",
@@ -22,5 +29,8 @@ export const appConfig: ApplicationConfig = {
     ),
     importProvidersFrom(provideAuth(() => getAuth())),
     importProvidersFrom(provideFirestore(() => getFirestore())),
-  ]
+    importProvidersFrom(provideStorage(() => getStorage())),
+    BreadcrumbService,
+    PostsService,
+  ],
 };
