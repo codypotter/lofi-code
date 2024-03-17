@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Post, PostsService } from '../services/posts.service';
 import { BreadcrumbService } from '../services/breadcrumb.service';
-import {  Subscription } from 'rxjs';
+import {  Subject, take, takeUntil } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { SearchResultComponent } from '../search-result/search-result.component';
 import { TagsComponent } from '../tags/tags.component';
@@ -24,11 +24,11 @@ export class PostsComponent implements OnInit, OnDestroy {
 
   private _tag?: string;
 
-  private _tagSubscription!: Subscription;
-
   lastPublished?: Date;
 
   showLoadMore = true;
+
+  destroy$ = new Subject<void>();
 
   constructor(
     private postsService: PostsService,
@@ -38,10 +38,10 @@ export class PostsComponent implements OnInit, OnDestroy {
   ) { }
   
   ngOnInit(): void {
-    this.tagsService.get().subscribe((tags) => {
+    this.tagsService.get().pipe(takeUntil(this.destroy$)).subscribe((tags) => {
       this.tags = tags.map(tag => tag.text);
     });
-    this._tagSubscription = this.route.queryParams.subscribe(params => {
+    this.route.queryParams.pipe(takeUntil(this.destroy$)).subscribe(params => {
       this._tag = params['tag'];
       this.setBreadcrumbs();
       this.newSearch();
@@ -57,13 +57,13 @@ export class PostsComponent implements OnInit, OnDestroy {
   }
 
   loadMorePosts() {
-    this.postsService.getN(this.limit, this.lastPublished, this._tag).subscribe((posts) => {
+    this.postsService.getN(this.limit, this.lastPublished, this._tag).pipe(take(1)).subscribe((posts) => {
       this.handlePosts(posts);
     });
   }
 
   newSearch() {
-    this.postsService.getN(this.limit, undefined, this._tag).subscribe((posts) => {
+    this.postsService.getN(this.limit, undefined, this._tag).pipe(take(1)).subscribe((posts) => {
       this.posts = [];
       this.handlePosts(posts);
     });
@@ -78,6 +78,7 @@ export class PostsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this._tagSubscription.unsubscribe();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

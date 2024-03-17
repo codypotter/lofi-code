@@ -7,7 +7,7 @@ import { RouterModule } from '@angular/router';
 import { TagsComponent } from '../tags/tags.component';
 import { YoutubePlayerComponent } from '../youtube-player/youtube-player.component';
 import { VideosService } from '../services/videos.service';
-import { forkJoin } from 'rxjs';
+import { Subject, forkJoin, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -19,16 +19,18 @@ import { forkJoin } from 'rxjs';
 export class HomeComponent implements OnInit {
   posts: any[] = [];
 
+  destroy$ = new Subject<void>();
+
   constructor(private postsService: PostsService, private breadcrumbService: BreadcrumbService, private videosService: VideosService) { }
   
   ngOnInit(): void {
     this.breadcrumbService.setBreadcrumbs([]);
-    forkJoin([
-      this.postsService.getN(3),
-      this.videosService.getVideos()
-    ]).subscribe(([posts, videos]) => {
-      this.posts = posts;
-      console.error('videos', videos);
-    });
+    this.postsService.getN(3).pipe(takeUntil(this.destroy$)).subscribe((posts) => { this.posts = posts;});
+    this.videosService.getVideos().pipe(takeUntil(this.destroy$)).subscribe((videos) => { console.error('videos', videos); })
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
