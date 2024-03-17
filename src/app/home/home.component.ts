@@ -21,13 +21,17 @@ export class HomeComponent implements OnInit {
 
   destroy$ = new Subject<void>();
 
+  featuredVideoId = '';
+
   constructor(private postsService: PostsService, private breadcrumbService: BreadcrumbService, private videosService: VideosService) { }
   
   ngOnInit(): void {
     this.breadcrumbService.setBreadcrumbs([]);
     this.postsService.getN(3).pipe(takeUntil(this.destroy$)).subscribe((posts) => { this.posts = posts;});
-    this.videosService.getVideos().pipe(takeUntil(this.destroy$)).subscribe((videos) => { console.error('videos', videos); })
-    this.videosService.getFeaturedVideo().pipe(takeUntil(this.destroy$)).subscribe((video) => { console.error('video', video); })
+    this.videosService.getFeaturedVideo().pipe(takeUntil(this.destroy$)).subscribe((res) => {
+      const featuredVideo = res.items[0];
+      this.featuredVideoId = featuredVideo?.id?.videoId;
+    })
   }
 
   ngOnDestroy() {
