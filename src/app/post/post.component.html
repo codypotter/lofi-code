@@ -1,4 +1,4 @@
-<div class="container" *ngIf="post">
+<article class="container" *ngIf="post">
   <div
     *ngIf="post.header_image"
     class="card-image"
@@ -21,5 +21,15 @@
       class="content"
       [innerHTML]="getContent()"
     ></div>
+  </div>
+</article>
+<div class="container">
+  <h2 class="title is-2 mb-5">Related Posts</h2>
+  <div class="tile is-ancestor">
+    <div class="tile is-parent" *ngFor="let relatedPost of relatedPosts">
+        <div class="tile is-child">
+          <app-post-preview [post]="relatedPost"></app-post-preview>
+        </div>
+    </div>
   </div>
 </div>

@@ -19,7 +19,7 @@ export class TagsComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.tags.length === 0) {
-      this.tagsService.get().subscribe((tags) => this.tags = tags.map(tag => tag.text));
+      this.tagsService.get().subscribe((tags) => this.tags = ['all', ...tags.map(tag => tag.text)]);
     }
   }
 }

@@ -11,11 +11,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BreadcrumbService } from './services/breadcrumb.service';
 import { PostsService } from './services/posts.service';
 import { YouTubePlayerModule } from '@angular/youtube-player';
+import { HttpClientModule } from '@angular/common/http';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
-    importProvidersFrom(BrowserAnimationsModule),
+    importProvidersFrom(BrowserAnimationsModule, HttpClientModule),
     importProvidersFrom(NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' })),
     importProvidersFrom(
       provideFirebaseApp(() => initializeApp({

@@ -42,7 +42,10 @@ export class PostsComponent implements OnInit, OnDestroy {
       this.tags = tags.map(tag => tag.text);
     });
     this.route.queryParams.pipe(takeUntil(this.destroy$)).subscribe(params => {
-      this._tag = params['tag'];
+      const tag = params['tag'];
+      if (tag != 'all') {
+        this._tag = tag;
+      }
       this.setBreadcrumbs();
       this.newSearch();
     });

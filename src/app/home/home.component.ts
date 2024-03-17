@@ -27,6 +27,7 @@ export class HomeComponent implements OnInit {
     this.breadcrumbService.setBreadcrumbs([]);
     this.postsService.getN(3).pipe(takeUntil(this.destroy$)).subscribe((posts) => { this.posts = posts;});
     this.videosService.getVideos().pipe(takeUntil(this.destroy$)).subscribe((videos) => { console.error('videos', videos); })
+    this.videosService.getFeaturedVideo().pipe(takeUntil(this.destroy$)).subscribe((video) => { console.error('video', video); })
   }
 
   ngOnDestroy() {
