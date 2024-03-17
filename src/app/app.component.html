@@ -15,12 +15,12 @@
   
     <div class="navbar-menu">
       <div class="navbar-end">
-        <div class="navbar-item">
+        <div *ngIf="!user" class="navbar-item">
           <a class="has-text-white" target="_blank">
             Log in
           </a>
         </div>
-        <div class="navbar-item">
+        <div *ngIf="!user" class="navbar-item">
           <a class="button is-primary" target="_blank" (click)="showCreateAccount = true">
             Create account
           </a>
@@ -55,4 +55,4 @@
   </div>
 </footer>
 
-<app-create-account *ngIf="showCreateAccount"></app-create-account>
+<app-create-account *ngIf="showCreateAccount" (cancel)="showCreateAccount = false"></app-create-account>
