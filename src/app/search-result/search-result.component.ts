@@ -4,6 +4,7 @@ import { Post } from '../services/posts.service';
 import { TagsComponent } from '../tags/tags.component';
 import { marked } from 'marked';
 import { RouterLink } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-search-result',
@@ -17,5 +18,9 @@ export class SearchResultComponent {
 
   getContent() {
     return marked(this.post.content[0].value as string, { async: false }) as string;
+  }
+
+  buildImageUrl() {
+    return `${environment.storageUrl}${encodeURIComponent(this.post.header_image ?? '')}?alt=media`;
   }
 }
