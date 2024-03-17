@@ -43,9 +43,7 @@ export class PostsComponent implements OnInit, OnDestroy {
     });
     this.route.queryParams.pipe(takeUntil(this.destroy$)).subscribe(params => {
       const tag = params['tag'];
-      if (tag != 'all') {
-        this._tag = tag;
-      }
+      this._tag = tag === 'all' ? undefined : tag;
       this.setBreadcrumbs();
       this.newSearch();
     });
@@ -66,6 +64,7 @@ export class PostsComponent implements OnInit, OnDestroy {
   }
 
   newSearch() {
+    this.lastPublished = undefined;
     this.postsService.getN(this.limit, undefined, this._tag).pipe(take(1)).subscribe((posts) => {
       this.posts = [];
       this.handlePosts(posts);
