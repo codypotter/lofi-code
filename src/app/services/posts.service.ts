@@ -1,6 +1,6 @@
-import { Injectable, Query } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Firestore, collection, collectionData, orderBy, query, where } from '@angular/fire/firestore';
-import { DocumentData, DocumentSnapshot, QueryDocumentSnapshot, Timestamp, getDocs, limit, startAfter } from 'firebase/firestore';
+import { Timestamp, limit, startAfter } from 'firebase/firestore';
 import { Observable, map } from 'rxjs';
 
 export interface Post {

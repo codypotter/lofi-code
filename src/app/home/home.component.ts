@@ -4,11 +4,12 @@ import { PostsService } from '../services/posts.service';
 import { PostPreviewComponent } from '../post-preview/post-preview.component';
 import { BreadcrumbService } from '../services/breadcrumb.service';
 import { RouterModule } from '@angular/router';
+import { TagsComponent } from '../tags/tags.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, PostPreviewComponent, RouterModule],
+  imports: [CommonModule, PostPreviewComponent, RouterModule, TagsComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })

@@ -1,0 +1,17 @@
+<div class="level">
+    <div class="level-left">
+        <h5 class="level-item title is-5">{{post.name}}</h5>
+    </div>
+    <div class="level-right">
+        <div class="level-item">
+            <app-tags [tags]="post.tags"></app-tags>
+        </div>
+    </div>
+</div>
+<h6 class="subtitle is-6">{{post.publish_date.toDate() | date}}</h6>
+<div
+    class="truncated content"
+    [innerHTML]="getContent()"
+></div>
+<a [routerLink]="['/posts', post.slug]">...Read More</a>
+<hr>

@@ -6,8 +6,11 @@
     </p>
   </div>
 </section>
-<div class="container">
-  <a routerLink="/posts"><h2 class="title is-2">Recent Posts</h2></a>
+<section class="mt-5">
+  <app-tags size="is-large"></app-tags>
+</section>
+<section class="container">
+  <h2 class="title is-2 mb-5">Recent Posts</h2>
   <div class="tile is-ancestor">
     <div class="tile is-parent" *ngFor="let post of posts">
         <div class="tile is-child">
@@ -15,4 +18,5 @@
         </div>
     </div>
   </div>
-</div>
+</section>
+<a routerLink="/posts">See All</a>

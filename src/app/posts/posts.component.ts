@@ -2,15 +2,15 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PostsService } from '../services/posts.service';
 import { BreadcrumbService } from '../services/breadcrumb.service';
-import { DocumentSnapshot, Timestamp } from 'firebase/firestore';
-import { PostPreviewComponent } from '../post-preview/post-preview.component';
-import { Subscribable, Subscription } from 'rxjs';
-import { ActivatedRoute, Route } from '@angular/router';
+import {  Subscription } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { SearchResultComponent } from '../search-result/search-result.component';
+import { TagsComponent } from '../tags/tags.component';
 
 @Component({
   selector: 'app-posts',
   standalone: true,
-  imports: [CommonModule, PostPreviewComponent],
+  imports: [CommonModule, SearchResultComponent, TagsComponent],
   templateUrl: './posts.component.html',
   styleUrls: ['./posts.component.scss']
 })
@@ -19,11 +19,11 @@ export class PostsComponent implements OnInit, OnDestroy {
 
   posts: any[] = [];
 
-  tags: string[] = ['architecture', 'clean-code', 'go', 'programming',];
+  tags: string[] = ['architecture', 'clean-code', 'go', 'programming'];
 
-  private _tags = [];
+  private _tag = '';
 
-  private _tagsSubscription!: Subscription;
+  private _tagSubscription!: Subscription;
 
   lastPublished?: Date;
 
@@ -32,13 +32,14 @@ export class PostsComponent implements OnInit, OnDestroy {
   constructor(private postsService: PostsService, private breadcrumbService: BreadcrumbService, private route: ActivatedRoute) { }
   
   ngOnInit(): void {
-    this.breadcrumbService.setBreadcrumbs([
-      { text: 'home', routerLink: '/' },
-      { text: 'posts' },
-    ]);
-    this._tagsSubscription = this.route.queryParams.subscribe(params => {
+    this._tagSubscription = this.route.queryParams.subscribe(params => {
       console.warn('params', params);
-      this._tags = params['tags'];
+      this._tag = params['tag'];
+      this.breadcrumbService.setBreadcrumbs([
+        { text: 'home', routerLink: '/' },
+        { text: 'posts', routerLink: 'posts' },
+        ...this._tag ? [{ text: this._tag }] : [],
+      ]);
       this.loadMorePosts();
     });
   }
@@ -58,6 +59,6 @@ export class PostsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this._tagsSubscription.unsubscribe();
+    this._tagSubscription.unsubscribe();
   }
 }
