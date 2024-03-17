@@ -28,9 +28,15 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.breadcrumbService.setBreadcrumbs([]);
     this.postsService.getN(3).pipe(takeUntil(this.destroy$)).subscribe((posts) => { this.posts = posts;});
-    this.videosService.getFeaturedVideo().pipe(takeUntil(this.destroy$)).subscribe((res) => {
-      const featuredVideo = res.items[0];
-      this.featuredVideoId = featuredVideo?.id?.videoId;
+    this.videosService.getFeaturedVideo().pipe(takeUntil(this.destroy$)).subscribe({
+      next: (res) => {
+        const featuredVideo = res.items[0];
+        this.featuredVideoId = featuredVideo?.id?.videoId;
+      },
+      error: (err) => {
+        console.warn(err);
+        this.featuredVideoId = 'Rk2SBoBwtRU';
+      }
     })
   }
 

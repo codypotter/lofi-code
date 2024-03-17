@@ -15,9 +15,21 @@
   
     <div class="navbar-menu">
       <div class="navbar-end">
-        <a class="navbar-item has-text-white" href="http://codypotter.com/contact">
-          Contact
-        </a>
+        <div class="navbar-item">
+          <a class="has-text-white" target="_blank">
+            Log in
+          </a>
+        </div>
+        <div class="navbar-item">
+          <a class="button is-primary" target="_blank" (click)="showCreateAccount = true">
+            Create account
+          </a>
+        </div>
+        <div class="navbar-item">
+          <a class="has-text-white" href="http://codypotter.com/">
+            codypotter.com
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -42,3 +54,5 @@
     </p>
   </div>
 </footer>
+
+<app-create-account *ngIf="showCreateAccount"></app-create-account>
