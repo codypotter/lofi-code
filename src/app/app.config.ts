@@ -10,6 +10,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BreadcrumbService } from './services/breadcrumb.service';
 import { PostsService } from './services/posts.service';
+import { YouTubePlayerModule } from '@angular/youtube-player';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -30,6 +31,7 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(provideAuth(() => getAuth())),
     importProvidersFrom(provideFirestore(() => getFirestore())),
     importProvidersFrom(provideStorage(() => getStorage())),
+    importProvidersFrom(YouTubePlayerModule),
     BreadcrumbService,
     PostsService,
   ],

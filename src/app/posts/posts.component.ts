@@ -21,7 +21,7 @@ export class PostsComponent implements OnInit, OnDestroy {
 
   tags: string[] = ['architecture', 'clean-code', 'go', 'programming'];
 
-  private _tag = '';
+  private _tag?: string;
 
   private _tagSubscription!: Subscription;
 
@@ -45,7 +45,8 @@ export class PostsComponent implements OnInit, OnDestroy {
   }
 
   loadMorePosts() {
-    this.postsService.getN(this.limit, this.lastPublished).subscribe((posts) => {
+    console.warn('loadMorePosts', this._tag, this.lastPublished, this.limit, this.posts.length)
+    this.postsService.getN(this.limit, this.lastPublished, this._tag).subscribe((posts) => {
       this.posts = [...this.posts, ...posts];
       if (posts.length < this.limit) {
         this.showLoadMore = false;

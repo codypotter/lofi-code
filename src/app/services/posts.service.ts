@@ -21,9 +21,18 @@ export interface Post {
 export class PostsService {
   constructor(private firestore: Firestore) { }
 
-  getN(n: number, lastPublishDate?: Date): Observable<Post[]> {
+  getN(n: number, lastPublishDate?: Date, tag?: string): Observable<Post[]> {
     let postsCollection;
-    if (lastPublishDate) {
+    if (lastPublishDate && tag) {
+      postsCollection = query(
+        collection(this.firestore, 'blog'),
+        orderBy('publish_date', 'desc'),
+        where('status', '==', 'published'),
+        where('tags', 'array-contains-any', [tag]),
+        limit(n),
+        startAfter(lastPublishDate),
+      );
+    } else if (lastPublishDate) {
       postsCollection = query(
         collection(this.firestore, 'blog'),
         orderBy('publish_date', 'desc'),
@@ -31,7 +40,15 @@ export class PostsService {
         limit(n),
         startAfter(lastPublishDate),
       );
-    } else { 
+    } else if (tag) {
+      postsCollection = query(
+        collection(this.firestore, 'blog'),
+        orderBy('publish_date', 'desc'),
+        where('status', '==', 'published'),
+        where('tags', 'array-contains-any', [tag]),
+        limit(n),
+      );
+    } else {
       postsCollection = query(
         collection(this.firestore, 'blog'),
         orderBy('publish_date', 'desc'),
