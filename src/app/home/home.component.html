@@ -2,16 +2,16 @@
   <div class="hero-body is-flex is-flex-direction-column">
     <img src="../../assets/logo-white.svg">
     <p class="subtitle">
-      Learn to code in byte-size pieces
+      learn to code in byte-size pieces
     </p>
   </div>
 </section>
 <div class="container">
-  <h2 class="title is-2">Recent Posts</h2>
+  <a routerLink="/posts"><h2 class="title is-2">Recent Posts</h2></a>
   <div class="tile is-ancestor">
     <div class="tile is-parent" *ngFor="let post of posts">
-        <div class="tile is-child box">
-          <app-post-preview  [post]="post"></app-post-preview>
+        <div class="tile is-child">
+          <app-post-preview [post]="post"></app-post-preview>
         </div>
     </div>
   </div>

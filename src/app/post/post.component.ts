@@ -27,8 +27,8 @@ export class PostComponent implements OnInit {
 
   ngOnInit() {
     this.breadcrumbService.setBreadcrumbs([
-      { text: 'Home', routerLink: '/' },
-      { text: 'Posts', routerLink: '/posts' },
+      { text: 'home', routerLink: '/' },
+      { text: 'posts', routerLink: '/posts' },
       { text: this.route.snapshot.params['slug'] },
     ]);
     this.spinner.show();

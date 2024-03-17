@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { PostsService } from '../services/posts.service';
 import { PostPreviewComponent } from '../post-preview/post-preview.component';
 import { BreadcrumbService } from '../services/breadcrumb.service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, PostPreviewComponent],
+  imports: [CommonModule, PostPreviewComponent, RouterModule],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
@@ -18,7 +19,7 @@ export class HomeComponent implements OnInit {
   
   ngOnInit(): void {
     this.breadcrumbService.setBreadcrumbs([]);
-    this.postsService.getTopTen().subscribe((posts) => {
+    this.postsService.getN(10).subscribe((posts) => {
       this.posts = posts.slice(0, 3);
     });
   }

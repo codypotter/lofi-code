@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, RouterOutlet } from '@angular/router';
+import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { Breadcrumb, BreadcrumbService } from './services/breadcrumb.service';
 
@@ -16,7 +16,7 @@ export class AppComponent implements OnInit {
 
   breadcrumbs: Array<Breadcrumb> = [];
 
-  constructor(private breadcrumbService: BreadcrumbService) { }
+  constructor(private breadcrumbService: BreadcrumbService, private router: Router) { }
 
   ngOnInit() {
     this.breadcrumbService.breadcrumbs$.subscribe((breadcrumbs) => {

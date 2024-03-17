@@ -1,4 +1,4 @@
-<div class="gradient-overlay">
+<a class="box" [routerLink]="['/posts', post.slug]">
   <div class="truncated">
     <div
       *ngIf="post.header_image"
@@ -24,6 +24,5 @@
       ></div>
     </div>
   </div>
-</div>
-
-<a class="button is-link" [routerLink]="['/posts', post.slug]">More</a>
+  <p class="card-content">...</p>
+</a>

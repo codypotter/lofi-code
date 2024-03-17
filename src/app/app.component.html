@@ -1,21 +1,21 @@
 <nav
-  class="navbar"
+  class="navbar is-transparent"
   role="navigation"
   aria-label="main navigation"
 >
   <div class="container">
     <div class="navbar-brand">
       <a
-        class="navbar-item"
-        href="/"
+        class="navbar-item has-text-white"
+        routerLink="/"
       >
-        <img src="../assets/logo-color.svg">
+        <em>lofi<strong>code</strong></em>
       </a>
     </div>
   
     <div class="navbar-menu">
       <div class="navbar-end">
-        <a class="navbar-item" href="http://codypotter.com/contact">
+        <a class="navbar-item has-text-white" href="http://codypotter.com/contact">
           Contact
         </a>
       </div>
@@ -23,11 +23,22 @@
   </div>
 </nav>
 <ngx-spinner type="ball-scale-multiple"></ngx-spinner>
-<div class="container block">
+<div class="container block mt-5" *ngIf="breadcrumbs.length">
   <nav class="breadcrumb is-large" aria-label="breadcrumbs">
     <ul>
-      <li [ngClass]="!breadcrumb.routerLink ? 'is-active' : ''" *ngFor="let breadcrumb of breadcrumbs"><a [routerLink]="breadcrumb.routerLink">{{breadcrumb.text}}</a></li>
+      <li [ngClass]="breadcrumb.routerLink ? '' : 'is-active'" *ngFor="let breadcrumb of breadcrumbs"><a [routerLink]="breadcrumb.routerLink">{{breadcrumb.text}}</a></li>
     </ul>
   </nav>
 </div>
-<router-outlet></router-outlet>
+<section class="pb-6">
+  <router-outlet></router-outlet>
+</section>
+<footer class="footer">
+  <div class="content has-text-centered">
+    <p>
+      <em>lofi<strong>code</strong></em> by <a href="http://codypotter.com">Cody Potter</a>. The source code is licensed
+      <a href="http://opensource.org/licenses/mit-license.php">MIT</a>. The website content
+      is licensed <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY NC SA 4.0</a>.
+    </p>
+  </div>
+</footer>
