@@ -22,41 +22,20 @@ export class PostsService {
   constructor(private firestore: Firestore) { }
 
   getN(n: number, lastPublishDate?: Date, tag?: string): Observable<Post[]> {
-    let postsCollection;
-    if (lastPublishDate && tag) {
-      postsCollection = query(
-        collection(this.firestore, 'blog'),
-        orderBy('publish_date', 'desc'),
-        where('status', '==', 'published'),
-        where('tags', 'array-contains-any', [tag]),
-        limit(n),
-        startAfter(lastPublishDate),
-      );
-    } else if (lastPublishDate) {
-      postsCollection = query(
-        collection(this.firestore, 'blog'),
-        orderBy('publish_date', 'desc'),
-        where('status', '==', 'published'),
-        limit(n),
-        startAfter(lastPublishDate),
-      );
-    } else if (tag) {
-      postsCollection = query(
-        collection(this.firestore, 'blog'),
-        orderBy('publish_date', 'desc'),
-        where('status', '==', 'published'),
-        where('tags', 'array-contains-any', [tag]),
-        limit(n),
-      );
-    } else {
-      postsCollection = query(
-        collection(this.firestore, 'blog'),
-        orderBy('publish_date', 'desc'),
-        where('status', '==', 'published'),
-        limit(n),
-      );
+    const postsQuery: any = [
+      collection(this.firestore, 'blog'),
+      orderBy('publish_date', 'desc'),
+      where('status', '==', 'published'),
+    ];
+    if (tag) {
+      postsQuery.push(where('tags', 'array-contains-any', [tag]));
     }
-    return collectionData(postsCollection) as Observable<Post[]>;
+    postsQuery.push(limit(n));
+    if (lastPublishDate) {
+      postsQuery.push(startAfter(lastPublishDate));
+    }
+
+    return collectionData(query(...postsQuery as [any, ...any[]])) as Observable<Post[]>;
   }
 
   getPostBySlug(slug: string): Observable<Post> {

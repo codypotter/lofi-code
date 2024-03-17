@@ -23,7 +23,7 @@
   </div>
 </nav>
 <ngx-spinner type="ball-scale-multiple"></ngx-spinner>
-<div class="container block mt-5" *ngIf="breadcrumbs.length">
+<div class="container block mt-5" *ngIf="breadcrumbs.length !== 0">
   <nav class="breadcrumb is-large" aria-label="breadcrumbs">
     <ul>
       <li [ngClass]="breadcrumb.routerLink ? '' : 'is-active'" *ngFor="let breadcrumb of breadcrumbs"><a [routerLink]="breadcrumb.routerLink">{{breadcrumb.text}}</a></li>

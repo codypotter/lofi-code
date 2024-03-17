@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
 import { TagsComponent } from '../tags/tags.component';
 import { YoutubePlayerComponent } from '../youtube-player/youtube-player.component';
 import { VideosService } from '../services/videos.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -22,14 +23,11 @@ export class HomeComponent implements OnInit {
   
   ngOnInit(): void {
     this.breadcrumbService.setBreadcrumbs([]);
-    this.postsService.getN(10).subscribe((posts) => {
-      this.posts = posts.slice(0, 3);
-    });
-    this.getVideos();
-  }
-
-  getVideos() {
-    this.videosService.getVideos().subscribe((videos) => {
+    forkJoin([
+      this.postsService.getN(3),
+      this.videosService.getVideos()
+    ]).subscribe(([posts, videos]) => {
+      this.posts = posts;
       console.error('videos', videos);
     });
   }
