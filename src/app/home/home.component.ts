@@ -10,6 +10,7 @@ import { VideosService } from '../services/videos.service';
 import { Subject, takeUntil } from 'rxjs';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-home',
@@ -26,6 +27,7 @@ export class HomeComponent implements OnInit {
   featuredVideoId = '';
 
   constructor(
+    private logger: NGXLogger,
     private postsService: PostsService,
     private breadcrumbService: BreadcrumbService,
     private videosService: VideosService,
@@ -40,7 +42,7 @@ export class HomeComponent implements OnInit {
         this.featuredVideoId = featuredVideo?.id?.videoId;
       },
       error: (err) => {
-        console.warn(err);
+        this.logger.warn(err);
         this.featuredVideoId = 'Rk2SBoBwtRU';
       }
     })

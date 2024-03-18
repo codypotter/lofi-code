@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AccountService } from '../services/account.service';
 import { CommonModule } from '@angular/common';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-settings',
@@ -33,7 +34,11 @@ export class SettingsComponent {
     mailingList: [false]
   });
 
-  constructor(private fb: FormBuilder, private accountService: AccountService) {}
+  constructor(
+    private logger: NGXLogger,
+    private fb: FormBuilder,
+    private accountService: AccountService,
+  ) {}
 
   validateMatchingPasswords() {
     if (this.passwordForm.get('password')?.value !== this.passwordForm.get('confirmPassword')?.value) {
@@ -44,10 +49,10 @@ export class SettingsComponent {
   onSaveUsername() {
     this.usernameForm.markAllAsTouched();
     if (this.usernameForm.invalid) {
-      console.warn('username form is invalid', this.usernameForm.value);
+      this.logger.warn('username form is invalid', this.usernameForm.value);
       return;
     }
-    console.warn('submitting username form', this.usernameForm.value);
+    this.logger.warn('submitting username form', this.usernameForm.value);
     this.setSuccessMessage('Username updated');
   }
 
@@ -56,7 +61,7 @@ export class SettingsComponent {
     if (this.emailForm.invalid) {
       return;
     }
-    console.warn('submitting email form', this.emailForm.value);
+    this.logger.warn('submitting email form', this.emailForm.value);
     this.setSuccessMessage('Email updated');
   }
 
@@ -66,7 +71,7 @@ export class SettingsComponent {
     if (this.passwordForm.invalid) {
       return;
     }
-    console.warn('submitting password form', this.passwordForm.value);
+    this.logger.warn('submitting password form', this.passwordForm.value);
     this.setSuccessMessage('Password updated');
   }
 

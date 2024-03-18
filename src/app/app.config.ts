@@ -12,12 +12,15 @@ import { BreadcrumbService } from './services/breadcrumb.service';
 import { PostsService } from './services/posts.service';
 import { YouTubePlayerModule } from '@angular/youtube-player';
 import { HttpClientModule } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+import { LoggerModule } from 'ngx-logger';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes, withViewTransitions()),
     importProvidersFrom(BrowserAnimationsModule, HttpClientModule),
     importProvidersFrom(NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' })),
+    importProvidersFrom(LoggerModule.forRoot({ level: environment.logLevel,  })),
     importProvidersFrom(
       provideFirebaseApp(() => initializeApp({
         apiKey: "AIzaSyBkk1syx5c5qVmPKFoLrOXkDwctSozfeL4",
