@@ -1,0 +1,82 @@
+<div class="modal is-active">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+      <div class="box">
+        <h3 class="title is-3">Log in</h3>
+        <form [formGroup]="form">
+          <div class="columns">
+            <div class="column border-right">  
+              <div class="field">
+                <label class="label">Email</label>
+                <div class="control has-icons-left has-icons-right">
+                  <input
+                    class="input"
+                    [class.is-danger]="form.get('email')?.invalid && form.get('email')?.touched"
+                    type="email"
+                    placeholder="me@codypotter.com"
+                    formControlName="email"
+                  >
+                  <span class="icon is-small is-left">
+                    <i class="fas fa-envelope"></i>
+                  </span>
+                </div>
+                <p
+                  *ngIf="form.get('email')?.touched && form.get('email')?.invalid"
+                  class="help is-danger"
+                >Email is invalid.</p>
+              </div>
+  
+              <div class="field">
+                <label class="label">Password</label>
+                <div class="control has-icons-left has-icons-right">
+                  <input
+                    class="input"
+                    [class.is-danger]="form.get('password')?.invalid && form.get('password')?.touched"
+                    type="password"
+                    placeholder="password123"
+                    formControlName="password"
+                  >
+                  <span class="icon is-small is-left">
+                    <i class="fas fa-lock"></i>
+                  </span>
+                </div>
+                <p
+                  *ngIf="form.get('password')?.touched && form.get('password')?.invalid"
+                  class="help"
+                  [class.is-danger]="form.get('password')?.invalid && form.get('password')?.touched"
+                >Password must be 8 to 20 characters long, and include at least one lowercase letter, one
+                  uppercase letter, one digit, and one special character.</p>
+              </div>
+  
+              <button
+                class="button is-primary is-fullwidth"
+                (click)="onLogIn()"
+              >Log in</button>
+            </div>
+  
+            <div class="column oauth">
+              <h5 class="title is-5 has-text-centered">Or Use Social Sign-in</h5>
+              <button
+                class="button is-dark is-fullwidth"
+                (click)="loginWithGitHub()"
+              >
+                <span class="icon">
+                  <i class="fab fa-github"></i>
+                </span>
+                <span>Log in with GitHub</span>
+              </button>
+            </div>
+          </div>
+          <div *ngIf="errorMessage" class="notification is-danger is-light">
+            <button class="delete" (click)="errorMessage = ''"></button>
+             {{errorMessage}}
+          </div>
+        </form>
+      </div>
+    </div>
+    <button
+      class="modal-close is-large"
+      aria-label="close"
+      (click)="onCancel()"
+    ></button>
+  </div>

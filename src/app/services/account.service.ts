@@ -1,13 +1,16 @@
 import { Injectable } from '@angular/core';
-import { Auth, GithubAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, updateProfile } from '@angular/fire/auth';
-import { defer, first, from, switchMap } from 'rxjs';
+import { Auth, GithubAuthProvider, User, authState, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, updateProfile } from '@angular/fire/auth';
+import { Observable, catchError, defer, first, from, switchMap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
+  currentUser: Observable<User | null>;
 
-  constructor(private auth: Auth) { }
+  constructor(private auth: Auth) {
+    this.currentUser = authState(auth)
+  }
 
   login(email: string, password: string) {
     return defer(() => signInWithEmailAndPassword(this.auth, email, password)).pipe(first());
@@ -28,5 +31,9 @@ export class AccountService {
 
   getCurrentUserInfo() {
     return this.auth.currentUser;
+  }
+
+  logout() {
+    return this.auth.signOut();
   }
 }

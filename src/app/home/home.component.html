@@ -15,7 +15,7 @@
 <section class="section is-small">
   <div class="container">
     <h3 class="title is-3 mb-5">Recent Posts</h3>
-    <div class="tile is-ancestor">
+    <div class="tile is-ancestor" [style]="{minHeight: '450px'}">
       <div class="tile is-parent" *ngFor="let post of posts">
           <div class="tile is-child">
             <app-post-preview [post]="post"></app-post-preview>

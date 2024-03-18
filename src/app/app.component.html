@@ -1,39 +1,4 @@
-<nav
-  class="navbar is-transparent"
-  role="navigation"
-  aria-label="main navigation"
->
-  <div class="container">
-    <div class="navbar-brand">
-      <a
-        class="navbar-item has-text-white"
-        routerLink="/"
-      >
-        <em>lofi<strong>code</strong></em>
-      </a>
-    </div>
-  
-    <div class="navbar-menu">
-      <div class="navbar-end">
-        <div *ngIf="!user" class="navbar-item">
-          <a class="has-text-white" target="_blank">
-            Log in
-          </a>
-        </div>
-        <div *ngIf="!user" class="navbar-item">
-          <a class="button is-primary" target="_blank" (click)="showCreateAccount = true">
-            Create account
-          </a>
-        </div>
-        <div class="navbar-item">
-          <a class="has-text-white" href="http://codypotter.com/">
-            codypotter.com
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-</nav>
+<app-navbar></app-navbar>
 <ngx-spinner type="ball-scale-multiple"></ngx-spinner>
 <div class="container block mt-5" *ngIf="breadcrumbs.length !== 0">
   <nav class="breadcrumb is-large" aria-label="breadcrumbs">
@@ -54,5 +19,3 @@
     </p>
   </div>
 </footer>
-
-<app-create-account *ngIf="showCreateAccount" (cancel)="showCreateAccount = false"></app-create-account>

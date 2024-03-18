@@ -2,11 +2,12 @@ import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TagsService } from '../services/tags.service';
 import { RouterLink } from '@angular/router';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 @Component({
   selector: 'app-tags',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, NgxSkeletonLoaderModule],
   templateUrl: './tags.component.html',
   styleUrls: ['./tags.component.scss']
 })

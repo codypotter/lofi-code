@@ -6,5 +6,6 @@
       [ngClass]="'tag level-item is-primary is-light ' + size"
       *ngFor="let tag of tags"
     >{{tag}}</a>
+    <ngx-skeleton-loader *ngIf="tags.length === 0" count="5" appearance="circle"></ngx-skeleton-loader>
   </div>
 </div>
