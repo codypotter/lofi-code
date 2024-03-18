@@ -33,6 +33,7 @@ export class CreateAccountComponent {
   ) { }
 
   onCreateAccount() {
+    this.logger.trace('creating account');
     this.form.markAllAsTouched();
     this.validateMatchingPasswords();
     if (this.form.invalid) {
@@ -46,16 +47,20 @@ export class CreateAccountComponent {
   }
 
   onCancel() {
+    this.logger.trace('cancelling');
     this.done.emit();
   }
 
   validateMatchingPasswords() {
+    this.logger.trace('validating matching passwords');
     if (this.form.get('password')?.value !== this.form.get('confirmPassword')?.value) {
+      this.logger.trace('passwords do not match');
       this.form.get('confirmPassword')?.setErrors({ passwordMismatch: true });
     }
   }
 
   loginWithGitHub() {
+    this.logger.trace('logging in with GitHub');
     if (this.form.get('terms')?.value === false) {
       this.form.get('terms')?.markAsTouched();
       return;

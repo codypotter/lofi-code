@@ -10,8 +10,8 @@
         </div>
 
         <div *ngIf="errorMessage" class="notification is-danger is-light">
-          <button class="delete" (click)="successMessage = ''"></button>
-          {{successMessage}}
+          <button class="delete" (click)="errorMessage = ''"></button>
+          {{errorMessage}}
         </div>
 
         <form class="block" [formGroup]="usernameForm">

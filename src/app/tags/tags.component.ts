@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { TagsService } from '../services/tags.service';
 import { RouterLink } from '@angular/router';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-tags',
@@ -16,11 +17,14 @@ export class TagsComponent implements OnInit {
 
   @Input() size = 'is-normal';
 
-  constructor(private tagsService: TagsService) { }
+  constructor(private logger: NGXLogger, private tagsService: TagsService) { }
 
   ngOnInit(): void {
+    this.logger.trace('tags: initializing');
     if (this.tags.length === 0) {
+      this.logger.trace('tags: getting tags');
       this.tagsService.get().subscribe((tags) => this.tags = ['all', ...tags.map(tag => tag.text)]);
     }
+    this.logger.trace('tags: initialized');
   }
 }
