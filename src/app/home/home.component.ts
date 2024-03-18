@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { PostsService } from '../services/posts.service';
 import { PostPreviewComponent } from '../post-preview/post-preview.component';
 import { BreadcrumbService } from '../services/breadcrumb.service';
@@ -14,7 +14,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, PostPreviewComponent, RouterModule, TagsComponent, YoutubePlayerComponent, NgxSkeletonLoaderModule],
+  imports: [PostPreviewComponent, RouterModule, TagsComponent, YoutubePlayerComponent, NgxSkeletonLoaderModule],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })

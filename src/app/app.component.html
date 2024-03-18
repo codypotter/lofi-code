@@ -1,12 +1,16 @@
 <app-navbar></app-navbar>
 <ngx-spinner type="ball-scale-multiple"></ngx-spinner>
-<div class="container block mt-5" *ngIf="breadcrumbs.length !== 0">
-  <nav class="breadcrumb is-large" aria-label="breadcrumbs">
-    <ul>
-      <li [ngClass]="breadcrumb.routerLink ? '' : 'is-active'" *ngFor="let breadcrumb of breadcrumbs"><a [routerLink]="breadcrumb.routerLink">{{breadcrumb.text}}</a></li>
-    </ul>
-  </nav>
-</div>
+@if (breadcrumbs.length !== 0) {
+  <div class="container block mt-5">
+    <nav class="breadcrumb is-large" aria-label="breadcrumbs">
+      <ul>
+        @for (breadcrumb of breadcrumbs; track breadcrumb) {
+          <li [ngClass]="breadcrumb.routerLink ? '' : 'is-active'"><a [routerLink]="breadcrumb.routerLink">{{breadcrumb.text}}</a></li>
+        }
+      </ul>
+    </nav>
+  </div>
+}
 <section class="pb-6">
   <router-outlet></router-outlet>
 </section>

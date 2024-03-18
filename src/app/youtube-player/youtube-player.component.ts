@@ -1,10 +1,10 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, ElementRef, HostListener, Input, NgModule, OnInit, ViewChild } from '@angular/core';
 import { YouTubePlayerModule } from '@angular/youtube-player';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, YouTubePlayerModule],
+  imports: [YouTubePlayerModule],
   templateUrl: './youtube-player.component.html',
   selector: 'app-youtube-player',
 })

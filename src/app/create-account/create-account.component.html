@@ -26,10 +26,9 @@
               href="/privacy-policy"
             >Privacy Policy</a>.
           </label>
-          <p
-            *ngIf="form.get('terms')?.touched && form.get('terms')?.invalid"
-            class="help is-danger"
-          >To create an account, you must accept the terms of service and privacy policy.</p>
+          @if (form.get('terms')?.touched && form.get('terms')?.invalid) {
+          <p class="help is-danger">To create an account, you must accept the terms of service and privacy policy.</p>
+          }
         </div>
         <hr>
         <div class="columns">
@@ -48,10 +47,9 @@
                   <i class="fas fa-user"></i>
                 </span>
               </div>
-              <p
-                *ngIf="form.get('username')?.touched && form.get('username')?.invalid"
-                class="help is-danger"
-              >Username must be between 4 and 20 characters.</p>
+              @if (form.get('username')?.touched && form.get('username')?.invalid) {
+              <p class="help is-danger">Username must be between 4 and 20 characters.</p>
+              }
             </div>
 
             <div class="field">
@@ -68,10 +66,9 @@
                   <i class="fas fa-envelope"></i>
                 </span>
               </div>
-              <p
-                *ngIf="form.get('email')?.touched && form.get('email')?.invalid"
-                class="help is-danger"
-              >Email is invalid.</p>
+              @if (form.get('email')?.touched && form.get('email')?.invalid) {
+              <p class="help is-danger">Email is invalid.</p>
+              }
             </div>
 
             <div class="field">
@@ -88,12 +85,12 @@
                   <i class="fas fa-lock"></i>
                 </span>
               </div>
+              @if (form.get('password')?.touched && form.get('password')?.invalid) {
               <p
-                *ngIf="form.get('password')?.touched && form.get('password')?.invalid"
-                class="help"
-                [class.is-danger]="form.get('password')?.invalid && form.get('password')?.touched"
+                class="help is-danger"
               >Password must be 8 to 20 characters long, and include at least one lowercase letter, one
                 uppercase letter, one digit, and one special character.</p>
+              }
             </div>
 
             <div class="field">
@@ -111,11 +108,11 @@
                   <i class="fas fa-lock"></i>
                 </span>
               </div>
+              @if (form.get('confirmPassword')?.touched && form.get('confirmPassword')?.invalid) {
               <p
-                *ngIf="form.get('confirmPassword')?.touched && form.get('confirmPassword')?.invalid"
-                class="help"
-                [class.is-danger]="form.get('confirmPassword')?.invalid && form.get('confirmPassword')?.touched"
+                class="help is-danger"
               >Passwords must match.</p>
+              }
             </div>
 
             <button
@@ -137,10 +134,15 @@
             </button>
           </div>
         </div>
-        <div *ngIf="errorMessage" class="notification is-danger is-light">
-          <button class="delete" (click)="errorMessage = ''"></button>
-           {{errorMessage}}
+        @if (errorMessage) {
+        <div class="notification is-danger is-light">
+          <button
+            class="delete"
+            (click)="errorMessage = ''"
+          ></button>
+          {{errorMessage}}
         </div>
+        }
       </form>
     </div>
   </div>

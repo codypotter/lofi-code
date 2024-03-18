@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { Post, PostsService } from '../services/posts.service';
 import { BreadcrumbService } from '../services/breadcrumb.service';
 import {  Subject, take, takeUntil } from 'rxjs';
@@ -12,7 +12,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 @Component({
   selector: 'app-posts',
   standalone: true,
-  imports: [CommonModule, SearchResultComponent, TagsComponent],
+  imports: [SearchResultComponent, TagsComponent],
   templateUrl: './posts.component.html',
   styleUrls: ['./posts.component.scss']
 })

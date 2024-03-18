@@ -1,16 +1,17 @@
 <a class="box" [routerLink]="['/posts', post.slug]">
   <div class="truncated">
-    <div
-      *ngIf="post.header_image"
-      class="card-image"
-    >
-      <figure class="image is-3by1">
-        <img
-          src="{{headerImg}}"
-          alt="Placeholder image"
+    @if (post.header_image) {
+      <div
+        class="card-image"
         >
-      </figure>
-    </div>
+        <figure class="image is-3by1">
+          <img
+            src="{{headerImg}}"
+            alt="Placeholder image"
+            >
+        </figure>
+      </div>
+    }
     <div class="card-content">
       <div class="media">
         <div class="media-content">

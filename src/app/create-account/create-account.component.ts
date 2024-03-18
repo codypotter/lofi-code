@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { AccountService } from '../services/account.service';
@@ -7,7 +7,7 @@ import { AccountService } from '../services/account.service';
 @Component({
   selector: 'app-create-account',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, RouterModule],
+  imports: [ReactiveFormsModule, FormsModule, RouterModule],
   templateUrl: './create-account.component.html',
   styleUrls: ['./create-account.component.scss']
 })

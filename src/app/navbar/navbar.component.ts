@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { CreateAccountComponent } from '../create-account/create-account.component';
 import { User } from 'firebase/auth';
 import { AccountService } from '../services/account.service';
-import { RouterLink } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { LoginComponent } from '../login/login.component';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, CreateAccountComponent, RouterLink, LoginComponent],
+  imports: [CreateAccountComponent, RouterModule, LoginComponent],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']
 })

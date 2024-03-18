@@ -1,11 +1,14 @@
 <div class="container">
   <div class="tags">
-    <a
-      [routerLink]="['/posts']"
-      [queryParams]="{tag}"
-      [ngClass]="'tag level-item is-primary is-light ' + size"
-      *ngFor="let tag of tags"
-    >{{tag}}</a>
-    <ngx-skeleton-loader *ngIf="tags.length === 0" count="5" appearance="circle"></ngx-skeleton-loader>
+    @for (tag of tags; track tag) {
+      <a
+        [routerLink]="['/posts']"
+        [queryParams]="{tag}"
+        [ngClass]="'tag level-item is-primary is-light ' + size"
+      >{{tag}}</a>
+    }
+    @if (tags.length === 0) {
+      <ngx-skeleton-loader count="5" appearance="circle"></ngx-skeleton-loader>
+    }
   </div>
 </div>

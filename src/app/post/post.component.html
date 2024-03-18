@@ -1,35 +1,40 @@
-<article class="container" *ngIf="post">
-  <div
-    *ngIf="post.header_image"
-    class="card-image"
-  >
-    <figure class="image is-3by1">
-      <img
-        src="{{getHeaderImg()}}"
-        alt="Placeholder image"
-      >
-    </figure>
-  </div>
-  <div class="card-content">
-    <div class="media">
-      <div class="media-content">
-        <h5 class="title">{{post.name}}</h5>
-        <h6 class="subtitle">{{post.publish_date.seconds * 1000 | date: 'medium'}}</h6>
+@if (post) {
+  <article class="container">
+    @if (post.header_image) {
+      <div
+        class="card-image"
+        >
+        <figure class="image is-3by1">
+          <img
+            src="{{getHeaderImg()}}"
+            alt="Placeholder image"
+            >
+        </figure>
       </div>
+    }
+    <div class="card-content">
+      <div class="media">
+        <div class="media-content">
+          <h5 class="title">{{post.name}}</h5>
+          <h6 class="subtitle">{{post.publish_date.seconds * 1000 | date: 'medium'}}</h6>
+        </div>
+      </div>
+      <div
+        class="content"
+        [innerHTML]="getContent()"
+      ></div>
     </div>
-    <div
-      class="content"
-      [innerHTML]="getContent()"
-    ></div>
-  </div>
-</article>
+  </article>
+}
 <div class="container">
   <h2 class="title is-2 mb-5">Related Posts</h2>
   <div class="tile is-ancestor">
-    <div class="tile is-parent" *ngFor="let relatedPost of relatedPosts">
+    @for (relatedPost of relatedPosts; track relatedPost) {
+      <div class="tile is-parent">
         <div class="tile is-child">
           <app-post-preview [post]="relatedPost"></app-post-preview>
         </div>
-    </div>
+      </div>
+    }
   </div>
 </div>

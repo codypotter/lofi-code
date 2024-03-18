@@ -1,15 +1,16 @@
 <a class="no-link-style" [routerLink]="['/posts', post.slug]">
   <div class="columns">
-    <div
-      *ngIf="post.header_image"
-      class="column is-narrow"
-    >
-      <img
-        [src]="buildImageUrl()"
-        alt="post.name"
-        class="image is-128x128"
-      >
-    </div>
+    @if (post.header_image) {
+      <div
+        class="column is-narrow"
+        >
+        <img
+          [src]="buildImageUrl()"
+          alt="post.name"
+          class="image is-128x128"
+          >
+      </div>
+    }
     <div class="column">
       <div class="level">
         <div class="level-left">

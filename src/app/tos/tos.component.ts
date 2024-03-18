@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-tos',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './tos.component.html',
   styleUrls: ['./tos.component.scss']
 })

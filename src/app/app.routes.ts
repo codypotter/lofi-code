@@ -1,24 +1,25 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './home/home.component';
-import { PostsComponent } from './posts/posts.component';
-import { PostComponent } from './post/post.component';
-import { TosComponent } from './tos/tos.component';
-import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
     {
-        path: '', component: HomeComponent
+        path: '', loadComponent: () => import('./home/home.component').then(m => m.HomeComponent)
     },
     {
-        path: 'posts', component: PostsComponent,
+        path: 'posts', loadComponent: () => import('./posts/posts.component').then(m => m.PostsComponent),
     },
     {
-        path: 'posts/:slug', component: PostComponent,
+        path: 'posts/:slug', loadComponent: () => import('./post/post.component').then(m => m.PostComponent),
     },
     {
-        path: 'tos', component: TosComponent,
+        path: 'tos', loadComponent: () => import('./tos/tos.component').then(m => m.TosComponent),
     },
     {
-        path: 'privacy-policy', component: PrivacyPolicyComponent,
+        path: 'privacy-policy', loadComponent: () => import('./privacy-policy/privacy-policy.component').then(m => m.PrivacyPolicyComponent),
+    },
+    {
+        path: 'settings',
+        loadComponent: () => import('./settings/settings.component').then(m => m.SettingsComponent),
+        canActivate: [authGuard]
     }
 ];
