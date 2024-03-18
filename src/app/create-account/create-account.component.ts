@@ -39,10 +39,39 @@ export class CreateAccountComponent {
     if (this.form.invalid) {
       return;
     }
-    this.accountService.createAccount(this.form.get('email')!.value!, this.form.get('password')!.value!, this.form.get('username')!.value!).subscribe((res) => {
-      this.logger.debug('Login response:', res);
-      this.logger.debug('currentUserInfo:', this.accountService.getCurrentUserInfo());
-      this.done.emit();
+    this.accountService.createAccount(this.form.get('email')!.value!, this.form.get('password')!.value!, this.form.get('username')!.value!).subscribe({
+      next: (res) => {
+        this.logger.debug('Login response:', res);
+        this.logger.debug('currentUserInfo:', this.accountService.getCurrentUserInfo());
+        this.done.emit();
+      },
+      error: (err) => {
+        switch (err.code) {
+          case 'auth/email-already-in-use':
+            this.errorMessage = 'An account already exists with that email address.';
+            break;
+          case 'auth/invalid-email':
+            this.errorMessage = 'Invalid email address.';
+            break;
+          case 'auth/operation-not-allowed':
+            this.errorMessage = 'Account creation is not allowed.';
+            break;
+          case 'auth/weak-password':
+            this.errorMessage = 'Password is too weak.';
+            break;
+          case 'auth/too-many-requests':
+            this.errorMessage = 'Too many requests. Try again later.';
+            break;
+          case 'auth/network-request-failed':
+            this.errorMessage = 'Network request failed. Try again later.';
+            break;
+          case 'auth/user-disabled':
+            this.errorMessage = 'This account has been disabled.';
+            break;
+          default:
+            this.errorMessage = 'An error occurred while creating the account.';
+        }
+      },
     });
   }
 
@@ -71,9 +100,13 @@ export class CreateAccountComponent {
         this.done.emit();
       },
       error: (err) => {
-        this.logger.error('Error logging in with GitHub:', err);
-        if (err.code === 'auth/account-exists-with-different-credential') {
-          this.errorMessage = "An account already exists with the same email address but different sign-in credentials. Sign in using a provider that you've used to sign in to this account.";
+        this.logger.debug('Error logging in with GitHub:', err);
+        switch (err.code) {
+          case 'auth/account-exists-with-different-credential':
+            this.errorMessage = "An account already exists with the same email address but different sign-in credentials. Sign in using a provider that you've used to sign in to this account.";
+            break;
+          default:
+            this.errorMessage = "An error occurred while logging in with GitHub.";
         }
       }
     });
