@@ -4,6 +4,7 @@ import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angu
 import { RouterModule } from '@angular/router';
 import { AccountService } from '../services/account.service';
 import { NGXLogger } from 'ngx-logger';
+import { UsersService } from '../services/users.service';
 
 @Component({
   selector: 'app-create-account',
@@ -30,6 +31,7 @@ export class CreateAccountComponent {
     private logger: NGXLogger,
     private fb: FormBuilder,
     private accountService: AccountService,
+    private usersService: UsersService,
   ) { }
 
   onCreateAccount() {
@@ -42,7 +44,16 @@ export class CreateAccountComponent {
     this.accountService.createAccount(this.form.get('email')!.value!, this.form.get('password')!.value!, this.form.get('username')!.value!).subscribe({
       next: (res) => {
         this.logger.debug('Login response:', res);
-        this.logger.debug('currentUserInfo:', this.accountService.getCurrentUserInfo());
+        const userInfo = this.accountService.getCurrentUserInfo()
+        this.usersService.set(userInfo!.uid!, {
+          email: this.form.get('email')!.value!,
+          displayName: this.form.get('username')!.value!,
+          mailingList: this.form.get('mailingList')!.value!,
+          photoURL: '',
+        }).subscribe({
+          next: () => this.logger.debug('User created'),
+          error: (err) => this.logger.error('Error creating user:', err),
+        });
         this.done.emit();
       },
       error: (err) => {

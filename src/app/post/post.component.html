@@ -25,9 +25,18 @@
       ></div>
     </div>
   </article>
+  <div class="container block">
+    <h4 class="title is-4 mb-5">Comments</h4>
+    <app-comments [post]="post"></app-comments>
+  </div>
+} @else {
+  <div class="container">
+    <ngx-skeleton-loader count="30"></ngx-skeleton-loader>
+  </div>
 }
-<div class="container">
-  <h2 class="title is-2 mb-5">Related Posts</h2>
+
+<div class="container block">
+  <h4 class="title is-4 mb-5">Related Posts</h4>
   <div class="tile is-ancestor">
     @for (relatedPost of relatedPosts; track relatedPost) {
       <div class="tile is-parent">

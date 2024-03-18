@@ -2,17 +2,18 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PostPreviewComponent } from '../post-preview/post-preview.component';
 import { Post, PostsService } from '../services/posts.service';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { marked } from 'marked';
 import { environment } from 'src/environments/environment';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { BreadcrumbService } from '../services/breadcrumb.service';
 import { Subject, takeUntil } from 'rxjs';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { CommentsComponent } from '../comments/comments.component';
 
 @Component({
   selector: 'app-post',
   standalone: true,
-  imports: [CommonModule, PostPreviewComponent],
+  imports: [CommonModule, PostPreviewComponent, NgxSkeletonLoaderModule, CommentsComponent],
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.scss']
 })
@@ -26,7 +27,6 @@ export class PostComponent implements OnInit, OnDestroy {
   constructor(
     private postsService: PostsService,
     private route: ActivatedRoute,
-    private spinner: NgxSpinnerService,
     private breadcrumbService: BreadcrumbService,
   ) {}
 
@@ -48,11 +48,9 @@ export class PostComponent implements OnInit, OnDestroy {
   }
 
   loadPost(slug: string) {
-    this.spinner.show();
     this.postsService.getPostBySlug(slug).pipe(takeUntil(this.destroy$)).subscribe((post) => {
       this.post = post;
       this.getRelatedPosts();
-      this.spinner.hide();
     });
   }
 

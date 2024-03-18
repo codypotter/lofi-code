@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AccountService } from '../services/account.service';
 import { CommonModule } from '@angular/common';
 import { NGXLogger } from 'ngx-logger';
 import { Router, RouterModule, RouterState } from '@angular/router';
+import { UsersService } from '../services/users.service';
 
 @Component({
   selector: 'app-settings',
@@ -12,7 +13,7 @@ import { Router, RouterModule, RouterState } from '@angular/router';
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.scss'
 })
-export class SettingsComponent {
+export class SettingsComponent implements OnInit {
 
   successMessage = '';
 
@@ -39,8 +40,16 @@ export class SettingsComponent {
     private logger: NGXLogger,
     private fb: FormBuilder,
     private accountService: AccountService,
+    private usersService: UsersService,
     private router: Router,
   ) { }
+
+  ngOnInit(): void {
+    this.usersService.get(this.accountService.getCurrentUserInfo()?.uid!).subscribe((user) => {
+      console.trace('user', user);
+      this.mailingListForm.get('mailingList')?.setValue(user.get('mailingList') ?? false);
+    });
+  }
 
   validateMatchingPasswords() {
     this.logger.trace('validating matching passwords');
@@ -59,7 +68,16 @@ export class SettingsComponent {
     }
     this.logger.trace('submitting username form', this.usernameForm.value);
     this.accountService.updateUsername(this.usernameForm.get('username')!.value!).subscribe({
-      next: () => this.setSuccessMessage('Username updated'),
+      next: () => {
+        this.setSuccessMessage('Username updated')
+        const userInfo = this.accountService.getCurrentUserInfo();
+        this.usersService.set(userInfo!.uid!, {
+          displayName: this.usernameForm.get('username')!.value!,
+        }).subscribe({
+          next: () => this.logger.debug('User created'),
+          error: (err) => this.logger.error('Error creating user:', err),
+        });
+      },
       error: (err) => this.setErrorMessage(err.message),
     });
   }
@@ -72,7 +90,16 @@ export class SettingsComponent {
     }
 
     this.accountService.updateEmail(this.emailForm.get('email')!.value!).subscribe({
-      next: () => this.setSuccessMessage('An email has been sent to verify the new email.'),
+      next: () => {
+        this.setSuccessMessage('An email has been sent to verify the new email.');
+        const userInfo = this.accountService.getCurrentUserInfo();
+        this.usersService.set(userInfo!.uid!, {
+          email: this.emailForm.get('email')!.value!,
+        }).subscribe({
+          next: () => this.logger.debug('User created'),
+          error: (err) => this.logger.error('Error creating user:', err),
+        });
+      },
       error: (err) => {
         switch (err.code) {
           case 'auth/invalid-email':
@@ -105,7 +132,9 @@ export class SettingsComponent {
       return;
     }
     this.accountService.updatePassword(this.passwordForm.get('password')!.value!).subscribe({
-      next: () => this.setSuccessMessage('Password updated'),
+      next: () => {
+        this.setSuccessMessage('Password updated')
+      },
       error: (err) => {
         switch (err.code) {
           case 'auth/weak-password':
@@ -131,6 +160,13 @@ export class SettingsComponent {
     if (this.mailingListForm.invalid) {
       return;
     }
+    const userInfo = this.accountService.getCurrentUserInfo();
+    this.usersService.set(userInfo!.uid!, {
+      mailingList: this.mailingListForm.get('mailingList')!.value!,
+    }).subscribe({
+      next: () => this.logger.debug('User created'),
+      error: (err) => this.logger.error('Error creating user:', err),
+    });
     this.setSuccessMessage('Mailing list preferences saved');
   }
 
