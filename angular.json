@@ -86,10 +86,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "lofi-code:build:production"
+              "buildTarget": "lofi-code:build:production"
             },
             "development": {
-              "browserTarget": "lofi-code:build:development"
+              "buildTarget": "lofi-code:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -97,7 +97,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "lofi-code:build"
+            "buildTarget": "lofi-code:build"
           }
         },
         "test": {

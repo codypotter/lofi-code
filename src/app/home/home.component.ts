@@ -29,21 +29,17 @@ export class HomeComponent implements OnInit {
     private postsService: PostsService,
     private breadcrumbService: BreadcrumbService,
     private videosService: VideosService,
-    private spinner: NgxSpinnerService,
   ) { }
   
   ngOnInit(): void {
-    this.spinner.show();
     this.breadcrumbService.setBreadcrumbs([]);
     this.postsService.getN(3).pipe(takeUntil(this.destroy$)).subscribe((posts) => { this.posts = posts;});
     this.videosService.getFeaturedVideo().pipe(takeUntil(this.destroy$)).subscribe({
       next: (res) => {
         const featuredVideo = res.items[0];
         this.featuredVideoId = featuredVideo?.id?.videoId;
-        this.spinner.hide();
       },
       error: (err) => {
-        this.spinner.hide();
         console.warn(err);
         this.featuredVideoId = 'Rk2SBoBwtRU';
       }
