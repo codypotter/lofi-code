@@ -1,5 +1,5 @@
 import { Injectable, Input } from '@angular/core';
-import { Firestore, collection, collectionData, query } from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, query } from '@angular/fire/firestore/lite';
 import { Observable } from 'rxjs';
 
 export interface Tag {

@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, collectionData, query } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
@@ -17,7 +15,7 @@ interface YouTubeResponse {
 })
 export class VideosService {
 
-  constructor(private firestore: Firestore, private http: HttpClient) { }
+  constructor(private http: HttpClient) { }
 
   getFeaturedVideo() {
     return this.http.get<YouTubeResponse>('https://www.googleapis.com/youtube/v3/search', {

@@ -22,7 +22,7 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:browser-esbuild",
           "options": {
             "outputPath": "dist/lofi-code",
             "index": "src/index.html",
@@ -41,7 +41,10 @@
               "node_modules/ngx-spinner/animations/ball-scale-multiple.css",
               "node_modules/@fortawesome/fontawesome-free/css/all.css"
             ],
-            "scripts": []
+            "scripts": [],
+            "stylePreprocessorOptions": {
+              "includePaths": ["."]
+            }
           },
           "configurations": {
             "production": {
