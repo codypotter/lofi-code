@@ -1,9 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Firestore, collection, collectionData, orderBy, query, where } from '@angular/fire/firestore/lite';
-import { Timestamp, limit, startAfter } from 'firebase/firestore/lite';
-import { Observable, map } from 'rxjs';
+import { DocumentReference, Timestamp, limit, startAfter } from 'firebase/firestore/lite';
+import { Observable, map, switchMap } from 'rxjs';
+
+export interface Comment {
+  text: string;
+  timestamp: Timestamp;
+  user: DocumentReference;
+}
 
 export interface Post {
+  id?: string;
   name: string;
   slug: string;
   tags: string[];
@@ -13,6 +20,7 @@ export interface Post {
   reviewed: boolean;
   header_image: string | null;
   content: Array<{ type: string; value: string | string[] }>;
+  comments: Array<Comment>;
 }
 
 @Injectable({
@@ -44,6 +52,10 @@ export class PostsService {
       where('slug', '==', slug),
       limit(1),
     );
-    return collectionData(postCollection).pipe(map(posts => posts[0])) as Observable<Post>;
+    return collectionData(postCollection, { idField: 'id' }).pipe(map(posts => posts[0])) as Observable<Post>;
+  }
+
+  getPostComments(id: string): Observable<Comment[]> {
+    return collectionData(collection(this.firestore, `blog/${id}/comments`)) as Observable<Comment[]>;
   }
 }

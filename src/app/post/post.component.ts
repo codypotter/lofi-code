@@ -9,6 +9,7 @@ import { BreadcrumbService } from '../services/breadcrumb.service';
 import { Subject, takeUntil } from 'rxjs';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { CommentsComponent } from '../comments/comments.component';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-post',
@@ -28,6 +29,7 @@ export class PostComponent implements OnInit, OnDestroy {
     private postsService: PostsService,
     private route: ActivatedRoute,
     private breadcrumbService: BreadcrumbService,
+    private logger: NGXLogger,
   ) {}
 
   ngOnInit() {
@@ -49,6 +51,7 @@ export class PostComponent implements OnInit, OnDestroy {
 
   loadPost(slug: string) {
     this.postsService.getPostBySlug(slug).pipe(takeUntil(this.destroy$)).subscribe((post) => {
+      this.logger.trace('post', post);
       this.post = post;
       this.getRelatedPosts();
     });
