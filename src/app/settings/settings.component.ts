@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AccountService } from '../services/account.service';
 import { CommonModule } from '@angular/common';
@@ -19,6 +19,8 @@ export class SettingsComponent implements OnInit {
 
   errorMessage = '';
 
+  avatar = '';
+
   usernameForm = this.fb.group({
     username: [this.accountService.getCurrentUserInfo()?.displayName ?? '', [Validators.required, Validators.minLength(4), Validators.maxLength(20)]],
   });
@@ -36,18 +38,23 @@ export class SettingsComponent implements OnInit {
     mailingList: [false]
   });
 
+  newAvatar = '';
+
   constructor(
     private logger: NGXLogger,
     private fb: FormBuilder,
     private accountService: AccountService,
     private usersService: UsersService,
     private router: Router,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
     this.usersService.get(this.accountService.getCurrentUserInfo()?.uid!).subscribe((user) => {
       console.trace('user', user);
       this.mailingListForm.get('mailingList')?.setValue(user.get('mailingList') ?? false);
+      this.avatar = user.get('photoURL') ?? '';
+      this.logger.warn('avatar', this.avatar);
     });
   }
 
@@ -188,5 +195,75 @@ export class SettingsComponent implements OnInit {
       this.errorMessage = '';
       this.logger.trace('error message cleared');
     }, 3000);
+  }
+
+  onFileUpload(e: any) {
+    const file = (e.target as HTMLInputElement)?.files?.[0];
+    if (!file) {
+      this.logger.warn('no file selected');
+      return;
+    }
+    const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    if (!validImageTypes.includes(file.type)) {
+      alert('Invalid file type. Please select a JPEG, PNG, or GIF image.');
+      return;
+    }
+
+    const maxSizeInBytes = 1 * 1024 * 1024; // 1MB
+    if (file.size > maxSizeInBytes) {
+      alert('File is too large. Please select a file smaller than 1MB.');
+      return;
+    }
+
+    const img = document.createElement('img');
+    img.src = URL.createObjectURL(file);
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      const maxDimension = 500; // Maximum dimension (width or height)
+      let width = img.width;
+      let height = img.height;
+
+      if (width > height) {
+        if (width > maxDimension) {
+          height *= maxDimension / width;
+          width = maxDimension;
+        }
+      } else {
+        if (height > maxDimension) {
+          width *= maxDimension / height;
+          height = maxDimension;
+        }
+      }
+
+      canvas.width = width;
+      canvas.height = height;
+      ctx?.drawImage(img, 0, 0, width, height);
+
+      canvas.toBlob((blob) => {
+        this.usersService.uploadAvatar(blob!, `${this.accountService.getCurrentUserInfo()?.uid!}`).subscribe((url) => {
+          this.logger.debug('avatar uploaded', url);
+          this.newAvatar = url as string;
+          this.cdr.detectChanges();
+        });
+      }, file.type);
+
+      URL.revokeObjectURL(img.src);
+    }
+  }
+
+  onSaveAvatar() {
+    this.logger.trace('saving avatar preferences');
+    const userInfo = this.accountService.getCurrentUserInfo();
+    this.usersService.set(userInfo!.uid!, {
+      photoURL: this.newAvatar,
+    }).subscribe({
+      next: () => {
+        this.avatar = this.newAvatar;
+        this.logger.debug('User updated');
+      },
+      error: (err) => this.logger.error('Error creating user:', err),
+    });
+    this.setSuccessMessage('Avatar preferences saved');
   }
 }

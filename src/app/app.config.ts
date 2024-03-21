@@ -15,6 +15,7 @@ import { environment } from 'src/environments/environment';
 import { LoggerModule } from 'ngx-logger';
 import { TagsService } from './services/tags.service';
 import { UsersService } from './services/users.service';
+import { getStorage, provideStorage } from '@angular/fire/storage';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -35,6 +36,7 @@ export const appConfig: ApplicationConfig = {
     ),
     importProvidersFrom(provideAuth(() => getAuth())),
     importProvidersFrom(provideFirestore(() => getFirestore())),
+    importProvidersFrom(provideStorage(() => getStorage())),
     importProvidersFrom(YouTubePlayerModule),
     BreadcrumbService,
     PostsService,
