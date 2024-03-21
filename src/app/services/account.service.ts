@@ -3,6 +3,7 @@ import { Auth, GithubAuthProvider, User, authState, createUserWithEmailAndPasswo
 import { updateEmail, updatePassword } from 'firebase/auth';
 import { NGXLogger } from 'ngx-logger';
 import { Observable, catchError, defer, first, from, switchMap, tap } from 'rxjs';
+import { UsersService } from './users.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,11 @@ import { Observable, catchError, defer, first, from, switchMap, tap } from 'rxjs
 export class AccountService {
   currentUser: Observable<User | null>;
 
-  constructor(private logger: NGXLogger, private auth: Auth) {
+  constructor(
+    private logger: NGXLogger,
+    private auth: Auth,
+    private usersService: UsersService,
+  ) {
     this.currentUser = authState(auth)
   }
 
@@ -21,13 +26,38 @@ export class AccountService {
 
   loginWithGitHub() {
     this.logger.trace('logging in with GitHub');
-    return defer(() => signInWithPopup(this.auth, new GithubAuthProvider().addScope('read:user'))).pipe(first());
+    return defer(() => signInWithPopup(this.auth, new GithubAuthProvider().addScope('read:user'))).pipe(
+      first(),
+      tap(() => {
+        const userInfo = this.getCurrentUserInfo()
+        this.logger.debug('userInfo', userInfo?.providerData[0].email!)
+        this.usersService.set(userInfo!.uid!, {
+          email: userInfo?.providerData[0].email!,
+          displayName: userInfo!.displayName!,
+          mailingList: false,
+          photoURL: userInfo?.photoURL!,
+        }).subscribe({
+          next: () => this.logger.debug('User created'),
+          error: (err) => this.logger.error('Error creating user:', err),
+        });
+      }),
+    );
   }
 
-  createAccount(email: string, password: string, displayName: string) {
+  createAccount(email: string, password: string, displayName: string, mailingList: boolean) {
     this.logger.trace('creating account', email, displayName);
     return defer(() => createUserWithEmailAndPassword(this.auth, email, password)).pipe(
       switchMap(userCredential => {
+        const userInfo = this.getCurrentUserInfo()
+        this.usersService.set(userInfo!.uid!, {
+          email,
+          displayName,
+          mailingList,
+          photoURL: '',
+        }).subscribe({
+          next: () => this.logger.debug('User created'),
+          error: (err) => this.logger.error('Error creating user:', err),
+        });
         return from(updateProfile(userCredential.user, { displayName }));
       }),
       first(),

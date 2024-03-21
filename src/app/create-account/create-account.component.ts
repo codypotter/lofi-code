@@ -31,7 +31,6 @@ export class CreateAccountComponent {
     private logger: NGXLogger,
     private fb: FormBuilder,
     private accountService: AccountService,
-    private usersService: UsersService,
   ) { }
 
   onCreateAccount() {
@@ -41,19 +40,14 @@ export class CreateAccountComponent {
     if (this.form.invalid) {
       return;
     }
-    this.accountService.createAccount(this.form.get('email')!.value!, this.form.get('password')!.value!, this.form.get('username')!.value!).subscribe({
+    this.accountService.createAccount(
+      this.form.get('email')!.value!,
+      this.form.get('password')!.value!,
+      this.form.get('username')!.value!,
+      this.form.get('mailingList')!.value!,
+    ).subscribe({
       next: (res) => {
         this.logger.debug('Login response:', res);
-        const userInfo = this.accountService.getCurrentUserInfo()
-        this.usersService.set(userInfo!.uid!, {
-          email: this.form.get('email')!.value!,
-          displayName: this.form.get('username')!.value!,
-          mailingList: this.form.get('mailingList')!.value!,
-          photoURL: '',
-        }).subscribe({
-          next: () => this.logger.debug('User created'),
-          error: (err) => this.logger.error('Error creating user:', err),
-        });
         this.done.emit();
       },
       error: (err) => {
@@ -107,7 +101,7 @@ export class CreateAccountComponent {
     }
     this.accountService.loginWithGitHub().subscribe({
       next: () => {
-        this.logger.debug('currentUserInfo:', this.accountService.getCurrentUserInfo());
+        this.logger.debug('Logged in with GitHub');
         this.done.emit();
       },
       error: (err) => {
