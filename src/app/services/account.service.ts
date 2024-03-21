@@ -29,13 +29,17 @@ export class AccountService {
     return defer(() => signInWithPopup(this.auth, new GithubAuthProvider().addScope('read:user'))).pipe(
       first(),
       tap(() => {
-        const userInfo = this.getCurrentUserInfo()
-        this.logger.debug('userInfo', userInfo?.providerData[0].email!)
-        this.usersService.set(userInfo!.uid!, {
-          email: userInfo?.providerData[0].email!,
-          displayName: userInfo!.displayName!,
+        const { uid, providerData } = this.getCurrentUserInfo() ?? {}
+        const { email, displayName, photoURL } = providerData?.[0] ?? {};
+        if (!uid) {
+          this.logger.error('No user ID somehow?');
+          return;
+        }
+        this.usersService.set(uid, {
+          email: email ?? '',
+          displayName: displayName ?? 'anonymous',
           mailingList: false,
-          photoURL: userInfo?.photoURL!,
+          photoURL: photoURL ?? '',
         }).subscribe({
           next: () => this.logger.debug('User created'),
           error: (err) => this.logger.error('Error creating user:', err),
@@ -48,12 +52,16 @@ export class AccountService {
     this.logger.trace('creating account', email, displayName);
     return defer(() => createUserWithEmailAndPassword(this.auth, email, password)).pipe(
       switchMap(userCredential => {
-        const userInfo = this.getCurrentUserInfo()
-        this.usersService.set(userInfo!.uid!, {
+        const {uid, providerData} = this.getCurrentUserInfo() ?? {};
+        if (!uid) {
+          this.logger.error('No user ID somehow?');
+          return from(updateProfile(userCredential.user, { displayName }));;
+        }
+        this.usersService.set(uid, {
           email,
           displayName,
           mailingList,
-          photoURL: '',
+          photoURL: providerData?.[0]?.photoURL ?? '',
         }).subscribe({
           next: () => this.logger.debug('User created'),
           error: (err) => this.logger.error('Error creating user:', err),
