@@ -1,16 +1,9 @@
 {
-  "hosting": {
-    "public": "dist/lofi-code",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ],
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
-    ]
-  }
+  "hosting": [
+    {
+      "target": "lofi-code",
+      "source": ".",
+      "frameworksBackend": {}
+    }
+  ]
 }

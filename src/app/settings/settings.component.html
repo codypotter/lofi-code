@@ -1,0 +1,175 @@
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-half">
+        <h1 class="title">Settings</h1>
+
+        <div *ngIf="successMessage" class="notification is-success is-light">
+          <button class="delete" (click)="successMessage = ''"></button>
+          {{successMessage}}
+        </div>
+
+        <div *ngIf="errorMessage" class="notification is-danger is-light">
+          <button class="delete" (click)="errorMessage = ''"></button>
+          {{errorMessage}}
+        </div>
+
+        <form class="block" [formGroup]="usernameForm">
+          <label class="label">Username</label>
+          <div class="field has-addons">
+            <div class="control has-icons-left is-expanded">
+              <input
+                class="input"
+                type="text"
+                formControlName="username"
+                [class.is-danger]="usernameForm.get('username')?.invalid && usernameForm.get('username')?.touched"
+              />
+              <span class="icon is-small is-left">
+                <i class="fas fa-user"></i>
+              </span>
+            </div>
+            <div class="control">
+              <button class="button is-primary" (click)="onSaveUsername()">Save</button>
+            </div>
+          </div>
+          @if (usernameForm.get('username')?.touched && usernameForm.get('username')?.invalid) {
+            <p class="help is-danger">Username must be between 4 and 20 characters.</p>
+          }
+        </form>
+
+        <hr>
+
+        <form class="block" [formGroup]="emailForm">
+          <label class="label">Email</label>
+          <div class="field has-addons">
+            <div class="control has-icons-left is-expanded">
+              <input
+                class="input"
+                type="email"
+                [class.is-danger]="emailForm.get('email')?.invalid && emailForm.get('email')?.touched"
+                formControlName="email"
+              />
+              <span class="icon is-small is-left">
+                <i class="fas fa-envelope"></i>
+              </span>
+            </div>
+            <div class="control">
+              <button class="button is-primary" (click)="onSaveEmail()">Save</button>
+            </div>
+          </div>
+          @if (emailForm.get('email')?.touched && emailForm.get('email')?.invalid) {
+            <p class="help is-danger">Email is invalid.</p>
+          }
+        </form>
+
+        <hr>
+
+        <form class="block" [formGroup]="passwordForm">
+          <div class="field">
+            <label class="label">Password</label>
+            <div class="control has-icons-left">
+              <input
+                class="input"
+                type="password"
+                formControlName="password"
+                [class.is-danger]="passwordForm.get('password')?.invalid && passwordForm.get('password')?.touched"
+              />
+              <span class="icon is-small is-left">
+                <i class="fas fa-lock"></i>
+              </span>
+            </div>
+            @if (passwordForm.get('password')?.touched && passwordForm.get('password')?.invalid) {
+              <p
+                class="help is-danger"
+              >Password must be 8 to 20 characters long, and include at least one lowercase letter, one
+                uppercase letter, one digit, and one special character.</p>
+            }
+          </div>
+        
+          <div class="field">
+            <label class="label">Confirm Password</label>
+            <div class="control has-icons-left">
+              <input
+                class="input"
+                [class.is-danger]="passwordForm.get('confirmPassword')?.invalid && passwordForm.get('confirmPassword')?.touched"
+                type="password"
+                formControlName="confirmPassword"
+                (blur)="validateMatchingPasswords()"
+              />
+              <span class="icon is-small is-left">
+                <i class="fas fa-lock"></i>
+              </span>
+            </div>
+            @if (passwordForm.get('confirmPassword')?.touched && passwordForm.get('confirmPassword')?.invalid) {
+              <p class="help is-danger">Passwords must match.</p>
+            }
+          </div>
+          <div class="field">
+            <p class="control">
+              <button class="button is-primary" (click)="onSavePassword()">Save</button>
+            </p>
+          </div>
+        </form>
+
+        <hr>
+        
+        <form class="block">
+          <div class="field">
+            <label class="label">Avatar</label>
+            <figure class="image is-128x128" style="overflow: hidden;">
+              <img [src]="avatar" alt="Avatar">
+            </figure>
+          </div>
+          <div class="field">
+            <div class="file has-name">
+              <label class="file-label">
+                <input class="file-input" type="file" (change)="onFileUpload($event)">
+                <span class="file-cta">
+                  <span class="file-icon">
+                    <i class="fas fa-upload"></i>
+                  </span>
+                  <span class="file-label">
+                    Choose an image...
+                  </span>
+                </span>
+                <span class="file-name">
+                  {{newAvatar}}
+                </span>
+              </label>
+            </div>
+            <p class="help">Image must be less than 1MB</p>
+          </div>
+          
+          <div class="field">
+            <p class="control">
+              <button class="button is-primary" (click)="onSaveAvatar()">Save</button>
+            </p>
+          </div>
+        </form>
+
+        <hr>
+
+        <form class="block" [formGroup]="mailingListForm">
+          <div class="field">
+            <label class="label">Marketing</label>
+            <div class="control">
+              <label class="checkbox">
+                <input
+                  type="checkbox"
+                  formControlName="mailingList"
+                >
+                I want to receive updates and promotional emails.
+              </label>
+            </div>
+          </div>
+          <div class="field">
+            <p class="control">
+              <button class="button is-primary" (click)="onSaveMailingList()">Save</button>
+            </p>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</section>

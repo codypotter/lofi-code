@@ -1,13 +1,44 @@
-<section class="hero is-primary is-large">
-  <div class="hero-body is-flex">
-    <img src="assets/cody.jpg">
-    <div class="is-flex is-flex-direction-column is-justify-content-center">
-      <p class="title is-family-monospace">
-        lofi code
-      </p>
-      <p class="subtitle">
-        nourishing your mind with byte-sized code
-      </p>
+<section id="intro" class="hero is-primary is-medium">
+  <div class="hero-body is-flex is-flex-direction-column">
+    <img src="../../assets/logo-white.svg">
+    <p class="subtitle has-text-white">
+      learn to code in byte-size pieces
+    </p>
+  </div>
+</section>
+<section class="section is-small">
+  <div class="container">
+    <h3 class="title is-3 mb-5">Browse by Tag</h3>
+    <app-tags size="is-large"></app-tags>
+  </div>
+</section>
+<section class="section is-small">
+  <div class="container">
+    <h3 class="title is-3 mb-5">Recent Posts</h3>
+    <div class="tile is-ancestor">
+      @if (posts.length === 0) {
+        @for (_ of [1, 2, 3]; track _) {
+          <div class="tile is-parent">
+            <div class="tile is-child">
+              <ngx-skeleton-loader count="1" appearance="line" [theme]="{height: '550px'}"></ngx-skeleton-loader>
+            </div>
+          </div>
+        }
+      }
+      @for (post of posts; track post) {
+        <div class="tile is-parent">
+          <div class="tile is-child">
+            <app-post-preview [post]="post"></app-post-preview>
+          </div>
+        </div>
+      }
     </div>
+  </div>
+</section>
+
+<section id="featured-video" class="section is-medium">
+  <div class="container">
+    <h3 class="title is-3 mb-5">Featured Video</h3>
+    <app-youtube-player [videoId]="featuredVideoId"></app-youtube-player>
   </div>
 </section>

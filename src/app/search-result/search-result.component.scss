@@ -1,0 +1,12 @@
+.truncated {
+    overflow: hidden;
+    max-height: 50px;
+}
+
+.no-link-style {
+    color: initial;
+}
+
+.no-link-style:hover {
+    text-decoration: underline;
+}
