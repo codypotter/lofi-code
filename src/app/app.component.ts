@@ -1,14 +1,13 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, RouterOutlet } from '@angular/router';
-import { NgxSpinnerModule } from 'ngx-spinner';
 import { Breadcrumb, BreadcrumbService } from './services/breadcrumb.service';
 import { NavbarComponent } from './navbar/navbar.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, NgxSpinnerModule, RouterModule, NavbarComponent],
+  imports: [CommonModule, RouterOutlet, RouterModule, NavbarComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })

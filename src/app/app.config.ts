@@ -5,7 +5,6 @@ import { routes } from './app.routes';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore/lite';
-import { NgxSpinnerModule } from 'ngx-spinner';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BreadcrumbService } from './services/breadcrumb.service';
 import { PostsService } from './services/posts.service';
@@ -21,7 +20,6 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     importProvidersFrom(BrowserAnimationsModule, HttpClientModule),
-    importProvidersFrom(NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' })),
     importProvidersFrom(LoggerModule.forRoot({ level: environment.logLevel,  })),
     importProvidersFrom(
       provideFirebaseApp(() => initializeApp({

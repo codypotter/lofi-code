@@ -8,7 +8,6 @@ import { TagsComponent } from '../tags/tags.component';
 import { YoutubePlayerComponent } from '../youtube-player/youtube-player.component';
 import { VideosService } from '../services/videos.service';
 import { Subject, takeUntil } from 'rxjs';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { NGXLogger } from 'ngx-logger';
 
