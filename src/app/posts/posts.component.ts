@@ -7,7 +7,6 @@ import { ActivatedRoute } from '@angular/router';
 import { SearchResultComponent } from '../search-result/search-result.component';
 import { TagsComponent } from '../tags/tags.component';
 import { TagsService } from '../services/tags.service';
-import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-posts',
@@ -36,7 +35,6 @@ export class PostsComponent implements OnInit, OnDestroy {
     private tagsService: TagsService,
     private breadcrumbService: BreadcrumbService,
     private route: ActivatedRoute,
-    private spinnerService: NgxSpinnerService,
   ) { }
   
   ngOnInit(): void {
@@ -60,7 +58,6 @@ export class PostsComponent implements OnInit, OnDestroy {
   }
 
   loadPosts() {
-    this.spinnerService.show();
     this.postsService.getN(this.limit, this.lastPublished, this._tag).pipe(take(1)).subscribe((posts) => {
       this.handlePosts(posts);
     });
@@ -78,7 +75,6 @@ export class PostsComponent implements OnInit, OnDestroy {
       this.lastPublished = posts[posts.length - 1]?.publish_date.toDate();
     }
     this.showLoadMore = posts.length === this.limit;
-    this.spinnerService.hide();
   }
 
   ngOnDestroy(): void {
