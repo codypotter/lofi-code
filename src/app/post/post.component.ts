@@ -10,11 +10,25 @@ import { Subject, takeUntil } from 'rxjs';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { CommentsComponent } from '../comments/comments.component';
 import { NGXLogger } from 'ngx-logger';
+import { ShareButtonsModule } from 'ngx-sharebuttons/buttons';
+import { ShareIconsModule } from 'ngx-sharebuttons/icons';
+import { TagsComponent } from '../tags/tags.component';
+import { Meta, Title } from '@angular/platform-browser';
+import { Location } from '@angular/common';
+
 
 @Component({
   selector: 'app-post',
   standalone: true,
-  imports: [CommonModule, PostPreviewComponent, NgxSkeletonLoaderModule, CommentsComponent],
+  imports: [
+    CommonModule,
+    PostPreviewComponent,
+    NgxSkeletonLoaderModule,
+    CommentsComponent,
+    ShareButtonsModule,
+    ShareIconsModule,
+    TagsComponent,
+  ],
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.scss']
 })
@@ -30,6 +44,9 @@ export class PostComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private breadcrumbService: BreadcrumbService,
     private logger: NGXLogger,
+    private meta: Meta,
+    private location: Location,
+    private title: Title,
   ) {}
 
   ngOnInit() {
@@ -53,8 +70,31 @@ export class PostComponent implements OnInit, OnDestroy {
     this.postsService.getPostBySlug(slug).pipe(takeUntil(this.destroy$)).subscribe((post) => {
       this.logger.trace('post', post);
       this.post = post;
+      this.setMetaTags();
       this.getRelatedPosts();
     });
+  }
+
+  setMetaTags() {
+    const title = `lofi code - ${this.post!.name}`;
+    const description = this.post?.description ?? '';
+    this.title.setTitle(title);
+    this.meta.updateTag({ name: 'description', content: description });
+    this.meta.updateTag({ name: 'og:title', content: title });
+    this.meta.updateTag({ name: 'og:description', content: description });
+    this.meta.updateTag({ name: 'og:image', content: this.getOGImage() });
+    this.meta.updateTag({ name: 'og:url', content: `https://${location.host}${this.location.path()}` });
+    this.meta.updateTag({ name: 'site_name', content: 'lofi code'});
+    this.meta.updateTag({ name: 'twitter:title', content: title });
+    this.meta.updateTag({ name: 'twitter:description', content: description });
+    this.meta.updateTag({ name: 'twitter:image', content: this.getOGImage() });
+    this.meta.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
+    this.meta.updateTag({ name: 'type', content: 'article' });
+    this.meta.updateTag({ name: 'article:published_time', content: this.post?.publish_date.toDate().toISOString() ?? '' });
+    this.meta.updateTag({ name: 'article:modified_time', content: this.post?.created_on.toDate().toISOString() ?? '' });
+    this.meta.updateTag({ name: 'article:author', content: 'Cody Potter' });
+    this.meta.updateTag({ name: 'article:section', content: 'Technology' });
+    this.meta.updateTag({ name: 'article:tag', content: this.post?.tags.join(',') ?? '' });
   }
 
   setBreadcrumbs(slug: string) {
@@ -71,6 +111,10 @@ export class PostComponent implements OnInit, OnDestroy {
 
   getHeaderImg() {
     return `${environment.storageUrl}${encodeURIComponent(this.post?.header_image ?? '')}?alt=media`;
+  }
+
+  getOGImage() {
+    return `${environment.storageUrl}${encodeURIComponent(this.post?.open_graph_image ?? '')}?alt=media`;
   }
 
   ngOnDestroy(): void {

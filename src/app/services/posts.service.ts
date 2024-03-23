@@ -13,12 +13,14 @@ export interface Post {
   id?: string;
   name: string;
   slug: string;
+  description: string;
   tags: string[];
   publish_date: Timestamp;
   created_on: Timestamp;
   status: string;
   reviewed: boolean;
   header_image: string | null;
+  open_graph_image: string | null;
   content: Array<{ type: string; value: string | string[] }>;
   comments: Array<Comment>;
 }

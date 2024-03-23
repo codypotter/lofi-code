@@ -6,6 +6,8 @@ import { NGXLogger } from 'ngx-logger';
 import { Router, RouterModule, RouterState } from '@angular/router';
 import { UsersService } from '../services/users.service';
 import { EmailsService } from '../services/emails.service';
+import { Title } from '@angular/platform-browser';
+import { BreadcrumbService } from '../services/breadcrumb.service';
 
 @Component({
   selector: 'app-settings',
@@ -48,10 +50,17 @@ export class SettingsComponent implements OnInit {
     private usersService: UsersService,
     private emailsService: EmailsService,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private title: Title,
+    private breadcrumbs: BreadcrumbService,
   ) { }
 
   ngOnInit(): void {
+    this.breadcrumbs.setBreadcrumbs([
+      { text: 'home', routerLink: '/' },
+      { text: 'settings' },
+    ]);
+    this.title.setTitle('lofi code - settings');
     this.emailsService.get(this.accountService.getCurrentUserInfo()?.uid!).subscribe((email) => {
       this.mailingListForm.get('mailingList')?.setValue(email.get('mailingList') ?? false);
       this.emailForm.get('email')?.setValue(email.get('email') ?? '');

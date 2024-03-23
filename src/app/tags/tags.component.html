@@ -5,7 +5,7 @@
         [routerLink]="['/posts']"
         [queryParams]="{tag}"
         [ngClass]="'tag level-item is-primary is-light ' + size"
-      >{{tag}}</a>
+      >#{{tag}}</a>
     }
     @if (tags.length === 0) {
       <ngx-skeleton-loader count="5" appearance="circle"></ngx-skeleton-loader>

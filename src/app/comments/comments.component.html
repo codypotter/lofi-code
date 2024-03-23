@@ -1,11 +1,7 @@
-@for (comment of comments; track comment) {
-<app-comment [comment]="comment"></app-comment>
-}
-
-<article class="media">
+<article class="media mb-5">
   <figure class="media-left">
     <p class="image is-64x64">
-      <img [src]="currentUser?.photoURL" />
+      <img [src]="currentUser?.photoURL || 'assets/anonymous.png'" />
     </p>
   </figure>
   <div class="media-content">
@@ -23,3 +19,7 @@
     </nav>
   </div>
 </article>
+
+@for (comment of comments; track comment) {
+<app-comment [comment]="comment"></app-comment>
+}

@@ -16,12 +16,16 @@ import { TagsService } from './services/tags.service';
 import { UsersService } from './services/users.service';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 import { TimeagoModule } from 'ngx-timeago';
+import { ShareButtonsModule } from 'ngx-sharebuttons/buttons';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     importProvidersFrom(BrowserAnimationsModule, HttpClientModule),
     importProvidersFrom(LoggerModule.forRoot({ level: environment.logLevel,  })),
+    importProvidersFrom(ShareButtonsModule.withConfig({
+      include: ['facebook', 'twitter', 'linkedin', 'reddit', 'email', 'tumblr'],
+    })),
     importProvidersFrom(
       provideFirebaseApp(() => initializeApp({
         apiKey: "AIzaSyBkk1syx5c5qVmPKFoLrOXkDwctSozfeL4",

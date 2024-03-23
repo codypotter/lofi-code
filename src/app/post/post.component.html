@@ -1,5 +1,8 @@
 @if (post) {
   <article class="container">
+    <div class="share-buttons">
+      <share-buttons [title]="post.name" [description]="post.description"></share-buttons>
+    </div>
     @if (post.header_image) {
       <div
         class="card-image"
@@ -15,8 +18,11 @@
     <div class="card-content">
       <div class="media">
         <div class="media-content">
-          <h5 class="title">{{post.name}}</h5>
-          <h6 class="subtitle">{{post.publish_date.seconds * 1000 | date: 'medium'}}</h6>
+          <h4 class="is-size-4">Cody Potter - Posted on {{post.publish_date.seconds * 1000 | date: 'longDate'}}</h4>
+          <h1 class="title is-size-1">{{post.name}}</h1>
+          <div class="mb-5">
+            <app-tags [tags]="post.tags"></app-tags>
+          </div>
         </div>
       </div>
       <div
@@ -25,16 +31,16 @@
       ></div>
     </div>
   </article>
-  <div class="container block is-max-desktop">
+  <div class="container p-5 block is-max-desktop">
     <app-comments [post]="post"></app-comments>
   </div>
 } @else {
-  <div class="container">
+  <div class="container p-5">
     <ngx-skeleton-loader count="30"></ngx-skeleton-loader>
   </div>
 }
 
-<div class="container block">
+<div class="container p-5 block">
   <h4 class="title is-4 mb-5">Related Posts</h4>
   <div class="tile is-ancestor">
     @for (relatedPost of relatedPosts; track relatedPost) {

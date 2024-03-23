@@ -10,6 +10,7 @@ import { VideosService } from '../services/videos.service';
 import { Subject, takeUntil } from 'rxjs';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { NGXLogger } from 'ngx-logger';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-home',
@@ -30,9 +31,11 @@ export class HomeComponent implements OnInit {
     private postsService: PostsService,
     private breadcrumbService: BreadcrumbService,
     private videosService: VideosService,
+    private title: Title,
   ) { }
   
   ngOnInit(): void {
+    this.title.setTitle('lofi code');
     this.breadcrumbService.setBreadcrumbs([]);
     this.postsService.getN(3).pipe(takeUntil(this.destroy$)).subscribe((posts) => { this.posts = posts;});
     this.videosService.getFeaturedVideo().pipe(takeUntil(this.destroy$)).subscribe({

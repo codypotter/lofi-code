@@ -1,3 +1,14 @@
 .related-post {
     max-width: 450px;
 }
+
+@media (min-width: 1024px) {
+    .share-buttons {
+        position: fixed;
+        transform: translateX(calc(-1 * 100%));
+    }
+    
+    ::ng-deep share-buttons .sb-group {
+        flex-direction: column;
+    }
+}

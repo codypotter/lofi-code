@@ -23,7 +23,7 @@ export class CommentComponent implements OnInit{
   ngOnInit(): void {
     this.usersService.get(this.comment.user.id).subscribe(user => {
       this.author = user.get('displayName') ?? 'Anonymous';
-      this.photoUrl = user.get('photoURL') ?? '';
+      this.photoUrl = user.get('photoURL') ?? 'assets/anonymous.png';
     });
   }
 }

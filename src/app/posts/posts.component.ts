@@ -7,6 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { SearchResultComponent } from '../search-result/search-result.component';
 import { TagsComponent } from '../tags/tags.component';
 import { TagsService } from '../services/tags.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-posts',
@@ -35,9 +36,11 @@ export class PostsComponent implements OnInit, OnDestroy {
     private tagsService: TagsService,
     private breadcrumbService: BreadcrumbService,
     private route: ActivatedRoute,
+    private title: Title,
   ) { }
   
   ngOnInit(): void {
+    this.title.setTitle('lofi code - posts');
     this.tagsService.get().pipe(takeUntil(this.destroy$)).subscribe((tags) => {
       this.tags = tags.map(tag => tag.text);
     });
