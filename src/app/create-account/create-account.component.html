@@ -2,7 +2,9 @@
   <div class="modal-background"></div>
   <div class="modal-content">
     <div class="box">
-      <h3 class="title is-3">Create Account</h3>
+      <div class="block">
+        <h3 class="title is-3" style="display: inline;">Create Account</h3><a (click)="onLogin()" class="ml-5">I already have an account</a>
+      </div>
       <form [formGroup]="form">
         <label class="checkbox">
           <input

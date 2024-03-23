@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { Auth, GithubAuthProvider, User, authState, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, updateCurrentUser, updateProfile } from '@angular/fire/auth';
 import { updateEmail, updatePassword } from 'firebase/auth';
 import { NGXLogger } from 'ngx-logger';
-import { Observable, catchError, defer, first, from, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, Observable, defer, first, from, switchMap, tap } from 'rxjs';
 import { UsersService } from './users.service';
+import { EmailsService } from './emails.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,10 +12,19 @@ import { UsersService } from './users.service';
 export class AccountService {
   currentUser: Observable<User | null>;
 
+  private _showLogin = new BehaviorSubject<boolean>(false);
+  
+  public readonly showLogin = this._showLogin.asObservable();
+
+  private _showCreateAccount = new BehaviorSubject<boolean>(false);
+  
+  public readonly showCreateAccount = this._showCreateAccount.asObservable();
+
   constructor(
     private logger: NGXLogger,
     private auth: Auth,
     private usersService: UsersService,
+    private emailsService: EmailsService,
   ) {
     this.currentUser = authState(auth)
   }
@@ -36,12 +46,22 @@ export class AccountService {
           return;
         }
         this.usersService.set(uid, {
-          email: email ?? '',
           displayName: displayName ?? 'anonymous',
-          mailingList: false,
           photoURL: photoURL ?? '',
         }).subscribe({
-          next: () => this.logger.debug('User created'),
+          next: () => {
+            this.logger.debug('User created');
+            this.getCurrentUserRef().subscribe((user) => {
+              this.emailsService.set(user.id, {
+                email: email ?? '',
+                mailingList: false,
+                user: user.ref,
+              }).subscribe({
+                next: () => this.logger.debug('Email created'),
+                error: (err) => this.logger.error('Error creating email:', err),
+              });
+            });
+          },
           error: (err) => this.logger.error('Error creating user:', err),
         });
       }),
@@ -56,14 +76,24 @@ export class AccountService {
         if (!uid) {
           this.logger.error('No user ID somehow?');
           return from(updateProfile(userCredential.user, { displayName }));;
-        }
+        }        
         this.usersService.set(uid, {
-          email,
           displayName,
-          mailingList,
           photoURL: providerData?.[0]?.photoURL ?? '',
         }).subscribe({
-          next: () => this.logger.debug('User created'),
+          next: () => {
+            this.logger.debug('User created')
+            this.getCurrentUserRef().subscribe((user) => {
+              this.emailsService.set(user.id, {
+                email,
+                mailingList,
+                user: user.ref,
+              }).subscribe({
+                next: () => this.logger.debug('Email created'),
+                error: (err) => this.logger.error('Error creating email:', err),
+              });
+            });
+          },
           error: (err) => this.logger.error('Error creating user:', err),
         });
         return from(updateProfile(userCredential.user, { displayName }));
@@ -75,6 +105,11 @@ export class AccountService {
   getCurrentUserInfo() {
     this.logger.trace('getting current user info');
     return this.auth.currentUser;
+  }
+
+  getCurrentUserRef() {
+    this.logger.trace('getting current user ref');
+    return this.usersService.get(this.getCurrentUserInfo()?.uid!);
   }
 
   updateUsername(displayName: string) {
@@ -101,5 +136,14 @@ export class AccountService {
       first(),
       switchMap(user => from(updateEmail(user!, password))),
     );
+  }
+
+  setShowLogin(value: boolean) {
+    this._showLogin.next(value);
+  }
+
+  setShowCreateAccount(value: boolean) {
+    console.debug('setShowCreateAccount', value)
+    this._showCreateAccount.next(value);
   }
 }

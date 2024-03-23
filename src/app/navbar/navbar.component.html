@@ -22,14 +22,14 @@
       <div class="navbar-end">
         @if (!user) {
           <div class="navbar-item">
-            <a class="has-text-white" (click)="showLogin = true">
+            <a class="has-text-white" (click)="toggleLogin()">
               Log in
             </a>
           </div>
         }
         @if (!user) {
           <div class="navbar-item">
-            <a class="button is-primary" (click)="showCreateAccount = true">
+            <a class="button is-primary" (click)="toggleCreateAccount()">
               Create account
             </a>
           </div>
@@ -55,8 +55,8 @@
 </nav>
 
 @if (showCreateAccount) {
-  <app-create-account (done)="showCreateAccount = false"></app-create-account>
+  <app-create-account></app-create-account>
 }
 @if (showLogin) {
-  <app-login (done)="showLogin = false"></app-login>
+  <app-login></app-login>
 }

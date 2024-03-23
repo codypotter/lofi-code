@@ -20,8 +20,6 @@ export class LoginComponent {
 
   errorMessage = '';
 
-  @Output() done = new EventEmitter<void>();
-
   constructor(
     private logger: NGXLogger,
     private fb: FormBuilder,
@@ -37,7 +35,7 @@ export class LoginComponent {
       next: (res) => {
         this.logger.debug('Login response:', res);
         this.logger.debug('currentUserInfo:', this.accountService.getCurrentUserInfo());
-        this.done.emit();
+        this.accountService.setShowLogin(false);
       },
       error: (err) => {
         switch(err.code) {
@@ -71,7 +69,7 @@ export class LoginComponent {
     this.accountService.loginWithGitHub().subscribe({
       next: () => {
         this.logger.debug('currentUserInfo:', this.accountService.getCurrentUserInfo());
-        this.done.emit();
+        this.accountService.setShowLogin(false);
       },
       error: (err) => {
         this.logger.error('Error logging in with GitHub:', err);
@@ -87,12 +85,17 @@ export class LoginComponent {
   }
 
   onCancel() {
-    this.done.emit();
+    this.accountService.setShowLogin(false);
   }
 
   setErrorMessage(message: string) {
     this.logger.trace('setting error message', message);
     this.errorMessage = message;
     setTimeout(() => this.errorMessage = '', 5000);
+  }
+
+  onCreateAccount() {
+    this.accountService.setShowLogin(false);
+    this.accountService.setShowCreateAccount(true);
   }
 }

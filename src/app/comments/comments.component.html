@@ -1,3 +1,25 @@
 @for (comment of comments; track comment) {
-    <app-comment [comment]="comment"></app-comment>
+<app-comment [comment]="comment"></app-comment>
 }
+
+<article class="media">
+  <figure class="media-left">
+    <p class="image is-64x64">
+      <img [src]="currentUser?.photoURL" />
+    </p>
+  </figure>
+  <div class="media-content">
+    <div class="field">
+      <p class="control">
+        <textarea class="textarea" placeholder="Add a comment..." [(ngModel)]="commentText" (focus)="captureUnauthorized()"></textarea>
+      </p>
+    </div>
+    <nav class="level">
+      <div class="level-left">
+        <div class="level-item">
+          <a class="button is-primary"(click)="onSubmit()">Submit</a>
+        </div>
+      </div>
+    </nav>
+  </div>
+</article>

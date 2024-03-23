@@ -15,6 +15,7 @@ import { LoggerModule } from 'ngx-logger';
 import { TagsService } from './services/tags.service';
 import { UsersService } from './services/users.service';
 import { getStorage, provideStorage } from '@angular/fire/storage';
+import { TimeagoModule } from 'ngx-timeago';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -36,6 +37,7 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(provideFirestore(() => getFirestore())),
     importProvidersFrom(provideStorage(() => getStorage())),
     importProvidersFrom(YouTubePlayerModule),
+    importProvidersFrom(TimeagoModule.forRoot()),
     BreadcrumbService,
     PostsService,
     TagsService,

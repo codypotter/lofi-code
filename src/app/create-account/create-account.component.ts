@@ -25,8 +25,6 @@ export class CreateAccountComponent {
 
   errorMessage = '';
 
-  @Output() done = new EventEmitter<void>();
-
   constructor(
     private logger: NGXLogger,
     private fb: FormBuilder,
@@ -48,7 +46,7 @@ export class CreateAccountComponent {
     ).subscribe({
       next: (res) => {
         this.logger.debug('Login response:', res);
-        this.done.emit();
+        this.accountService.setShowCreateAccount(false);
       },
       error: (err) => {
         switch (err.code) {
@@ -82,7 +80,7 @@ export class CreateAccountComponent {
 
   onCancel() {
     this.logger.trace('cancelling');
-    this.done.emit();
+    this.accountService.setShowCreateAccount(false);
   }
 
   validateMatchingPasswords() {
@@ -102,7 +100,7 @@ export class CreateAccountComponent {
     this.accountService.loginWithGitHub().subscribe({
       next: () => {
         this.logger.debug('Logged in with GitHub');
-        this.done.emit();
+        this.accountService.setShowCreateAccount(false);
       },
       error: (err) => {
         this.logger.debug('Error logging in with GitHub:', err);
@@ -115,5 +113,10 @@ export class CreateAccountComponent {
         }
       }
     });
+  }
+
+  onLogin() {
+    this.accountService.setShowCreateAccount(false);
+    this.accountService.setShowLogin(true);
   }
 }
