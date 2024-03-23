@@ -2,7 +2,9 @@
   <div class="modal-background"></div>
   <div class="modal-content">
     <div class="box">
-      <h3 class="title is-3">Log in</h3>
+      <div class="block">
+        <h3 class="title is-3" style="display: inline;">Log in</h3><a (click)="onCreateAccount()" class="ml-5">I don't have an account</a>
+      </div>
       <form [formGroup]="form">
         <div class="columns">
           <div class="column border-right">

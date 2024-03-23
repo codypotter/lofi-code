@@ -114,4 +114,9 @@ export class CreateAccountComponent {
       }
     });
   }
+
+  onLogin() {
+    this.accountService.setShowCreateAccount(false);
+    this.accountService.setShowLogin(true);
+  }
 }

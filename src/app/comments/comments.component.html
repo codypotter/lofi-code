@@ -11,7 +11,7 @@
   <div class="media-content">
     <div class="field">
       <p class="control">
-        <textarea class="textarea" placeholder="Add a comment..." [(ngModel)]="commentText"></textarea>
+        <textarea class="textarea" placeholder="Add a comment..." [(ngModel)]="commentText" (focus)="captureUnauthorized()"></textarea>
       </p>
     </div>
     <nav class="level">

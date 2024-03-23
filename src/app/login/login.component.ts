@@ -93,4 +93,9 @@ export class LoginComponent {
     this.errorMessage = message;
     setTimeout(() => this.errorMessage = '', 5000);
   }
+
+  onCreateAccount() {
+    this.accountService.setShowLogin(false);
+    this.accountService.setShowCreateAccount(true);
+  }
 }

@@ -34,13 +34,17 @@ export class CommentsComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.postsService.getPostComments(this.post.id!).subscribe((comments) => {
-      this.logger.trace('comments', comments);
-      this.comments = comments;
-    });
+    this.getComments();
 
     this.accountService.currentUser.pipe(takeUntil(this.destroy$)).subscribe((user) => {
       this.currentUser = user ?? undefined;
+    });
+  }
+
+  private getComments() {
+    this.postsService.getPostComments(this.post.id!).subscribe((comments) => {
+      this.logger.trace('comments', comments);
+      this.comments = comments;
     });
   }
 
@@ -65,11 +69,14 @@ export class CommentsComponent implements OnInit, OnDestroy {
       }).subscribe(() => {
         this.logger.debug('Comment added');
         this.commentText = '';
+        this.getComments();
       });
     })
   }
 
-  onLogIn() {
-    this.accountService.setShowLogin(true);
+  captureUnauthorized() {
+    if (!this.currentUser) {
+      this.accountService.setShowCreateAccount(true);
+    }
   }
 }
