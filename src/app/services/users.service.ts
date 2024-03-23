@@ -6,9 +6,7 @@ import { getDownloadURL } from 'firebase/storage';
 
 interface User {
   displayName?: string;
-  email?: string;
   photoURL?: string;
-  mailingList?: boolean;
 }
 
 @Injectable({

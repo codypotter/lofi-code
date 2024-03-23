@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { NGXLogger } from 'ngx-logger';
 import { Router, RouterModule, RouterState } from '@angular/router';
 import { UsersService } from '../services/users.service';
+import { EmailsService } from '../services/emails.service';
 
 @Component({
   selector: 'app-settings',
@@ -45,16 +46,18 @@ export class SettingsComponent implements OnInit {
     private fb: FormBuilder,
     private accountService: AccountService,
     private usersService: UsersService,
+    private emailsService: EmailsService,
     private router: Router,
     private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
+    this.emailsService.get(this.accountService.getCurrentUserInfo()?.uid!).subscribe((email) => {
+      this.mailingListForm.get('mailingList')?.setValue(email.get('mailingList') ?? false);
+      this.emailForm.get('email')?.setValue(email.get('email') ?? '');
+    });
     this.usersService.get(this.accountService.getCurrentUserInfo()?.uid!).subscribe((user) => {
-      console.trace('user', user);
-      this.mailingListForm.get('mailingList')?.setValue(user.get('mailingList') ?? false);
       this.avatar = user.get('photoURL') ?? '';
-      this.logger.warn('avatar', this.avatar);
     });
   }
 
@@ -100,7 +103,7 @@ export class SettingsComponent implements OnInit {
       next: () => {
         this.setSuccessMessage('An email has been sent to verify the new email.');
         const userInfo = this.accountService.getCurrentUserInfo();
-        this.usersService.set(userInfo!.uid!, {
+        this.emailsService.set(userInfo!.uid!, {
           email: this.emailForm.get('email')!.value!,
         }).subscribe({
           next: () => this.logger.debug('User created'),
@@ -168,7 +171,7 @@ export class SettingsComponent implements OnInit {
       return;
     }
     const userInfo = this.accountService.getCurrentUserInfo();
-    this.usersService.set(userInfo!.uid!, {
+    this.emailsService.set(userInfo!.uid!, {
       mailingList: this.mailingListForm.get('mailingList')!.value!,
     }).subscribe({
       next: () => this.logger.debug('User created'),

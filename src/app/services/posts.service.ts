@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, collectionData, orderBy, query, where } from '@angular/fire/firestore/lite';
-import { DocumentReference, Timestamp, limit, startAfter } from 'firebase/firestore/lite';
-import { Observable, map, switchMap } from 'rxjs';
+import { Firestore, addDoc, arrayUnion, collection, collectionData, orderBy, query, setDoc, updateDoc, where } from '@angular/fire/firestore/lite';
+import { DocumentReference, Timestamp, doc, limit, startAfter } from 'firebase/firestore/lite';
+import { Observable, from, map, of, switchMap } from 'rxjs';
 
 export interface Comment {
   text: string;
@@ -57,5 +57,9 @@ export class PostsService {
 
   getPostComments(id: string): Observable<Comment[]> {
     return collectionData(collection(this.firestore, `blog/${id}/comments`)) as Observable<Comment[]>;
+  }
+
+  addPostComment(id: string, comment: Comment) {
+    return from(addDoc(collection(this.firestore, `blog/${id}/comments`), comment));
   }
 }

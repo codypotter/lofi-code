@@ -4,6 +4,7 @@ import { updateEmail, updatePassword } from 'firebase/auth';
 import { NGXLogger } from 'ngx-logger';
 import { Observable, catchError, defer, first, from, switchMap, tap } from 'rxjs';
 import { UsersService } from './users.service';
+import { EmailsService } from './emails.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,7 @@ export class AccountService {
     private logger: NGXLogger,
     private auth: Auth,
     private usersService: UsersService,
+    private emailsService: EmailsService,
   ) {
     this.currentUser = authState(auth)
   }
@@ -36,12 +38,22 @@ export class AccountService {
           return;
         }
         this.usersService.set(uid, {
-          email: email ?? '',
           displayName: displayName ?? 'anonymous',
-          mailingList: false,
           photoURL: photoURL ?? '',
         }).subscribe({
-          next: () => this.logger.debug('User created'),
+          next: () => {
+            this.logger.debug('User created');
+            this.getCurrentUserRef().subscribe((user) => {
+              this.emailsService.set(user.id, {
+                email: email ?? '',
+                mailingList: false,
+                user: user.ref,
+              }).subscribe({
+                next: () => this.logger.debug('Email created'),
+                error: (err) => this.logger.error('Error creating email:', err),
+              });
+            });
+          },
           error: (err) => this.logger.error('Error creating user:', err),
         });
       }),
@@ -56,14 +68,24 @@ export class AccountService {
         if (!uid) {
           this.logger.error('No user ID somehow?');
           return from(updateProfile(userCredential.user, { displayName }));;
-        }
+        }        
         this.usersService.set(uid, {
-          email,
           displayName,
-          mailingList,
           photoURL: providerData?.[0]?.photoURL ?? '',
         }).subscribe({
-          next: () => this.logger.debug('User created'),
+          next: () => {
+            this.logger.debug('User created')
+            this.getCurrentUserRef().subscribe((user) => {
+              this.emailsService.set(user.id, {
+                email,
+                mailingList,
+                user: user.ref,
+              }).subscribe({
+                next: () => this.logger.debug('Email created'),
+                error: (err) => this.logger.error('Error creating email:', err),
+              });
+            });
+          },
           error: (err) => this.logger.error('Error creating user:', err),
         });
         return from(updateProfile(userCredential.user, { displayName }));
@@ -75,6 +97,11 @@ export class AccountService {
   getCurrentUserInfo() {
     this.logger.trace('getting current user info');
     return this.auth.currentUser;
+  }
+
+  getCurrentUserRef() {
+    this.logger.trace('getting current user ref');
+    return this.usersService.get(this.getCurrentUserInfo()?.uid!);
   }
 
   updateUsername(displayName: string) {
