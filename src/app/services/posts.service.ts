@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Firestore, addDoc, arrayUnion, collection, collectionData, orderBy, query, setDoc, updateDoc, where } from '@angular/fire/firestore/lite';
+import { Firestore, addDoc, arrayUnion, collection, collectionData, orderBy, query, runTransaction, setDoc, updateDoc, where } from '@angular/fire/firestore/lite';
 import { DocumentReference, Timestamp, doc, limit, startAfter } from 'firebase/firestore/lite';
-import { Observable, from, map, of, switchMap } from 'rxjs';
+import { Observable, first, from, map, of, switchMap, take } from 'rxjs';
 
 export interface Comment {
   text: string;
@@ -23,6 +23,7 @@ export interface Post {
   open_graph_image: string | null;
   content: Array<{ type: string; value: string | string[] }>;
   comments: Array<Comment>;
+  upvotes: number;
 }
 
 @Injectable({
@@ -62,6 +63,6 @@ export class PostsService {
   }
 
   addPostComment(id: string, comment: Comment) {
-    return from(addDoc(collection(this.firestore, `blog/${id}/comments`), comment));
+    return from(addDoc(collection(this.firestore, `blog/${id}/comments`), comment)).pipe(first());
   }
 }
