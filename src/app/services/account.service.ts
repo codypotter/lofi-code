@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Auth, GithubAuthProvider, User, authState, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, updateCurrentUser, updateProfile } from '@angular/fire/auth';
 import { updateEmail, updatePassword } from 'firebase/auth';
 import { NGXLogger } from 'ngx-logger';
-import { Observable, catchError, defer, first, from, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, Observable, defer, first, from, switchMap, tap } from 'rxjs';
 import { UsersService } from './users.service';
 import { EmailsService } from './emails.service';
 
@@ -11,6 +11,14 @@ import { EmailsService } from './emails.service';
 })
 export class AccountService {
   currentUser: Observable<User | null>;
+
+  private _showLogin = new BehaviorSubject<boolean>(false);
+  
+  public readonly showLogin = this._showLogin.asObservable();
+
+  private _showCreateAccount = new BehaviorSubject<boolean>(false);
+  
+  public readonly showCreateAccount = this._showCreateAccount.asObservable();
 
   constructor(
     private logger: NGXLogger,
@@ -128,5 +136,14 @@ export class AccountService {
       first(),
       switchMap(user => from(updateEmail(user!, password))),
     );
+  }
+
+  setShowLogin(value: boolean) {
+    this._showLogin.next(value);
+  }
+
+  setShowCreateAccount(value: boolean) {
+    console.debug('setShowCreateAccount', value)
+    this._showCreateAccount.next(value);
   }
 }

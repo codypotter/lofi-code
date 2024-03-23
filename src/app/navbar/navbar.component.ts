@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { CreateAccountComponent } from '../create-account/create-account.component';
 import { User } from 'firebase/auth';
 import { AccountService } from '../services/account.service';
 import { RouterModule } from '@angular/router';
 import { LoginComponent } from '../login/login.component';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
@@ -13,7 +14,7 @@ import { LoginComponent } from '../login/login.component';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, OnDestroy {
   user: User | null = null;
 
   showCreateAccount = false;
@@ -22,15 +23,38 @@ export class NavbarComponent implements OnInit {
 
   isNavbarBurgerActive = false;
 
+  destroy$ = new Subject<void>();
+
   constructor(private accountService: AccountService) {}
 
   ngOnInit(): void {
-    this.accountService.currentUser.subscribe((user) => {
+    this.accountService.currentUser.pipe(takeUntil(this.destroy$)).subscribe((user) => {
       this.user = user;
-    })
+    });
+
+    this.accountService.showLogin.pipe(takeUntil(this.destroy$)).subscribe((showLogin) => {
+      this.showLogin = showLogin;
+    });
+
+    this.accountService.showCreateAccount.pipe(takeUntil(this.destroy$)).subscribe((showCreateAccount) => {
+      this.showCreateAccount = showCreateAccount;
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   onLogOut() {
     this.accountService.logout()
+  }
+
+  toggleLogin() {
+    this.accountService.setShowLogin(!this.showLogin);
+  }
+
+  toggleCreateAccount() {
+    this.accountService.setShowCreateAccount(!this.showCreateAccount);
   }
 }
