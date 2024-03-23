@@ -26,6 +26,8 @@ export class HomeComponent implements OnInit {
 
   featuredVideoId = '';
 
+  featuredVideoTitle = '';
+
   constructor(
     private logger: NGXLogger,
     private postsService: PostsService,
@@ -40,8 +42,8 @@ export class HomeComponent implements OnInit {
     this.postsService.getN(3).pipe(takeUntil(this.destroy$)).subscribe((posts) => { this.posts = posts;});
     this.videosService.getFeaturedVideo().pipe(takeUntil(this.destroy$)).subscribe({
       next: (res) => {
-        const featuredVideo = res.items[0];
-        this.featuredVideoId = featuredVideo?.id?.videoId;
+        this.featuredVideoId = res.id;
+        this.featuredVideoTitle = res.title;
       },
       error: (err) => {
         this.logger.warn(err);

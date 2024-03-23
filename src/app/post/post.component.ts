@@ -1,8 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { PostPreviewComponent } from '../post-preview/post-preview.component';
 import { Post, PostsService } from '../services/posts.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { marked } from 'marked';
 import { environment } from 'src/environments/environment';
 import { BreadcrumbService } from '../services/breadcrumb.service';
@@ -15,7 +15,6 @@ import { ShareIconsModule } from 'ngx-sharebuttons/icons';
 import { TagsComponent } from '../tags/tags.component';
 import { Meta, Title } from '@angular/platform-browser';
 import { Location } from '@angular/common';
-
 
 @Component({
   selector: 'app-post',
@@ -47,14 +46,14 @@ export class PostComponent implements OnInit, OnDestroy {
     private meta: Meta,
     private location: Location,
     private title: Title,
+    private router: Router,
   ) {}
 
   ngOnInit() {
-    this.route.params.pipe(takeUntil(this.destroy$)).subscribe((params) => {
-      const slug = params['slug'];
-      this.loadPost(slug);
-      this.setBreadcrumbs(slug);
-    });
+    this.post = this.route.snapshot.data['post'];
+    this.setMetaTags();
+    this.getRelatedPosts();
+    this.setBreadcrumbs(this.post!.slug);
   }
 
   private getRelatedPosts() {
@@ -66,24 +65,16 @@ export class PostComponent implements OnInit, OnDestroy {
     }
   }
 
-  loadPost(slug: string) {
-    this.postsService.getPostBySlug(slug).pipe(takeUntil(this.destroy$)).subscribe((post) => {
-      this.logger.trace('post', post);
-      this.post = post;
-      this.setMetaTags();
-      this.getRelatedPosts();
-    });
-  }
-
   setMetaTags() {
-    const title = `lofi code - ${this.post!.name}`;
+    const title = `lofi code - ${this.post?.name}`;
     const description = this.post?.description ?? '';
+
     this.title.setTitle(title);
     this.meta.updateTag({ name: 'description', content: description });
     this.meta.updateTag({ name: 'og:title', content: title });
     this.meta.updateTag({ name: 'og:description', content: description });
     this.meta.updateTag({ name: 'og:image', content: this.getOGImage() });
-    this.meta.updateTag({ name: 'og:url', content: `https://${location.host}${this.location.path()}` });
+    this.meta.updateTag({ name: 'og:url', content: `https://lofi-code.com${this.location.path()}` });
     this.meta.updateTag({ name: 'site_name', content: 'lofi code'});
     this.meta.updateTag({ name: 'twitter:title', content: title });
     this.meta.updateTag({ name: 'twitter:description', content: description });
