@@ -126,7 +126,8 @@
           "builder": "@angular/fire:deploy",
           "options": {
             "version": 2,
-            "browserTarget": "lofi-code:build:production"
+            "browserTarget": "lofi-code:build:production",
+            "serverTarget": "lofi-code:server:production"
           }
         },
         "server": {

@@ -6,6 +6,8 @@ import * as express from 'express';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import bootstrap from './src/main.server';
+import 'dotenv/config';
+import axios from 'axios';
 
 // The Express app is exported so that it can be used by serverless Functions.
 export function app(): express.Express {
@@ -19,6 +21,52 @@ export function app(): express.Express {
 
   server.set('view engine', 'html');
   server.set('views', distFolder);
+
+  let cache = {
+    time: Date.now(),
+    data: null as any,
+  };
+
+  server.get('/api/featured-video', async (req, res) => {
+    const apiKey = process.env['YOUTUBE_API_KEY'];
+    const cacheValid = Date.now() - cache.time < 1000 * 60 * 60 * 24; // Cache valid for 24 hours
+
+    if (cacheValid && cache.data) {
+      res.json(cache.data);
+      return
+    }
+
+    try {
+      const response = await axios.get('https://www.googleapis.com/youtube/v3/search', {
+        params: {
+          part: 'snippet',
+          channelId: 'UCsPXgrtO5bTfdVdNLLB_Erw',
+          maxResults: 1,
+          order: 'date',
+          key: apiKey,
+        },
+        headers: {
+          referer: 'https://lofi-code.com',
+        }
+      });
+  
+      const video = response.data.items[0];
+      const videoId = video.id.videoId;
+      const videoTitle = video.snippet.title;
+
+      const videoData = { title: videoTitle, id: videoId };
+
+      cache = {
+        time: Date.now(),
+        data: videoData
+      };
+  
+      res.json(videoData);
+    } catch (error: any) {
+      console.error(error.message);
+      res.status(500).json({ error: 'An error occurred while fetching the featured video' });
+    }
+  });
 
   // Example Express Rest API endpoints
   // server.get('/api/**', (req, res) => { });
