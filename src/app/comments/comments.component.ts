@@ -67,6 +67,9 @@ export class CommentsComponent implements OnInit, OnDestroy {
         this.commentText = '';
       });
     })
-    
+  }
+
+  onLogIn() {
+    this.accountService.setShowLogin(true);
   }
 }
