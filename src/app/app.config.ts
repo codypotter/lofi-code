@@ -17,6 +17,7 @@ import { UsersService } from './services/users.service';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 import { TimeagoModule } from 'ngx-timeago';
 import { ShareButtonsModule } from 'ngx-sharebuttons/buttons';
+import { provideClientHydration } from '@angular/platform-browser';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -45,6 +46,6 @@ export const appConfig: ApplicationConfig = {
     BreadcrumbService,
     PostsService,
     TagsService,
-    UsersService,
+    UsersService, provideClientHydration(),
   ],
 };

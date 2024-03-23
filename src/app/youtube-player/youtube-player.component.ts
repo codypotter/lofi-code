@@ -1,5 +1,5 @@
 
-import { Component, ElementRef, HostListener, Input, NgModule, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, ViewChild, afterRender } from '@angular/core';
 import { YouTubePlayerModule } from '@angular/youtube-player';
 import { NGXLogger } from 'ngx-logger';
 
@@ -9,7 +9,7 @@ import { NGXLogger } from 'ngx-logger';
   templateUrl: './youtube-player.component.html',
   selector: 'app-youtube-player',
 })
-export class YoutubePlayerComponent implements OnInit {
+export class YoutubePlayerComponent {
   @Input() videoId = '';
 
   playerWidth = 0;
@@ -20,14 +20,14 @@ export class YoutubePlayerComponent implements OnInit {
 
   @ViewChild('container', { static: true }) container!: ElementRef;
 
-  constructor(private logger: NGXLogger) {}
-
-  ngOnInit(): void {
-    this.logger.trace('youtube-player: initializing');
-    const tag = document.createElement('script');
-    tag.src = 'https://www.youtube.com/iframe_api';
-    document.body.appendChild(tag);
-    this.playerWidth = this.container.nativeElement.offsetWidth;
-    this.logger.trace('youtube-player: initialized');
+  constructor(private logger: NGXLogger) {
+    afterRender(() => {
+      this.logger.trace('youtube-player: afterRender');
+      const tag = document.createElement('script');
+      tag.src = 'https://www.youtube.com/iframe_api';
+      document.body.appendChild(tag);
+      this.playerWidth = this.container.nativeElement.offsetWidth;
+      this.logger.trace('youtube-player: initialized');
+    });
   }
 }
