@@ -13,7 +13,7 @@ import { NGXLogger } from 'ngx-logger';
 import { ShareButtonsModule } from 'ngx-sharebuttons/buttons';
 import { ShareIconsModule } from 'ngx-sharebuttons/icons';
 import { TagsComponent } from '../tags/tags.component';
-import { Meta, Title } from '@angular/platform-browser';
+import { DomSanitizer, Meta, Title } from '@angular/platform-browser';
 import { Location } from '@angular/common';
 
 @Component({
@@ -42,11 +42,9 @@ export class PostComponent implements OnInit, OnDestroy {
     private postsService: PostsService,
     private route: ActivatedRoute,
     private breadcrumbService: BreadcrumbService,
-    private logger: NGXLogger,
     private meta: Meta,
     private location: Location,
     private title: Title,
-    private router: Router,
   ) {}
 
   ngOnInit() {
@@ -99,7 +97,7 @@ export class PostComponent implements OnInit, OnDestroy {
   getContent() {
     const allContents = this.post?.content.map(item => {
       if (item.type === 'images') {
-        return `<img class="centered-image" src="${this.imageUrl(item.value as string)}" alt="content image"/>`;
+        return `![content image](${this.imageUrl(item.value as string)})`;
       } else {
         return item.value;
       }
