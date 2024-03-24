@@ -99,11 +99,11 @@ export class PostComponent implements OnInit, OnDestroy {
   getContent() {
     const allContents = this.post?.content.map(item => {
       if (item.type === 'images') {
-        return `<br><img src="${this.imageUrl(item.value as string)}" alt="content image"/><br>`;
+        return `<img class="centered-image" src="${this.imageUrl(item.value as string)}" alt="content image"/>`;
       } else {
         return item.value;
       }
-    }).join(' ') ?? '';
+    }).join('\n') ?? '';
     return marked(allContents, { async: false }) as string;
   }
 

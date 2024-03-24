@@ -1,21 +1,16 @@
-<app-tags [tags]="tags"></app-tags>
-<hr>
+<div class="has-background-white p-3">
+  <app-tags [tags]="tags"></app-tags>
+  <hr>
   <section class="container mt-5">
     @for (post of posts; track post) {
-      <div
-        class="block"
-        >
-        <app-search-result [post]="post"></app-search-result>
-      </div>
+    <div class="block">
+      <app-search-result [post]="post"></app-search-result>
+    </div>
     }
     @if (showLoadMore) {
-      <div
-        class="level"
-        >
-        <button
-          class="button level-item mb-5"
-          (click)="loadPosts()"
-        >Load More</button>
-      </div>
+    <div class="level">
+      <button class="button level-item mb-5" (click)="loadPosts()">Load More</button>
+    </div>
     }
   </section>
+</div>

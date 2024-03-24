@@ -12,3 +12,12 @@
         flex-direction: column;
     }
 }
+
+::ng-deep .centered-image {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    max-width: 100%;
+}

@@ -1,5 +1,5 @@
 @if (post) {
-  <article class="container">
+  <article class="container is-max-desktop has-background-white">
     <div class="share-buttons">
       <share-buttons [title]="post.name" [description]="post.description"></share-buttons>
     </div>
@@ -31,7 +31,7 @@
       ></div>
     </div>
   </article>
-  <div class="container p-5 block is-max-desktop">
+  <div class="container p-5 block has-background-white is-max-desktop">
     <app-comments [post]="post"></app-comments>
   </div>
 } @else {
@@ -40,7 +40,7 @@
   </div>
 }
 
-<div class="container p-5 block">
+<div class="container p-5 block is-max-desktop">
   <h4 class="title is-4 mb-5">Related Posts</h4>
   <div class="tile is-ancestor">
     @for (relatedPost of relatedPosts; track relatedPost) {

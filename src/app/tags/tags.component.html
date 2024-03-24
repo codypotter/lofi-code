@@ -4,7 +4,7 @@
       <a
         [routerLink]="['/posts']"
         [queryParams]="{tag}"
-        [ngClass]="'tag level-item is-primary is-light ' + size"
+        [ngClass]="'tag level-item is-primary ' + size"
       >#{{tag}}</a>
     }
     @if (tags.length === 0) {
