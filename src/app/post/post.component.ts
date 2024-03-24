@@ -97,15 +97,26 @@ export class PostComponent implements OnInit, OnDestroy {
   }
 
   getContent() {
-    return marked(this.post?.content[0].value as string ?? '', { async: false }) as string;
+    const allContents = this.post?.content.map(item => {
+      if (item.type === 'images') {
+        return `<br><img src="${this.imageUrl(item.value as string)}" alt="content image"/><br>`;
+      } else {
+        return item.value;
+      }
+    }).join(' ') ?? '';
+    return marked(allContents, { async: false }) as string;
   }
 
   getHeaderImg() {
-    return `${environment.storageUrl}${encodeURIComponent(this.post?.header_image ?? '')}?alt=media`;
+    return this.imageUrl(this.post?.header_image ?? '');
   }
 
   getOGImage() {
-    return `${environment.storageUrl}${encodeURIComponent(this.post?.open_graph_image ?? '')}?alt=media`;
+    return this.imageUrl(this.post?.open_graph_image ?? '');
+  }
+
+  imageUrl(url: string) {
+    return `${environment.storageUrl}${encodeURIComponent(url)}?alt=media`;
   }
 
   ngOnDestroy(): void {
