@@ -6,7 +6,6 @@ import {  Subject, take, takeUntil } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { SearchResultComponent } from '../search-result/search-result.component';
 import { TagsComponent } from '../tags/tags.component';
-import { TagsService } from '../services/tags.service';
 import { Title } from '@angular/platform-browser';
 
 @Component({
@@ -21,8 +20,6 @@ export class PostsComponent implements OnInit, OnDestroy {
 
   posts: Post[] = [];
 
-  tags: string[] = [];
-
   private _tag?: string;
 
   lastPublished?: Date;
@@ -33,7 +30,6 @@ export class PostsComponent implements OnInit, OnDestroy {
 
   constructor(
     private postsService: PostsService,
-    private tagsService: TagsService,
     private breadcrumbService: BreadcrumbService,
     private route: ActivatedRoute,
     private title: Title,
@@ -41,9 +37,6 @@ export class PostsComponent implements OnInit, OnDestroy {
   
   ngOnInit(): void {
     this.title.setTitle('lofi code - posts');
-    this.tagsService.get().pipe(takeUntil(this.destroy$)).subscribe((tags) => {
-      this.tags = tags.map(tag => tag.text);
-    });
     this.route.queryParams.pipe(takeUntil(this.destroy$)).subscribe(params => {
       const tag = params['tag'];
       this._tag = tag === 'all' ? undefined : tag;

@@ -20,11 +20,9 @@ export class TagsComponent implements OnInit {
   constructor(private logger: NGXLogger, private tagsService: TagsService) { }
 
   ngOnInit(): void {
-    this.logger.trace('tags: initializing');
     if (this.tags.length === 0) {
       this.logger.trace('tags: getting tags');
       this.tagsService.get().subscribe((tags) => this.tags = ['all', ...tags.map(tag => tag.text)]);
     }
-    this.logger.trace('tags: initialized');
   }
 }

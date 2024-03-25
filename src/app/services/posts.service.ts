@@ -46,7 +46,7 @@ export class PostsService {
       postsQuery.push(startAfter(lastPublishDate));
     }
 
-    return collectionData(query(...postsQuery as [any, ...any[]])) as Observable<Post[]>;
+    return collectionData(query(...postsQuery as [any, ...any[]])).pipe(first()) as Observable<Post[]>;
   }
 
   getPostBySlug(slug: string): Observable<Post> {
@@ -55,11 +55,11 @@ export class PostsService {
       where('slug', '==', slug),
       limit(1),
     );
-    return collectionData(postCollection, { idField: 'id' }).pipe(map(posts => posts[0])) as Observable<Post>;
+    return collectionData(postCollection, { idField: 'id' }).pipe(map(posts => posts[0])).pipe(first()) as Observable<Post>;
   }
 
   getPostComments(id: string): Observable<Comment[]> {
-    return collectionData(collection(this.firestore, `blog/${id}/comments`)) as Observable<Comment[]>;
+    return collectionData(collection(this.firestore, `blog/${id}/comments`)).pipe(first()) as Observable<Comment[]>;
   }
 
   addPostComment(id: string, comment: Comment) {
