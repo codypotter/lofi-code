@@ -17,21 +17,17 @@
 <section class="section is-small">
   <div class="container">
     <h3 class="title is-3 mb-5">Recent Posts</h3>
-    <div class="tile is-ancestor">
+    <div class="columns">
       @if (posts.length === 0) {
         @for (_ of [1, 2, 3]; track _) {
-          <div class="tile is-parent">
-            <div class="tile is-child">
-              <ngx-skeleton-loader count="1" appearance="line" [theme]="{height: '550px'}"></ngx-skeleton-loader>
-            </div>
+          <div class="column is-one-third">
+            <ngx-skeleton-loader count="1" appearance="line" [theme]="{height: '550px'}"></ngx-skeleton-loader>
           </div>
         }
       }
       @for (post of posts; track post) {
-        <div class="tile is-parent">
-          <div class="tile is-child">
-            <app-post-preview [post]="post"></app-post-preview>
-          </div>
+        <div class="column is-one-third">
+          <app-post-preview [post]="post"></app-post-preview>
         </div>
       }
     </div>

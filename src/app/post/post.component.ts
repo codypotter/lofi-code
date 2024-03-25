@@ -47,8 +47,21 @@ export class PostComponent implements OnInit, OnDestroy {
     private title: Title,
   ) {}
 
+  
+
   ngOnInit() {
-    this.post = this.route.snapshot.data['post'];
+    this.loadPost(this.route.snapshot.data['post']);
+
+    this.route.paramMap.subscribe(params => {
+      const slug = params.get('slug');
+      this.postsService.getPostBySlug(slug!).subscribe(post => {
+        this.loadPost(post);
+      });
+    });
+  }
+
+  loadPost(post: Post) {
+    this.post = post;
     this.setMetaTags();
     this.getRelatedPosts();
     this.setBreadcrumbs(this.post!.slug);
