@@ -21,6 +21,6 @@ export class SearchResultComponent {
   }
 
   buildImageUrl() {
-    return `${environment.storageUrl}${encodeURIComponent(this.post.header_image ?? '')}?alt=media`;
+    return `${environment.storageUrl}${encodeURIComponent(this.post.open_graph_image ?? '')}?alt=media`;
   }
 }
