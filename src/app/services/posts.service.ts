@@ -5,7 +5,11 @@ import { Observable, first, from, map } from 'rxjs';
 
 import { Marked } from "marked";
 import { markedHighlight } from "marked-highlight";
-import hljs from 'highlight.js';
+import hljs from 'highlight.js/lib/core';
+import typescript from 'highlight.js/lib/languages/typescript';
+import go from 'highlight.js/lib/languages/go';
+import plaintext from 'highlight.js/lib/languages/plaintext';
+import shell from 'highlight.js/lib/languages/shell';
 
 export interface Comment {
   text: string;
@@ -34,15 +38,21 @@ export interface Post {
   providedIn: 'root'
 })
 export class PostsService {
-  constructor(private firestore: Firestore) { }
+  parser: Marked;
 
-  parser = new Marked(markedHighlight({
-    langPrefix: 'hljs language-',
-    highlight(code, lang, info) {
-      const language = hljs.getLanguage(lang) ? lang : 'plaintext';
-      return hljs.highlight(code, { language }).value;
-    }
-  }))
+  constructor(private firestore: Firestore) {
+    hljs.registerLanguage('typescript', typescript);
+    hljs.registerLanguage('go', go);
+    hljs.registerLanguage('plaintext', plaintext);
+    hljs.registerLanguage('shell', shell);
+    this.parser = new Marked(markedHighlight({
+      langPrefix: 'hljs language-',
+      highlight(code, lang, info) {
+        const language = hljs.getLanguage(lang) ? lang : 'plaintext';
+        return hljs.highlight(code, { language }).value;
+      }
+    }))
+  }
 
   getN(n: number, lastPublishDate?: Date, tag?: string): Observable<Post[]> {
     const postsQuery: any = [
