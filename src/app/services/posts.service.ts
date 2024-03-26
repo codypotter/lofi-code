@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Firestore, addDoc, arrayUnion, collection, collectionData, orderBy, query, runTransaction, setDoc, updateDoc, where } from '@angular/fire/firestore/lite';
-import { DocumentReference, Timestamp, doc, limit, startAfter } from 'firebase/firestore/lite';
-import { Observable, first, from, map, of, switchMap, take } from 'rxjs';
+import { Firestore, addDoc, collection, collectionData, orderBy, query, where } from '@angular/fire/firestore/lite';
+import { DocumentReference, Timestamp, limit, startAfter } from 'firebase/firestore/lite';
+import { Observable, first, from, map } from 'rxjs';
+
+import { Marked } from "marked";
+import { markedHighlight } from "marked-highlight";
+import hljs from 'highlight.js';
 
 export interface Comment {
   text: string;
@@ -31,6 +35,14 @@ export interface Post {
 })
 export class PostsService {
   constructor(private firestore: Firestore) { }
+
+  parser = new Marked(markedHighlight({
+    langPrefix: 'hljs language-',
+    highlight(code, lang, info) {
+      const language = hljs.getLanguage(lang) ? lang : 'plaintext';
+      return hljs.highlight(code, { language }).value;
+    }
+  }))
 
   getN(n: number, lastPublishDate?: Date, tag?: string): Observable<Post[]> {
     const postsQuery: any = [

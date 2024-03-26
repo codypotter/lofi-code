@@ -1,19 +1,17 @@
-import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { PostPreviewComponent } from '../post-preview/post-preview.component';
 import { Post, PostsService } from '../services/posts.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { marked } from 'marked';
+import { ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { BreadcrumbService } from '../services/breadcrumb.service';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject } from 'rxjs';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { CommentsComponent } from '../comments/comments.component';
-import { NGXLogger } from 'ngx-logger';
 import { ShareButtonsModule } from 'ngx-sharebuttons/buttons';
 import { ShareIconsModule } from 'ngx-sharebuttons/icons';
 import { TagsComponent } from '../tags/tags.component';
-import { DomSanitizer, Meta, Title } from '@angular/platform-browser';
+import { Meta, Title } from '@angular/platform-browser';
 import { Location } from '@angular/common';
 
 @Component({
@@ -115,7 +113,8 @@ export class PostComponent implements OnInit, OnDestroy {
         return item.value;
       }
     }).join('\n') ?? '';
-    return marked(allContents, { async: false }) as string;
+    
+    return this.postsService.parser.parse(allContents, { async: false }) as string;
   }
 
   getHeaderImg() {
