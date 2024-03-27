@@ -4,11 +4,12 @@ import { Post } from '../services/posts.service';
 import { marked } from 'marked';
 import { environment } from 'src/environments/environment';
 import { RouterModule } from '@angular/router';
+import { TagsComponent } from '../tags/tags.component';
 
 @Component({
   selector: 'app-post-preview',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, TagsComponent],
   templateUrl: './post-preview.component.html',
   styleUrls: ['./post-preview.component.scss']
 })
