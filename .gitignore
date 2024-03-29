@@ -48,5 +48,8 @@ Thumbs.db
 *-debug.log
 .runtimeconfig.json
 
+# Build
+.serverless
+
 src/environments/environment.prod.ts
 src/environments/environment.dev.ts
