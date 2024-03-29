@@ -1,6 +1,6 @@
 <section id="intro" class="hero is-primary is-medium">
   <div class="hero-body is-flex is-flex-direction-column">
-    <img src="../../assets/logo-white.svg">
+    <img src="assets/logo-white.svg">
     <p class="subtitle has-text-white">
       learn to code in byte-size pieces
     </p>
@@ -25,11 +25,9 @@
           </div>
         }
       }
-      @for (post of posts; track post) {
-        <div class="column is-one-third">
-          <app-post-preview [post]="post"></app-post-preview>
-        </div>
-      }
+      <div *ngFor="let post of posts" class="column is-one-third">
+        <app-post-preview [post]="post"></app-post-preview>
+      </div>
     </div>
   </div>
 </section>

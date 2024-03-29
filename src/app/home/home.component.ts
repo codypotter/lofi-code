@@ -11,11 +11,12 @@ import { Subject, takeUntil } from 'rxjs';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { NGXLogger } from 'ngx-logger';
 import { Title } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [PostPreviewComponent, RouterModule, TagsComponent, YoutubePlayerComponent, NgxSkeletonLoaderModule],
+  imports: [CommonModule, PostPreviewComponent, RouterModule, TagsComponent, YoutubePlayerComponent, NgxSkeletonLoaderModule],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
@@ -39,7 +40,8 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.title.setTitle('lofi code');
     this.breadcrumbService.setBreadcrumbs([]);
-    this.postsService.getN(3).pipe(takeUntil(this.destroy$)).subscribe((posts) => { this.posts = posts;});
+    this.postsService.getN(3).subscribe((posts) => { this.posts = posts;});
+    this.logger.debug('skipping featured video');
     this.videosService.getFeaturedVideo().pipe(takeUntil(this.destroy$)).subscribe({
       next: (res) => {
         this.featuredVideoId = res.id;
@@ -50,6 +52,7 @@ export class HomeComponent implements OnInit {
         this.featuredVideoId = 'Rk2SBoBwtRU';
       }
     })
+    // testing this
   }
 
   ngOnDestroy() {

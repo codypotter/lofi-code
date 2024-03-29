@@ -8,13 +8,7 @@
 @import 'node_modules/bulma/bulma.sass';
 @import 'node_modules/ngx-sharebuttons/themes/default';
 @import 'node_modules/highlight.js/scss/androidstudio';
-
-@font-face {
-    font-family: 'IBM Plex Sans';
-    src: url('./assets/IBMPlexSans-Regular.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-}
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&display=swap');
 
 body {
     font-family: 'IBM Plex Sans', sans-serif;
