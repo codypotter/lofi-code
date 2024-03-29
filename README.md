@@ -1,26 +1,30 @@
 # lofi-code
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.5.
+`lofi-code` is a personal blogging project built with [Angular CLI](https://github.com/angular/angular-cli).
+
+## Getting Started
+
+Clone this repository. Run `npm install` with a modern node version, 18 or greater. Create an `environments.dev.ts` from `environments.ts` with valid secrets. Then `npm start`.
 
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
-## Code scaffolding
+## Server-Side Rendering (SSR)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+This project uses Angular Universal for server-side rendering. This allows the application to render the initial page on the server, which can improve performance and make the application more crawlable for SEO purposes. To run the SSR server, use the command `npm run dev:ssr`.
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Run `npm run buld` to build the project. The build artifacts will be stored in the `dist/` directory.
 
 ## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Run `npm run test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-## Running end-to-end tests
+## AWS Deployment
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+This project is configured for deployment on AWS. To deploy the application, ensure you have a valid `environments.prod.ts` file. Then authenticate your command line with aws by adding your aws credentials to `~/aws/.credentials` and running `npm run deploy`.
 
 ## Further help
 

@@ -177,7 +177,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/angular-serverless-app/dev/1711745301575-2024-03-29T20:48:21.575Z/angular-serverless-app.zip"
+                "S3Key": "serverless/angular-serverless-app/dev/1711746187631-2024-03-29T21:03:07.631Z/angular-serverless-app.zip"
               },
               "Handler": "lambda.universal",
               "Runtime": "nodejs20.x",
@@ -195,14 +195,14 @@
               "ApiLogGroup"
             ]
           },
-          "ApiLambdaVersionrre16CkasLxhZYs1ARMszY4Rnwg0WIU1dzMUlL3eg": {
+          "ApiLambdaVersion3qwZcd293yjxUiXNM5jYYXTL0XAqfrMkpGODH3p0L6c": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "ApiLambdaFunction"
               },
-              "CodeSha256": "OwlMcuRYUd/0ZEhBJwsQjW/WCPLOa9oDQVqQ4fu7oHo="
+              "CodeSha256": "Gsln9mE6P/m6QSeUzZSdvBapSY8GjA7l9V7OmvSSgTg="
             }
           },
           "ApiGatewayRestApi": {
@@ -328,7 +328,7 @@
               "ApiLambdaPermissionApiGateway"
             ]
           },
-          "ApiGatewayDeployment1711745288506": {
+          "ApiGatewayDeployment1711746175635": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -391,7 +391,7 @@
           "ApiLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "ApiLambdaVersionrre16CkasLxhZYs1ARMszY4Rnwg0WIU1dzMUlL3eg"
+              "Ref": "ApiLambdaVersion3qwZcd293yjxUiXNM5jYYXTL0XAqfrMkpGODH3p0L6c"
             },
             "Export": {
               "Name": "sls-angular-serverless-app-dev-ApiLambdaFunctionQualifiedArn"
@@ -553,7 +553,7 @@
         "timeout": 10,
         "runtime": "nodejs20.x",
         "vpc": {},
-        "versionLogicalId": "ApiLambdaVersionrre16CkasLxhZYs1ARMszY4Rnwg0WIU1dzMUlL3eg"
+        "versionLogicalId": "ApiLambdaVersion3qwZcd293yjxUiXNM5jYYXTL0XAqfrMkpGODH3p0L6c"
       }
     },
     "configValidationMode": "warn",
@@ -588,7 +588,7 @@
         ],
         "artifactsS3KeyDirname": "serverless/angular-serverless-app/dev/code-artifacts",
         "artifact": "/home/cody/projects/lofi-code/.serverless/angular-serverless-app.zip",
-        "artifactDirectoryName": "serverless/angular-serverless-app/dev/1711745301575-2024-03-29T20:48:21.575Z"
+        "artifactDirectoryName": "serverless/angular-serverless-app/dev/1711746187631-2024-03-29T21:03:07.631Z"
       },
       "custom": {
         "$ref": "$[\"service\"][\"custom\"]"
@@ -602,7 +602,7 @@
     "artifact": "/home/cody/projects/lofi-code/.serverless/angular-serverless-app.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/angular-serverless-app/dev/1711745301575-2024-03-29T20:48:21.575Z",
+    "artifactDirectoryName": "serverless/angular-serverless-app/dev/1711746187631-2024-03-29T21:03:07.631Z",
     "artifact": "angular-serverless-app.zip"
   }
 }

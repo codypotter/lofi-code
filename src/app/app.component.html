@@ -4,7 +4,7 @@
     <nav class="breadcrumb is-large" aria-label="breadcrumbs">
       <ul>
         @for (breadcrumb of breadcrumbs; track breadcrumb) {
-          <li [ngClass]="breadcrumb.routerLink ? '' : 'is-active'"><a [routerLink]="breadcrumb.routerLink" style="overflow-wrap: break-word;">{{breadcrumb.text}}</a></li>
+          <li [ngClass]="breadcrumb.routerLink ? '' : 'is-active'"  style="overflow-wrap: anywhere;"><a [routerLink]="breadcrumb.routerLink" style="overflow-wrap: anywhere;">{{breadcrumb.text}}</a></li>
         }
       </ul>
     </nav>

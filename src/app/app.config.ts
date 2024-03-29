@@ -28,15 +28,7 @@ export const appConfig: ApplicationConfig = {
       include: ['facebook', 'twitter', 'linkedin', 'reddit', 'email', 'tumblr'],
     })),
     importProvidersFrom(
-      provideFirebaseApp(() => initializeApp({
-        apiKey: "AIzaSyBkk1syx5c5qVmPKFoLrOXkDwctSozfeL4",
-        authDomain: "lofi-code.firebaseapp.com",
-        projectId: "lofi-code",
-        storageBucket: "lofi-code.appspot.com",
-        messagingSenderId: "489391062135",
-        appId: "1:489391062135:web:06311425fa89d443119a72",
-        measurementId: "G-G4Z07Y8ZC3"
-      })),
+      provideFirebaseApp(() => initializeApp(environment.firebaseOptions)),
     ),
     importProvidersFrom(provideAuth(() => getAuth())),
     importProvidersFrom(provideFirestore(() => getFirestore())),
