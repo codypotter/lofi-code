@@ -16,10 +16,6 @@ import { environment } from 'src/environments/environment';
 export class SearchResultComponent {
   @Input() post!: Post;
 
-  getContent() {
-    return marked(this.post.content[0].value as string, { async: false }) as string;
-  }
-
   buildImageUrl() {
     return `${environment.storageUrl}${encodeURIComponent(this.post.open_graph_image ?? '')}?alt=media`;
   }
