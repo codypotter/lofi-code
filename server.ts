@@ -72,7 +72,12 @@ export function app(): express.Express {
   // server.get('/api/**', (req, res) => { });
   // Serve static files from /browser
   server.get('*.*', express.static(distFolder, {
-    maxAge: '1y'
+    maxAge: '1y',
+    setHeaders: (res, path) => {
+      if (path.endsWith('.ttf')) {
+        res.removeHeader('Content-Encoding');
+      }
+    }
   }));
 
   // All regular routes use the Angular engine

@@ -1,19 +1,27 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { AccountService } from '../services/account.service';
 import { NGXLogger } from 'ngx-logger';
-import { UsersService } from '../services/users.service';
+import { faGithub } from '@fortawesome/free-brands-svg-icons';
+import { faEnvelope, faLock, faUser } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component({
   selector: 'app-create-account',
   standalone: true,
-  imports: [ReactiveFormsModule, FormsModule, RouterModule],
+  imports: [ReactiveFormsModule, FormsModule, RouterModule, FontAwesomeModule],
   templateUrl: './create-account.component.html',
   styleUrls: ['./create-account.component.scss']
 })
 export class CreateAccountComponent {
+
+  faGithub = faGithub;
+  faEnvelope = faEnvelope;
+  faLock = faLock;
+  faUser = faUser;
+
   form = this.fb.group({
     terms: [false, [Validators.requiredTrue]],
     mailingList: [false],

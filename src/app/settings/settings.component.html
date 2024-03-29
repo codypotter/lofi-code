@@ -25,7 +25,7 @@
                 [class.is-danger]="usernameForm.get('username')?.invalid && usernameForm.get('username')?.touched"
               />
               <span class="icon is-small is-left">
-                <i class="fas fa-user"></i>
+                <fa-icon [icon]="faUser"></fa-icon>
               </span>
             </div>
             <div class="control">
@@ -50,7 +50,7 @@
                 formControlName="email"
               />
               <span class="icon is-small is-left">
-                <i class="fas fa-envelope"></i>
+                <fa-icon [icon]="faEnvelope"></fa-icon>
               </span>
             </div>
             <div class="control">
@@ -75,7 +75,7 @@
                 [class.is-danger]="passwordForm.get('password')?.invalid && passwordForm.get('password')?.touched"
               />
               <span class="icon is-small is-left">
-                <i class="fas fa-lock"></i>
+                <fa-icon [icon]="faLock"></fa-icon>
               </span>
             </div>
             @if (passwordForm.get('password')?.touched && passwordForm.get('password')?.invalid) {
@@ -97,7 +97,7 @@
                 (blur)="validateMatchingPasswords()"
               />
               <span class="icon is-small is-left">
-                <i class="fas fa-lock"></i>
+                <fa-icon [icon]="faLock"></fa-icon>
               </span>
             </div>
             @if (passwordForm.get('confirmPassword')?.touched && passwordForm.get('confirmPassword')?.invalid) {
@@ -126,7 +126,7 @@
                 <input class="file-input" type="file" (change)="onFileUpload($event)">
                 <span class="file-cta">
                   <span class="file-icon">
-                    <i class="fas fa-upload"></i>
+                    <fa-icon [icon]="faUpload"></fa-icon>
                   </span>
                   <span class="file-label">
                     Choose an image...

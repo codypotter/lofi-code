@@ -1,27 +1,28 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Post } from '../services/posts.service';
-import { marked } from 'marked';
 import { environment } from 'src/environments/environment';
 import { RouterModule } from '@angular/router';
 import { TagsComponent } from '../tags/tags.component';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-post-preview',
   standalone: true,
   imports: [CommonModule, RouterModule, TagsComponent],
   templateUrl: './post-preview.component.html',
-  styleUrls: ['./post-preview.component.scss']
+  styleUrls: ['./post-preview.component.scss'],
+  host: { ngSkipHydration: 'true' }
 })
 export class PostPreviewComponent implements OnInit {
   @Input() post!: Post;
 
-  content = '';
-
   headerImg = '';
 
+  constructor(private logger: NGXLogger) {}
+
   ngOnInit(): void {
-    this.content = marked(this.post.content[0].value as string, { async: false }) as string;
+    this.logger.debug('post', this.post);
     this.headerImg = `${environment.storageUrl}${encodeURIComponent(this.post.header_image ?? '')}?alt=media`;
   }
 }

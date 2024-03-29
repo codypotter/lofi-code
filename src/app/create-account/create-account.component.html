@@ -46,7 +46,7 @@
                   formControlName="username"
                 >
                 <span class="icon is-small is-left">
-                  <i class="fas fa-user"></i>
+                  <fa-icon [icon]="faUser"></fa-icon>
                 </span>
               </div>
               @if (form.get('username')?.touched && form.get('username')?.invalid) {
@@ -65,7 +65,7 @@
                   formControlName="email"
                 >
                 <span class="icon is-small is-left">
-                  <i class="fas fa-envelope"></i>
+                  <fa-icon [icon]="faEnvelope"></fa-icon>
                 </span>
               </div>
               @if (form.get('email')?.touched && form.get('email')?.invalid) {
@@ -84,7 +84,7 @@
                   formControlName="password"
                 >
                 <span class="icon is-small is-left">
-                  <i class="fas fa-lock"></i>
+                  <fa-icon [icon]="faLock"></fa-icon>
                 </span>
               </div>
               @if (form.get('password')?.touched && form.get('password')?.invalid) {
@@ -107,7 +107,7 @@
                   (blur)="validateMatchingPasswords()"
                 >
                 <span class="icon is-small is-left">
-                  <i class="fas fa-lock"></i>
+                  <fa-icon [icon]="faLock"></fa-icon>
                 </span>
               </div>
               @if (form.get('confirmPassword')?.touched && form.get('confirmPassword')?.invalid) {
@@ -130,7 +130,7 @@
               (click)="loginWithGitHub()"
             >
               <span class="icon">
-                <i class="fab fa-github"></i>
+                <fa-icon [icon]="faGithub"></fa-icon>
               </span>
               <span>Log in with GitHub</span>
             </button>

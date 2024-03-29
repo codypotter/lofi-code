@@ -3,20 +3,27 @@ import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angu
 import { AccountService } from '../services/account.service';
 import { CommonModule } from '@angular/common';
 import { NGXLogger } from 'ngx-logger';
-import { Router, RouterModule, RouterState } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { UsersService } from '../services/users.service';
 import { EmailsService } from '../services/emails.service';
 import { Title } from '@angular/platform-browser';
 import { BreadcrumbService } from '../services/breadcrumb.service';
+import { faEnvelope, faLock, faUpload, faUser } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component({
   selector: 'app-settings',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, RouterModule, FontAwesomeModule],
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.scss'
 })
 export class SettingsComponent implements OnInit {
+
+  faEnvelope = faEnvelope;
+  faLock = faLock;
+  faUser = faUser;
+  faUpload = faUpload;
 
   successMessage = '';
 
