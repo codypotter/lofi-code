@@ -40,7 +40,14 @@ custom:
   contentCompression: 1024
   apigwBinary:
     types:
-      - '*/*'
+      - 'image/jpeg'
+      - 'image/png'
+      - 'image/gif'
+      - 'application/font-woff'
+      - 'application/font-woff2'
+      - 'application/vnd.ms-fontobject'
+      - 'application/x-font-ttf'
+      - 'font/opentype'
 
 functions:
   api:
