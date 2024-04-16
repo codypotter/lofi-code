@@ -71,6 +71,7 @@
     "serverless-api-compression": "^1.0.1",
     "serverless-apigw-binary": "^0.4.4",
     "serverless-associate-waf": "^1.2.1",
+    "serverless-domain-manager": "^7.3.8",
     "serverless-offline": "^13.3.3",
     "typescript": "^5.4.2"
   }

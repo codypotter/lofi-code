@@ -5,6 +5,7 @@ plugins:
   - serverless-offline
   - serverless-api-compression
   - serverless-associate-waf
+  - serverless-domain-manager
 
 provider:
   name: aws
@@ -48,6 +49,10 @@ custom:
       - 'application/vnd.ms-fontobject'
       - 'application/x-font-ttf'
       - 'font/opentype'
+  customDomain:
+    domainName: loficode.com
+    stage: dev
+    createRoute53Record: true
 
 functions:
   api:
