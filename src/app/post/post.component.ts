@@ -90,8 +90,8 @@ export class PostComponent implements OnInit, OnDestroy {
     this.meta.updateTag({ name: 'twitter:image', content: this.getOGImage() });
     this.meta.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
     this.meta.updateTag({ name: 'type', content: 'article' });
-    this.meta.updateTag({ name: 'article:published_time', content: this.post?.publish_date.toDate().toISOString() ?? '' });
-    this.meta.updateTag({ name: 'article:modified_time', content: this.post?.created_on.toDate().toISOString() ?? '' });
+    this.meta.updateTag({ name: 'article:published_time', content: this.post?.publish_date?.toDate().toISOString() ?? '' });
+    this.meta.updateTag({ name: 'article:modified_time', content: this.post?.created_on?.toDate().toISOString() ?? '' });
     this.meta.updateTag({ name: 'article:author', content: 'Cody Potter' });
     this.meta.updateTag({ name: 'article:section', content: 'Technology' });
     this.meta.updateTag({ name: 'article:tag', content: this.post?.tags.join(',') ?? '' });
