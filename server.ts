@@ -33,7 +33,7 @@ export function app(): express.Express {
 
     if (cacheValid && cache.data) {
       res.json(cache.data);
-      return
+      return;
     }
 
     try {

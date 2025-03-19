@@ -86,7 +86,11 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
-              "baseHref": "/"
+              "baseHref": "/",
+              "sourceMap": false,
+              "optimization": true,
+              "aot": true,
+              "buildOptimizer": true
             },
             "development": {
               "buildOptimizer": false,

@@ -52,7 +52,6 @@ export class HomeComponent implements OnInit {
         this.featuredVideoId = 'Rk2SBoBwtRU';
       }
     })
-    // testing this
   }
 
   ngOnDestroy() {
