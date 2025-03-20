@@ -20,6 +20,6 @@
   </div>
 </article>
 
-@for (comment of comments; track comment) {
+@for (comment of comments; track comment.timestamp) {
 <app-comment [comment]="comment"></app-comment>
 }

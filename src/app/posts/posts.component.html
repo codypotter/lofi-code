@@ -2,7 +2,7 @@
   <app-tags></app-tags>
   <hr>
   <section class="container mt-5">
-    @for (post of posts; track post) {
+    @for (post of posts; track post.slug) {
     <div class="block">
       <app-search-result [post]="post"></app-search-result>
     </div>

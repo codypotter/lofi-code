@@ -43,7 +43,7 @@
 <div class="container p-5 block is-max-desktop">
   <h4 class="title is-4 mb-5">Related Posts</h4>
   <div class="columns is-multiline">
-    @for (relatedPost of relatedPosts; track relatedPost) {
+    @for (relatedPost of relatedPosts; track relatedPost.slug) {
       <div class="column is-one-third">
         <app-post-preview [post]="relatedPost"></app-post-preview>
       </div>
