@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Auth, GithubAuthProvider, User, authState, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, updateCurrentUser, updateProfile } from '@angular/fire/auth';
-import { updateEmail, updatePassword } from 'firebase/auth';
+import { Auth, GithubAuthProvider, User, authState, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, updateCurrentUser, updateEmail, updatePassword, updateProfile } from '@angular/fire/auth';
 import { NGXLogger } from 'ngx-logger';
 import { BehaviorSubject, Observable, defer, first, from, switchMap, tap } from 'rxjs';
 import { UsersService } from './users.service';

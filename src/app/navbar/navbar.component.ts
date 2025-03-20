@@ -1,11 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { CreateAccountComponent } from '../create-account/create-account.component';
-import { User } from 'firebase/auth';
 import { AccountService } from '../services/account.service';
 import { RouterModule } from '@angular/router';
 import { LoginComponent } from '../login/login.component';
 import { Subject, takeUntil } from 'rxjs';
+import { User } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-navbar',

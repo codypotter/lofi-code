@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Firestore, doc, getDoc, setDoc } from '@angular/fire/firestore/lite';
 import { first, from } from 'rxjs';
-import { Storage, ref, uploadBytesResumable } from '@angular/fire/storage';
-import { getDownloadURL } from 'firebase/storage';
+import { Storage, getDownloadURL, ref, uploadBytesResumable } from '@angular/fire/storage';
 
 interface User {
   displayName?: string;
