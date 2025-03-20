@@ -1,16 +1,15 @@
-<a class="no-link-style" [routerLink]="['/posts', post.slug]">
+<a class="no-link-style" [routerLink]="['/posts', post.slug]" ngSkipHydration>
   <div class="columns">
-    @if (post.open_graph_image) {
-      <div
-        class="column is-one-fifth"
+    <div
+      *ngIf="post.open_graph_image"
+      class="column is-one-fifth"
+      >
+      <img
+        [src]="buildImageUrl()"
+        alt="post.name"
+        class="image"
         >
-        <img
-          [src]="buildImageUrl()"
-          alt="post.name"
-          class="image"
-          >
-      </div>
-    }
+    </div>
     <div class="column">
       <div class="level">
         <div class="level-left">

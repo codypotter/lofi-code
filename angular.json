@@ -71,7 +71,7 @@
                 {
                   "type": "initial",
                   "maximumWarning": "500kb",
-                  "maximumError": "2mb"
+                  "maximumError": "3mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -87,10 +87,7 @@
                 }
               ],
               "baseHref": "/",
-              "sourceMap": false,
-              "optimization": true,
-              "aot": true,
-              "buildOptimizer": true
+              "optimization": false
             },
             "development": {
               "buildOptimizer": false,

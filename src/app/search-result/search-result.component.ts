@@ -2,7 +2,6 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Post } from '../services/posts.service';
 import { TagsComponent } from '../tags/tags.component';
-import { marked } from 'marked';
 import { RouterLink } from '@angular/router';
 import { environment } from 'src/environments/environment';
 
