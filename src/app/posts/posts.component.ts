@@ -38,11 +38,18 @@ export class PostsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.title.setTitle('lofi code - posts');
     this.posts = this.route.snapshot.data['posts'];
+    let lastTag: string | undefined = this.route.snapshot.queryParams['tag'];
+
+    this.setBreadcrumbs();
     this.route.queryParams.pipe(takeUntil(this.destroy$)).subscribe(params => {
-      const tag = params['tag'];
-      this._tag = tag === 'all' ? undefined : tag;
-      this.setBreadcrumbs();
-      this.newSearch();
+      const newTag = params['tag'];
+      const normalizedTag = newTag === 'all' ? undefined : newTag;
+      if (normalizedTag !== lastTag) {
+        lastTag = normalizedTag;
+        this._tag = normalizedTag;
+        this.newSearch();
+        this.setBreadcrumbs();
+      }
     });
   }
 

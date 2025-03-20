@@ -22,7 +22,6 @@ export class PostPreviewComponent implements OnInit {
   constructor(private logger: NGXLogger) {}
 
   ngOnInit(): void {
-    this.logger.debug('post', this.post);
     this.headerImg = `${environment.storageUrl}${encodeURIComponent(this.post.header_image ?? '')}?alt=media`;
   }
 }

@@ -21,7 +21,9 @@
           <h4 class="is-size-4">Cody Potter - Posted on {{post.publish_date.seconds * 1000 | date: 'longDate'}}</h4>
           <h1 class="title is-size-1">{{post.name}}</h1>
           <div class="mb-5">
-            <app-tags [tags]="post.tags"></app-tags>
+            @if(post.tags) {
+              <app-tags [tags]="post.tags"></app-tags>
+            }
           </div>
         </div>
       </div>
