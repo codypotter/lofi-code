@@ -4,7 +4,9 @@
   <section class="container mt-5">
     @for (post of posts; track post.slug) {
     <div class="block">
-      <app-search-result [post]="post"></app-search-result>
+      @if (post.slug) {
+        <app-search-result [post]="post"></app-search-result>
+      }
     </div>
     }
     @if (showLoadMore) {

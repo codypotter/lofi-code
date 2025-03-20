@@ -37,6 +37,7 @@ export class PostsComponent implements OnInit, OnDestroy {
   
   ngOnInit(): void {
     this.title.setTitle('lofi code - posts');
+    this.posts = this.route.snapshot.data['posts'];
     this.route.queryParams.pipe(takeUntil(this.destroy$)).subscribe(params => {
       const tag = params['tag'];
       this._tag = tag === 'all' ? undefined : tag;
