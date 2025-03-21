@@ -10,7 +10,8 @@
     "dev:ssr": "ng run lofi-code:serve-ssr",
     "serve:ssr": "node dist/lofi-code/server/main.js",
     "build:ssr": "ng build --configuration serverless && ng run lofi-code:server",
-    "deploy": "npm run build:ssr && serverless deploy"
+    "deploy": "npm run build:ssr && serverless deploy",
+    "tag": "npm version patch -m 'Deploy version %s'"
   },
   "private": true,
   "dependencies": {
