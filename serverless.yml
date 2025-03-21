@@ -57,6 +57,8 @@ custom:
 functions:
   api:
     handler: lambda.universal
+    environment:
+      YOUTUBE_API_KEY: ${ssm:/dev/lofi-code-youtube-api_key~true}
     events:
       - http: ANY /{proxy+}
       - http: ANY /
