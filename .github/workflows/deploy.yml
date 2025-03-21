@@ -32,9 +32,9 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
-      - name: Restore environment.prod.ts
+      - name: Decode and write environment.prod.ts
         run: |
-          echo "${{ secrets.ENV_PROD_TS }}" > src/environments/environment.prod.ts
+          echo "${{ secrets.ENV_PROD_TS }}" | base64 --decode > src/environments/environment.prod.ts
 
       - name: Deploy to AWS S3
         run: npm run deploy
