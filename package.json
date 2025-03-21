@@ -11,7 +11,8 @@
     "serve:ssr": "node dist/lofi-code/server/main.js",
     "build:ssr": "ng build --configuration serverless && ng run lofi-code:server",
     "deploy": "npm run build:ssr && serverless deploy",
-    "tag": "npm version patch -m 'Deploy version %s'"
+    "tag": "npm version patch -m 'Deploy version %s'",
+    "encode-env-prod": "base64 -w 0 src/environments/environment.prod.ts"
   },
   "private": true,
   "dependencies": {
