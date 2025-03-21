@@ -1,0 +1,32 @@
+name: Tag Release
+
+permissions:
+  contents: write
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  tag-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Git identity
+        run: |
+          git config --global user.email "me@codypotter.com"
+          git config --global user.name "Cody Potter"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+
+      - name: Bump version and create tag
+        run: npm run tag
+
+      - name: Push commit and tag
+        run: git push origin main --follow-tags

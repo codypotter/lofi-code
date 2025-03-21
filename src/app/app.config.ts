@@ -9,7 +9,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BreadcrumbService } from './services/breadcrumb.service';
 import { PostsService } from './services/posts.service';
 import { YouTubePlayerModule } from '@angular/youtube-player';
-import { HttpClientModule } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { LoggerModule } from 'ngx-logger';
 import { TagsService } from './services/tags.service';
@@ -18,26 +17,27 @@ import { getStorage, provideStorage } from '@angular/fire/storage';
 import { TimeagoModule } from 'ngx-timeago';
 import { ShareButtonsModule } from 'ngx-sharebuttons/buttons';
 import { provideClientHydration } from '@angular/platform-browser';
+import { provideHttpClient } from '@angular/common/http';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
-    importProvidersFrom(BrowserAnimationsModule, HttpClientModule),
+    importProvidersFrom(BrowserAnimationsModule),
     importProvidersFrom(LoggerModule.forRoot({ level: environment.logLevel,  })),
     importProvidersFrom(ShareButtonsModule.withConfig({
       include: ['facebook', 'twitter', 'linkedin', 'reddit', 'email', 'tumblr'],
     })),
-    importProvidersFrom(
-      provideFirebaseApp(() => initializeApp(environment.firebaseOptions)),
-    ),
-    importProvidersFrom(provideAuth(() => getAuth())),
-    importProvidersFrom(provideFirestore(() => getFirestore())),
-    importProvidersFrom(provideStorage(() => getStorage())),
+    provideFirebaseApp(() => initializeApp(environment.firebaseOptions)),
+    provideAuth(() => getAuth()),
+    provideFirestore(() => getFirestore()),
+    provideStorage(() => getStorage()),
     importProvidersFrom(YouTubePlayerModule),
     importProvidersFrom(TimeagoModule.forRoot()),
     BreadcrumbService,
     PostsService,
     TagsService,
-    UsersService, provideClientHydration(),
+    UsersService,
+    provideClientHydration(),
+    provideHttpClient(),
   ],
 };
