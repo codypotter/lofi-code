@@ -14,8 +14,6 @@ provider:
   timeout: 10
   region: us-east-1
   deploymentBucket:
-    environment:
-      FORCE_DEPLOY: true
 
 package:
   excludeDevDependencies: true
@@ -61,6 +59,7 @@ functions:
     handler: lambda.universal
     environment:
       YOUTUBE_API_KEY: ${ssm:/dev/lofi-code-youtube-api_key}
+      FORCE_REDEPLOY: '2025-03-22T14:05:00Z'
     events:
       - http: ANY /{proxy+}
       - http: ANY /
