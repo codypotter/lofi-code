@@ -32,12 +32,6 @@ jobs:
           role-to-assume: arn:aws:iam::812100404712:role/role-lofi-code-githubci
           aws-region: us-east-1
 
-      - name: Show AWS identity
-        run: aws sts get-caller-identity
-
-      - name: Confirm SSM fetch
-        run: aws ssm get-parameter --name /dev/lofi-code-youtube-api_key --with-decryption
-
       - name: Decode and write environment.prod.ts
         run: |
           echo "${{ secrets.ENV_PROD_TS }}" | base64 --decode > src/environments/environment.prod.ts
