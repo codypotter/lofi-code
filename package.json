@@ -68,7 +68,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "serverless": "^3.38.0",
+    "serverless": "^3.40.0",
     "serverless-api-compression": "^1.0.1",
     "serverless-apigw-binary": "^0.4.4",
     "serverless-associate-waf": "^1.2.1",
