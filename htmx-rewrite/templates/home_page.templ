@@ -1,0 +1,13 @@
+package templates
+
+templ HomePage() {
+    @PageWrapper(
+        Head(
+            "Home - Lofi Code",
+            "Learn to code in byte-size pieces",
+            "/assets/images/logo-white.svg",
+        ),
+        []Breadcrumb{},
+        Home(),
+    )
+}

@@ -1,0 +1,19 @@
+package templates
+
+templ PageWrapper(head templ.Component, breadcrumbs []Breadcrumb, content templ.Component) {
+    <!DOCTYPE html>
+    <html lang="en">
+        @head
+        <body>
+            @Navbar()
+
+           @Breadcrumbs(breadcrumbs) 
+
+            <section>
+                @content
+            </section>
+
+           @Footer() 
+        </body>
+    </html>
+}

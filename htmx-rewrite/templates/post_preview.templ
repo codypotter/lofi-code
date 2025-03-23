@@ -1,0 +1,14 @@
+package templates
+
+type Post struct {
+    Title   string
+    Summary string
+    URL     string
+}
+
+templ PostPreview(post Post) {
+    <div class="post-preview">
+        <h4>{ post.Title }</h4>
+        <p>{ post.Summary }</p>
+    </div>
+}

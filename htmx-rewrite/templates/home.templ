@@ -1,0 +1,81 @@
+package templates
+
+const featuredVideoId = "Rk2SBoBwtRU"
+const featuredVideoTitle = ""
+
+func getFeaturedPosts() []Post {
+    return []Post{
+    	{Title: "Post 1", Summary: "Summary of post 1", URL: "/post-1"},
+		{Title: "Post 2", Summary: "Summary of post 2", URL: "/post-2"},
+    }
+}
+
+templ Home() {
+    <style>
+        #intro {
+            background: linear-gradient(135deg, #FF0F7B 0%, #F89B29 100%);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            #intro {
+                background: linear-gradient(135deg, #A60950, #BA6423 100%);
+            }
+        }
+
+        #intro img {
+            height: 10rem;
+        }
+
+        #intro p {
+            text-align: center;
+        }
+
+        #featured-video {
+            background: linear-gradient(135deg, #6FEB84 0%, #1AE8FF 100%);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            #featured-video {
+                background: linear-gradient(135deg, #51aa60 0%, #1098a7 100%);
+            }
+        }
+    </style>
+    <section id="intro" class="hero is-primary is-medium">
+        <div class="hero-body is-flex is-flex-direction-column">
+            <img src="assets/images/logo-white.svg"/>
+            <p class="subtitle has-text-white">
+                learn to code in byte-size pieces
+            </p>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h3 class="title is-3 mb-5">Browse by Tag</h3>
+            <div class="p-3">
+                @Tags("is-large")
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h3 class="title is-3 mb-5">Recent Posts</h3>
+            <div class="columns is-multiline is-flex" style="align-items: stretch;">
+                for _, post := range getFeaturedPosts() {
+                    <div class="column is-one-third">
+                        @PostPreview(post)
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+
+    <section id="featured-video" class="section is-medium">
+        <div class="container">
+            <h3 class="title is-3">Featured Video</h3>
+            <h4 class="subtitle is-4 mb-5">{ featuredVideoTitle }</h4>
+            @YouTubePlayer(featuredVideoId)
+        </div>
+    </section>
+}
