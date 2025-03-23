@@ -1,8 +1,6 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { CommonEngine, isMainModule } from '@angular/ssr/node';
 import express from 'express';
-import axios from 'axios';
-import 'dotenv/config'
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import bootstrap from './main.server';
@@ -14,34 +12,32 @@ const indexHtml = join(serverDistFolder, 'index.server.html');
 const app = express();
 const commonEngine = new CommonEngine();
 
-app.get('/api/**', async (req, res) => {
+app.get('/api/featured-video', async (req, res) => {
   const apiKey = process.env['YOUTUBE_API_KEY'];
+  const params = new URLSearchParams({
+    part: 'snippet',
+    channelId: 'UCsPXgrtO5bTfdVdNLLB_Erw',
+    maxResults: '1',
+    order: 'date',
+    key: apiKey!,
+  });
 
-  try {
-    const response = await axios.get('https://www.googleapis.com/youtube/v3/search', {
-      params: {
-        part: 'snippet',
-        channelId: 'UCsPXgrtO5bTfdVdNLLB_Erw',
-        maxResults: 1,
-        order: 'date',
-        key: apiKey,
-      },
-      headers: {
-        referer: 'https://lofi-code.com',
-      }
-    });
+  const response = await fetch(`https://www.googleapis.com/youtube/v3/search?${params.toString()}`, {
+    headers: {
+      referer: 'https://lofi-code.com',
+    }
+  });
 
-    const video = response.data.items[0];
-    const videoId = video.id.videoId;
-    const videoTitle = video.snippet.title;
-
-    const videoData = { title: videoTitle, id: videoId };
-
-    return res.json(videoData);
-  } catch (error: any) {
-    console.error(error.message);
+  if (!response.ok) {
     return res.status(500).json({ error: 'An error occurred while fetching the featured video' });
   }
+
+  const data = await response.json();
+  const video = data.items[0];
+  const videoId = video.id.videoId;
+  const videoTitle = video.snippet.title;
+  const videoData = { title: videoTitle, id: videoId };
+  return res.json(videoData);
 });
 
 /**
