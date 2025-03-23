@@ -7,7 +7,7 @@
     "build": "ng build --configuration=production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "deploy": "npm run build:ssr && serverless deploy",
+    "deploy": "npm run build && serverless deploy",
     "tag": "npm version patch -m 'Deploy version %s'",
     "encode-env-prod": "base64 -w 0 src/environments/environment.prod.ts",
     "serve:ssr:lofi-code": "node dist/lofi-code/server/server.mjs"
