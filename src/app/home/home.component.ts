@@ -14,11 +14,10 @@ import { Title } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-home',
-  standalone: true,
-  imports: [CommonModule, PostPreviewComponent, RouterModule, TagsComponent, YoutubePlayerComponent, NgxSkeletonLoaderModule],
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+    selector: 'app-home',
+    imports: [CommonModule, PostPreviewComponent, RouterModule, TagsComponent, YoutubePlayerComponent, NgxSkeletonLoaderModule],
+    templateUrl: './home.component.html',
+    styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
   posts: any[] = [];
@@ -41,14 +40,13 @@ export class HomeComponent implements OnInit {
     this.title.setTitle('lofi code');
     this.breadcrumbService.setBreadcrumbs([]);
     this.postsService.getN(3).subscribe((posts) => { this.posts = posts;});
-    this.logger.debug('skipping featured video');
     this.videosService.getFeaturedVideo().pipe(takeUntil(this.destroy$)).subscribe({
       next: (res) => {
         this.featuredVideoId = res.id;
         this.featuredVideoTitle = res.title;
       },
       error: (err) => {
-        this.logger.warn(err);
+        this.logger.warn('failed to get featured video', err);
         this.featuredVideoId = 'Rk2SBoBwtRU';
       }
     })

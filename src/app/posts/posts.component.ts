@@ -9,11 +9,10 @@ import { TagsComponent } from '../tags/tags.component';
 import { Title } from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-posts',
-  standalone: true,
-  imports: [SearchResultComponent, TagsComponent],
-  templateUrl: './posts.component.html',
-  styleUrls: ['./posts.component.scss']
+    selector: 'app-posts',
+    imports: [SearchResultComponent, TagsComponent],
+    templateUrl: './posts.component.html',
+    styleUrls: ['./posts.component.scss']
 })
 export class PostsComponent implements OnInit, OnDestroy {
   limit = 10;

@@ -1,6 +1,9 @@
 #intro {
     background: linear-gradient(135deg, #FF0F7B 0%, #F89B29 100%);
 
+    @media (prefers-color-scheme: dark) {
+        background: linear-gradient(135deg, #A60950, #BA6423 100%);
+    }
     img {
         height: 10rem;
     }
@@ -11,5 +14,9 @@
 }
 
 #featured-video {
-    background: linear-gradient(135deg, #6feb84 0%, #1ae8ff 100%);
+    background: linear-gradient(135deg, #6FEB84 0%, #1AE8FF 100%);
+
+    @media (prefers-color-scheme: dark) {
+        background: linear-gradient(135deg, #51aa60 0%, #1098a7 100%);
+    }
 }

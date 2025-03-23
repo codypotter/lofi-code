@@ -7,12 +7,11 @@ import { TagsComponent } from '../tags/tags.component';
 import { NGXLogger } from 'ngx-logger';
 
 @Component({
-  selector: 'app-post-preview',
-  standalone: true,
-  imports: [CommonModule, RouterModule, TagsComponent],
-  templateUrl: './post-preview.component.html',
-  styleUrls: ['./post-preview.component.scss'],
-  host: { ngSkipHydration: 'true' }
+    selector: 'app-post-preview',
+    imports: [CommonModule, RouterModule, TagsComponent],
+    templateUrl: './post-preview.component.html',
+    styleUrls: ['./post-preview.component.scss'],
+    host: { ngSkipHydration: 'true' }
 })
 export class PostPreviewComponent implements OnInit {
   @Input() post!: Post;

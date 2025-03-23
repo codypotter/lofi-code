@@ -1,6 +1,6 @@
-const awsServerlessExpress = require('aws-serverless-express');
-const server = require('./dist/lofi-code/server/main');
-const awsServerlessExpressMiddleware = require('aws-serverless-express/middleware');
+import awsServerlessExpress from 'aws-serverless-express';
+import awsServerlessExpressMiddleware from 'aws-serverless-express/middleware';
+import app from './dist/lofi-code/server/server.mjs';
 
 const binaryMimeTypes = [
   "application/javascript",
@@ -22,9 +22,9 @@ const binaryMimeTypes = [
   "application/x-font-ttf",
 ];
 
-const app = server.app();
 app.use(awsServerlessExpressMiddleware.eventContext());
-const serverProxy = awsServerlessExpress.createServer(app,null,binaryMimeTypes);
 
-module.exports.universal = (event, context) =>
-  awsServerlessExpress.proxy(serverProxy, event, context);
+const server = awsServerlessExpress.createServer(app, null, binaryMimeTypes);
+
+export const universal = (event, context) =>
+  awsServerlessExpress.proxy(server, event, context);

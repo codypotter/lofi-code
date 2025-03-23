@@ -8,11 +8,10 @@ import { Subject, takeUntil } from 'rxjs';
 import { User } from '@angular/fire/auth';
 
 @Component({
-  selector: 'app-navbar',
-  standalone: true,
-  imports: [CreateAccountComponent, RouterModule, LoginComponent],
-  templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss']
+    selector: 'app-navbar',
+    imports: [CreateAccountComponent, RouterModule, LoginComponent],
+    templateUrl: './navbar.component.html',
+    styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit, OnDestroy {
   user: User | null = null;

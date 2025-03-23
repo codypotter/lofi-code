@@ -6,11 +6,10 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { NGXLogger } from 'ngx-logger';
 
 @Component({
-  selector: 'app-tags',
-  standalone: true,
-  imports: [CommonModule, RouterLink, NgxSkeletonLoaderModule],
-  templateUrl: './tags.component.html',
-  styleUrls: ['./tags.component.scss']
+    selector: 'app-tags',
+    imports: [CommonModule, RouterLink, NgxSkeletonLoaderModule],
+    templateUrl: './tags.component.html',
+    styleUrls: ['./tags.component.scss']
 })
 export class TagsComponent implements OnInit {
   @Input() tags: string[] = [];

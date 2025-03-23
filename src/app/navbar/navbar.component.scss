@@ -1,5 +1,8 @@
 .navbar {
     background: linear-gradient(90deg, #FF0F7B 0%, #f98039 100%);
+    @media (prefers-color-scheme: dark) {
+        background: linear-gradient(90deg, #A60950, #BA6423 100%);
+    }
 }
 
 img {

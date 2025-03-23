@@ -9,11 +9,10 @@ import { faEnvelope, faLock, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component({
-  selector: 'app-create-account',
-  standalone: true,
-  imports: [ReactiveFormsModule, FormsModule, RouterModule, FontAwesomeModule],
-  templateUrl: './create-account.component.html',
-  styleUrls: ['./create-account.component.scss']
+    selector: 'app-create-account',
+    imports: [ReactiveFormsModule, FormsModule, RouterModule, FontAwesomeModule],
+    templateUrl: './create-account.component.html',
+    styleUrls: ['./create-account.component.scss']
 })
 export class CreateAccountComponent {
 

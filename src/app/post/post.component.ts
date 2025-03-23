@@ -15,19 +15,18 @@ import { Meta, Title } from '@angular/platform-browser';
 import { Location } from '@angular/common';
 
 @Component({
-  selector: 'app-post',
-  standalone: true,
-  imports: [
-    CommonModule,
-    PostPreviewComponent,
-    NgxSkeletonLoaderModule,
-    CommentsComponent,
-    ShareButtonsModule,
-    ShareIconsModule,
-    TagsComponent,
-  ],
-  templateUrl: './post.component.html',
-  styleUrls: ['./post.component.scss']
+    selector: 'app-post',
+    imports: [
+        CommonModule,
+        PostPreviewComponent,
+        NgxSkeletonLoaderModule,
+        CommentsComponent,
+        ShareButtonsModule,
+        ShareIconsModule,
+        TagsComponent,
+    ],
+    templateUrl: './post.component.html',
+    styleUrls: ['./post.component.scss']
 })
 export class PostComponent implements OnInit, OnDestroy {
   post?: Post;
