@@ -10,11 +10,10 @@ import { Timestamp } from '@angular/fire/firestore/lite';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'app-comments',
-  standalone: true,
-  imports: [CommonModule, CommentComponent, FormsModule],
-  templateUrl: './comments.component.html',
-  styleUrl: './comments.component.scss'
+    selector: 'app-comments',
+    imports: [CommonModule, CommentComponent, FormsModule],
+    templateUrl: './comments.component.html',
+    styleUrl: './comments.component.scss'
 })
 export class CommentsComponent implements OnInit, OnDestroy {
   @Input() post!: Post;

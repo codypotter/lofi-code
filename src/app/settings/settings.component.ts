@@ -12,11 +12,10 @@ import { faEnvelope, faLock, faUpload, faUser } from '@fortawesome/free-solid-sv
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component({
-  selector: 'app-settings',
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, RouterModule, FontAwesomeModule],
-  templateUrl: './settings.component.html',
-  styleUrl: './settings.component.scss'
+    selector: 'app-settings',
+    imports: [CommonModule, ReactiveFormsModule, FormsModule, RouterModule, FontAwesomeModule],
+    templateUrl: './settings.component.html',
+    styleUrl: './settings.component.scss'
 })
 export class SettingsComponent implements OnInit {
 

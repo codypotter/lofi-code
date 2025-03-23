@@ -1,5 +1,5 @@
 const awsServerlessExpress = require('aws-serverless-express');
-const server = require('./dist/lofi-code/server/main');
+const server = require('./dist/lofi-code/server/server');
 const awsServerlessExpressMiddleware = require('aws-serverless-express/middleware');
 
 const binaryMimeTypes = [

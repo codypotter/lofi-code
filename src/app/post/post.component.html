@@ -1,5 +1,5 @@
 @if (post) {
-  <article class="container is-max-desktop has-background-white">
+  <article class="container is-max-desktop">
     <div class="share-buttons">
       <share-buttons [title]="post.name" [description]="post.description"></share-buttons>
     </div>
@@ -33,7 +33,7 @@
       ></div>
     </div>
   </article>
-  <div class="container p-5 block has-background-white is-max-desktop">
+  <div class="container p-5 block is-max-desktop">
     <app-comments [post]="post"></app-comments>
   </div>
 } @else {

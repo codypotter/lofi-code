@@ -9,11 +9,10 @@ import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-  selector: 'app-login',
-  standalone: true,
-  imports: [ReactiveFormsModule, FormsModule, CommonModule, FontAwesomeModule],
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+    selector: 'app-login',
+    imports: [ReactiveFormsModule, FormsModule, CommonModule, FontAwesomeModule],
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
 

@@ -5,11 +5,10 @@ import { NGXLogger } from 'ngx-logger';
 import { TimeagoModule } from 'ngx-timeago';
 
 @Component({
-  selector: 'app-comment',
-  standalone: true,
-  imports: [TimeagoModule],
-  templateUrl: './comment.component.html',
-  styleUrl: './comment.component.scss'
+    selector: 'app-comment',
+    imports: [TimeagoModule],
+    templateUrl: './comment.component.html',
+    styleUrl: './comment.component.scss'
 })
 export class CommentComponent implements OnInit{
   @Input() comment!: Comment;

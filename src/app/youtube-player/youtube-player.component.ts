@@ -4,10 +4,9 @@ import { YouTubePlayerModule } from '@angular/youtube-player';
 import { NGXLogger } from 'ngx-logger';
 
 @Component({
-  standalone: true,
-  imports: [YouTubePlayerModule],
-  templateUrl: './youtube-player.component.html',
-  selector: 'app-youtube-player',
+    imports: [YouTubePlayerModule],
+    templateUrl: './youtube-player.component.html',
+    selector: 'app-youtube-player'
 })
 export class YoutubePlayerComponent {
   @Input() videoId = '';

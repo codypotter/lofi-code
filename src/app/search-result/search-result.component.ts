@@ -6,11 +6,10 @@ import { RouterLink } from '@angular/router';
 import { environment } from 'src/environments/environment';
 
 @Component({
-  selector: 'app-search-result',
-  standalone: true,
-  imports: [CommonModule, TagsComponent, RouterLink],
-  templateUrl: './search-result.component.html',
-  styleUrls: ['./search-result.component.scss']
+    selector: 'app-search-result',
+    imports: [CommonModule, TagsComponent, RouterLink],
+    templateUrl: './search-result.component.html',
+    styleUrls: ['./search-result.component.scss']
 })
 export class SearchResultComponent {
   @Input() post!: Post;
