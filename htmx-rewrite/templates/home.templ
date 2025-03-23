@@ -5,8 +5,18 @@ const featuredVideoTitle = ""
 
 func getFeaturedPosts() []Post {
     return []Post{
-    	{Title: "Post 1", Summary: "Summary of post 1", URL: "/post-1"},
-		{Title: "Post 2", Summary: "Summary of post 2", URL: "/post-2"},
+    	{
+            Name: "Post 1",
+            Description: "Summary of post 1",
+            URL: "/post-1",
+            HeaderImage: "https://firebasestorage.googleapis.com/v0/b/lofi-code.appspot.com/o/images%2Ftdtm4_clown%203x1.jpg?alt=media",
+        },
+		{
+            Name: "Post 2",
+            Description: "Summary of post 2",
+            URL: "/post-2",
+            HeaderImage: "https://firebasestorage.googleapis.com/v0/b/lofi-code.appspot.com/o/images%2Ftdtm4_clown%203x1.jpg?alt=media",
+        },
     }
 }
 
@@ -53,7 +63,7 @@ templ Home() {
         <div class="container">
             <h3 class="title is-3 mb-5">Browse by Tag</h3>
             <div class="p-3">
-                @Tags("is-large")
+                @Tags(TagsConfig{Size: "is-large", Tags: []string{"HTML", "CSS", "JavaScript", "Go", "Python"}})
             </div>
         </div>
     </section>

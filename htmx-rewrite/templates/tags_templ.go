@@ -8,7 +8,12 @@ package templates
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-func Tags(size string) templ.Component {
+type TagsConfig struct {
+	Size string
+	Tags []string
+}
+
+func Tags(config TagsConfig) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -29,12 +34,19 @@ func Tags(size string) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
+
+		if config.Size == "" {
+			config.Size = "is-medium"
+		}
+		if config.Tags == nil {
+			config.Tags = []string{"tag1", "tag2", "tag3"}
+		}
 		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"container\"><div class=\"tags\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		for _, tag := range []string{"tag1", "tag2", "tag3"} {
-			var templ_7745c5c3_Var2 = []any{"tag", "level-item", "is-primary", size}
+		for _, tag := range config.Tags {
+			var templ_7745c5c3_Var2 = []any{"tag", "level-item", "is-primary", config.Size}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var2...)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -59,7 +71,7 @@ func Tags(size string) templ.Component {
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(tag)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/tags.templ`, Line: 7, Col: 74}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/tags.templ`, Line: 20, Col: 81}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {

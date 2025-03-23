@@ -31,20 +31,20 @@ func YouTubePlayer(videoId string) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<iframe class=\"youtube-player\" src=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<style>\n        .youtube-container {\n            position: relative;\n            width: 100%;\n            aspect-ratio: 16 / 9;\n            margin: 0 auto;\n        }\n\n        .youtube-container iframe {\n            position: absolute;\n            width: 100%;\n            height: 100%;\n            border: 0;\n        }\n    </style><div class=\"container\"><div class=\"youtube-container\"><iframe width=\"560\" height=\"315\" src=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(string(templ.URL(fmt.Sprintf("https://www.youtube.com/embed/%s", videoId))))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/youtube_player.templ`, Line: 6, Col: 116}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/youtube_player.templ`, Line: 26, Col: 97}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\" allowfullscreen></iframe>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\" allowfullscreen></iframe></div><h5 class=\"title is-5 mt-5\">Want to see more? <a href=\"https://youtube.com/@lofi-code525?si=G-WLnBGg4mJ_FH8R\">Subscribe!</a></h5></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

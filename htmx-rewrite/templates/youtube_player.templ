@@ -3,5 +3,30 @@ package templates
 import "fmt"
 
 templ YouTubePlayer(videoId string) {
-    <iframe class="youtube-player" src={ string(templ.URL(fmt.Sprintf("https://www.youtube.com/embed/%s", videoId))) } allowfullscreen></iframe>
+    <style>
+        .youtube-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            margin: 0 auto;
+        }
+
+        .youtube-container iframe {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+    </style>
+    <div class="container">
+        <div class="youtube-container">
+            <iframe
+                width="560"
+                height="315"
+                src={ string(templ.URL(fmt.Sprintf("https://www.youtube.com/embed/%s", videoId))) }
+                allowfullscreen
+            ></iframe>
+        </div>
+        <h5 class="title is-5 mt-5">Want to see more? <a href="https://youtube.com/@lofi-code525?si=G-WLnBGg4mJ_FH8R">Subscribe!</a></h5>
+    </div>
 }

@@ -1,10 +1,23 @@
 package templates
 
-templ Tags(size string) {
+type TagsConfig struct {
+    Size string
+    Tags []string
+}
+
+templ Tags(config TagsConfig) {
+    {{
+        if config.Size == "" {
+            config.Size = "is-medium"
+        }
+        if config.Tags == nil {
+            config.Tags = []string{"tag1", "tag2", "tag3"}
+        }
+    }}
     <div class="container">
         <div class="tags">
-            for _, tag := range []string{"tag1", "tag2", "tag3"} {
-                <a class={ "tag", "level-item", "is-primary", size }>#{tag}</a>
+            for _, tag := range config.Tags {
+                <a class={ "tag", "level-item", "is-primary", config.Size }>#{tag}</a>
             }
         </div> 
     </div>

@@ -13,8 +13,18 @@ const featuredVideoTitle = ""
 
 func getFeaturedPosts() []Post {
 	return []Post{
-		{Title: "Post 1", Summary: "Summary of post 1", URL: "/post-1"},
-		{Title: "Post 2", Summary: "Summary of post 2", URL: "/post-2"},
+		{
+			Name:        "Post 1",
+			Description: "Summary of post 1",
+			URL:         "/post-1",
+			HeaderImage: "https://firebasestorage.googleapis.com/v0/b/lofi-code.appspot.com/o/images%2Ftdtm4_clown%203x1.jpg?alt=media",
+		},
+		{
+			Name:        "Post 2",
+			Description: "Summary of post 2",
+			URL:         "/post-2",
+			HeaderImage: "https://firebasestorage.googleapis.com/v0/b/lofi-code.appspot.com/o/images%2Ftdtm4_clown%203x1.jpg?alt=media",
+		},
 	}
 }
 
@@ -43,7 +53,7 @@ func Home() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Tags("is-large").Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Tags(TagsConfig{Size: "is-large", Tags: []string{"HTML", "CSS", "JavaScript", "Go", "Python"}}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -72,7 +82,7 @@ func Home() templ.Component {
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(featuredVideoTitle)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/home.templ`, Line: 77, Col: 63}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/home.templ`, Line: 87, Col: 63}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {

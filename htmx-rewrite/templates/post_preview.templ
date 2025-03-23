@@ -1,14 +1,34 @@
 package templates
 
 type Post struct {
-    Title   string
-    Summary string
+    Name   string
+    Description string
     URL     string
+    HeaderImage string
+    PublishDate string
+    Tags    []string
 }
 
 templ PostPreview(post Post) {
-    <div class="post-preview">
-        <h4>{ post.Title }</h4>
-        <p>{ post.Summary }</p>
+    <div class="box full-height has-background is-shadowless is-clickable">
+        if post.HeaderImage != "" {
+            <div class="card-image">
+                <figure class="image is-3by1">
+                    <img src={post.HeaderImage} alt="Post Header Image">
+                </figure>
+            </div>
+        }
+        <div class="card-content">
+            <div class="media">
+                <div class="media-content">
+                    <h5 class="title is-size-5 mt-5">{post.Name}</h5>
+                    <h6 class="subtitle is-size-6">{post.PublishDate}</h6>
+                </div>
+            </div>
+            <div class="content">
+                <p>{post.Description}</p>
+                @Tags(TagsConfig{Size: "is-small", Tags: post.Tags})
+            </div>
+        </div>
     </div>
 }
