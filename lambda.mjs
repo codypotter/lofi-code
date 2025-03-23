@@ -1,5 +1,4 @@
-import awsServerlessExpress from 'aws-serverless-express';
-import awsServerlessExpressMiddleware from 'aws-serverless-express/middleware';
+const { default: serverlessExpress } = await import('@codegenie/serverless-express');
 import app from './dist/lofi-code/server/server.mjs';
 
 const binaryMimeTypes = [
@@ -22,9 +21,5 @@ const binaryMimeTypes = [
   "application/x-font-ttf",
 ];
 
-app.use(awsServerlessExpressMiddleware.eventContext());
 
-const server = awsServerlessExpress.createServer(app, null, binaryMimeTypes);
-
-export const universal = (event, context) =>
-  awsServerlessExpress.proxy(server, event, context);
+export const handler = serverlessExpress({ app, binaryMimeTypes });
