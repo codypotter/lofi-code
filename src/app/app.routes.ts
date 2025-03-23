@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './guards/auth.guard';
 import { postResolver } from './resolvers/post.resolver';
-import { postsResolver } from './services/posts.resolver';
 
 export const routes: Routes = [
     {
@@ -9,9 +8,6 @@ export const routes: Routes = [
     },
     {
         path: 'posts', loadComponent: () => import('./posts/posts.component').then(m => m.PostsComponent),
-        resolve: {
-            posts: postsResolver,
-        },
     },
     {
         path: 'posts/:slug', loadComponent: () => import('./post/post.component').then(m => m.PostComponent),
