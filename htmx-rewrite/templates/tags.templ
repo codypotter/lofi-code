@@ -1,7 +1,11 @@
 package templates
 
 templ Tags(size string) {
-    <div class={ size }>
-        tags go here
+    <div class="container">
+        <div class="tags">
+            for _, tag := range []string{"tag1", "tag2", "tag3"} {
+                <a class={ "tag", "level-item", "is-primary", size }>#{tag}</a>
+            }
+        </div> 
     </div>
 }
