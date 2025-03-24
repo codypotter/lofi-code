@@ -2,3 +2,5 @@ github.com/a-h/templ v0.3.856 h1:rMSlGIaQCqctylqM49VinpN7LlrptrFj0dMbYDj9GEQ=
 github.com/a-h/templ v0.3.856/go.mod h1:qhrhAkRFubE7khxLZHsBFHfX+gWwVNKbzKeF9GlPV4M=
 github.com/google/go-cmp v0.6.0 h1:ofyhxvXcZhMsU5ulbFiLKl/XBFqE1GSq7atu8tAmTRI=
 github.com/google/go-cmp v0.6.0/go.mod h1:17dUlkBOakJ0+DkrSSNjCkIjxS6bF9zb3elmeNGIjoY=
+github.com/templ-go/x v0.0.0-20240924085055-a31c35cebd07 h1:vPqplUw8cK1sETeUZK0z1yNGJIClqrGwOqEjFROzkS8=
+github.com/templ-go/x v0.0.0-20240924085055-a31c35cebd07/go.mod h1:gRxdXlJXWrKLIriCm3zcPG73Y+zphNB29pcElJLSV+8=

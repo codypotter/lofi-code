@@ -10,7 +10,18 @@ type Post struct {
 }
 
 templ PostPreview(post Post) {
-    <div class="box full-height has-background is-shadowless is-clickable">
+    <style>
+        .post-preview-card .card-content {
+            text-decoration: none;
+        }
+        .post-preview-card .card-content:hover {
+            text-decoration: none;
+        }
+        .full-height {
+            height: 100%;
+        }
+    </style>
+    <a class="post-preview-card box full-height has-background is-shadowless" href={templ.URL(post.URL)}>
         if post.HeaderImage != "" {
             <div class="card-image">
                 <figure class="image is-3by1">
@@ -30,5 +41,5 @@ templ PostPreview(post Post) {
                 @Tags(TagsConfig{Size: "is-small", Tags: post.Tags})
             </div>
         </div>
-    </div>
+    </a>
 }

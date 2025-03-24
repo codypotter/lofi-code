@@ -63,7 +63,11 @@ templ Home() {
         <div class="container">
             <h3 class="title is-3 mb-5">Browse by Tag</h3>
             <div class="p-3">
-                @Tags(TagsConfig{Size: "is-large", Tags: []string{"HTML", "CSS", "JavaScript", "Go", "Python"}})
+                @Tags(TagsConfig{
+                    Size: "is-large",
+                    Tags: []string{"HTML", "CSS", "JavaScript", "Go", "Python"},
+                    EnableNavigation: true,
+                })
             </div>
         </div>
     </section>

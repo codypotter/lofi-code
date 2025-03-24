@@ -1,8 +1,21 @@
 package templates
 
+import "net/url"
+
 type TagsConfig struct {
     Size string
     Tags []string
+    EnableNavigation bool
+}
+
+func getUrl(tag string) string {
+    u := url.URL{
+        Path: "/posts",
+    }
+    query := url.Values{}
+    query.Set("tag", tag)
+    u.RawQuery = query.Encode()
+    return u.String()
 }
 
 templ Tags(config TagsConfig) {
@@ -17,7 +30,11 @@ templ Tags(config TagsConfig) {
     <div class="container">
         <div class="tags">
             for _, tag := range config.Tags {
-                <a class={ "tag", "level-item", "is-primary", config.Size }>#{tag}</a>
+                if config.EnableNavigation {
+                    <a class={ "tag", "level-item", "is-primary", config.Size } href={ templ.URL(getUrl(tag)) }>#{tag}</a>
+                } else {
+                    <span class={ "tag", "level-item", "is-primary", config.Size }>#{tag}</span>
+                }
             }
         </div> 
     </div>
