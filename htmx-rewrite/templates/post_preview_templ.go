@@ -8,13 +8,33 @@ package templates
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
+import "time"
+import "encoding/json"
+
+type Content struct {
+	Type  string          `json:"type"`
+	Value json.RawMessage `json:"value"`
+}
+
+type Comment struct {
+	Text      string    `json:"text"`
+	Timestamp time.Time `json:"timestamp"`
+	User      string    `json:"user"`
+}
+
 type Post struct {
-	Name        string
-	Description string
-	URL         string
-	HeaderImage string
-	PublishDate string
-	Tags        []string
+	Id             *string   `json:"id,omitempty"`
+	Name           string    `json:"name"`
+	Slug           string    `json:"slug"`
+	Description    string    `json:"description"`
+	Tags           []string  `json:"tags"`
+	PublishDate    time.Time `json:"publish_date"`
+	CreatedOn      time.Time `json:"created_on"`
+	HeaderImage    *string   `json:"header_image"`
+	OpenGraphImage *string   `json:"open_graph_image"`
+	Content        []Content `json:"content"`
+	Comments       []Comment `json:"comments"`
+	Upvotes        int       `json:"upvotes"`
 }
 
 func PostPreview(post Post) templ.Component {
@@ -42,7 +62,7 @@ func PostPreview(post Post) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var2 templ.SafeURL = templ.URL(post.URL)
+		var templ_7745c5c3_Var2 templ.SafeURL = templ.URL("/posts/" + post.Slug)
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(string(templ_7745c5c3_Var2)))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -51,15 +71,15 @@ func PostPreview(post Post) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		if post.HeaderImage != "" {
+		if post.HeaderImage != nil {
 			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<div class=\"card-image\"><figure class=\"image is-3by1\"><img src=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var3 string
-			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(post.HeaderImage)
+			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(*post.HeaderImage)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/post_preview.templ`, Line: 28, Col: 46}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/post_preview.templ`, Line: 48, Col: 33}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
@@ -77,7 +97,7 @@ func PostPreview(post Post) templ.Component {
 		var templ_7745c5c3_Var4 string
 		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(post.Name)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/post_preview.templ`, Line: 35, Col: 63}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/post_preview.templ`, Line: 55, Col: 49}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 		if templ_7745c5c3_Err != nil {
@@ -88,9 +108,9 @@ func PostPreview(post Post) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var5 string
-		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(post.PublishDate)
+		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(post.PublishDate.Format("Jan 2, 2006"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/post_preview.templ`, Line: 36, Col: 68}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/post_preview.templ`, Line: 56, Col: 76}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 		if templ_7745c5c3_Err != nil {
@@ -103,7 +123,7 @@ func PostPreview(post Post) templ.Component {
 		var templ_7745c5c3_Var6 string
 		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(post.Description)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/post_preview.templ`, Line: 40, Col: 36}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/post_preview.templ`, Line: 60, Col: 25}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 		if templ_7745c5c3_Err != nil {

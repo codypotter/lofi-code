@@ -1,16 +1,36 @@
 package templates
 
+import "time"
+import "encoding/json"
+
+type Content struct {
+	Type  string          `json:"type"`
+	Value json.RawMessage `json:"value"`
+}
+
+type Comment struct {
+	Text      string    `json:"text"`
+	Timestamp time.Time `json:"timestamp"`
+	User      string    `json:"user"`
+}
+
 type Post struct {
-    Name   string
-    Description string
-    URL     string
-    HeaderImage string
-    PublishDate string
-    Tags    []string
+	Id             *string   `json:"id,omitempty"`
+	Name           string    `json:"name"`
+	Slug           string    `json:"slug"`
+	Description    string    `json:"description"`
+	Tags           []string  `json:"tags"`
+	PublishDate    time.Time `json:"publish_date"`
+	CreatedOn      time.Time `json:"created_on"`
+	HeaderImage    *string   `json:"header_image"`
+	OpenGraphImage *string   `json:"open_graph_image"`
+	Content        []Content `json:"content"`
+	Comments       []Comment `json:"comments"`
+	Upvotes        int       `json:"upvotes"`
 }
 
 templ PostPreview(post Post) {
-    <style>
+	<style>
         .post-preview-card .card-content {
             text-decoration: none;
         }
@@ -21,25 +41,25 @@ templ PostPreview(post Post) {
             height: 100%;
         }
     </style>
-    <a class="post-preview-card box full-height has-background is-shadowless" href={templ.URL(post.URL)}>
-        if post.HeaderImage != "" {
-            <div class="card-image">
-                <figure class="image is-3by1">
-                    <img src={post.HeaderImage} alt="Post Header Image">
-                </figure>
-            </div>
-        }
-        <div class="card-content">
-            <div class="media">
-                <div class="media-content">
-                    <h5 class="title is-size-5 mt-5">{post.Name}</h5>
-                    <h6 class="subtitle is-size-6">{post.PublishDate}</h6>
-                </div>
-            </div>
-            <div class="content">
-                <p>{post.Description}</p>
-                @Tags(TagsConfig{Size: "is-small", Tags: post.Tags})
-            </div>
-        </div>
-    </a>
+	<a class="post-preview-card box full-height has-background is-shadowless" href={ templ.URL("/posts/"+post.Slug) }>
+		if post.HeaderImage != nil {
+			<div class="card-image">
+				<figure class="image is-3by1">
+					<img src={ *post.HeaderImage } alt="Post Header Image"/>
+				</figure>
+			</div>
+		}
+		<div class="card-content">
+			<div class="media">
+				<div class="media-content">
+					<h5 class="title is-size-5 mt-5">{ post.Name }</h5>
+					<h6 class="subtitle is-size-6">{ post.PublishDate.Format("Jan 2, 2006") }</h6>
+				</div>
+			</div>
+			<div class="content">
+				<p>{ post.Description }</p>
+				@Tags(TagsConfig{Size: "is-small", Tags: post.Tags})
+			</div>
+		</div>
+	</a>
 }

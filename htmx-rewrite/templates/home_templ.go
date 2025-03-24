@@ -8,22 +8,28 @@ package templates
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
+import "time"
+
 const featuredVideoId = "Rk2SBoBwtRU"
 const featuredVideoTitle = ""
+
+var placeholderImage = "https://placehold.co/300x100"
 
 func getFeaturedPosts() []Post {
 	return []Post{
 		{
 			Name:        "Post 1",
 			Description: "Summary of post 1",
-			URL:         "/post-1",
-			HeaderImage: "https://firebasestorage.googleapis.com/v0/b/lofi-code.appspot.com/o/images%2Ftdtm4_clown%203x1.jpg?alt=media",
+			Slug:        "/post-1",
+			HeaderImage: &placeholderImage,
+			PublishDate: time.Now(),
 		},
 		{
 			Name:        "Post 2",
 			Description: "Summary of post 2",
-			URL:         "/post-2",
-			HeaderImage: "https://firebasestorage.googleapis.com/v0/b/lofi-code.appspot.com/o/images%2Ftdtm4_clown%203x1.jpg?alt=media",
+			Slug:        "/post-2",
+			HeaderImage: &placeholderImage,
+			PublishDate: time.Now(),
 		},
 	}
 }
@@ -86,7 +92,7 @@ func Home() templ.Component {
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(featuredVideoTitle)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/home.templ`, Line: 91, Col: 63}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/home.templ`, Line: 96, Col: 63}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {

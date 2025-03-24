@@ -1,21 +1,26 @@
 package templates
 
+import "time"
+
 const featuredVideoId = "Rk2SBoBwtRU"
 const featuredVideoTitle = ""
+var placeholderImage = "https://placehold.co/300x100"
 
 func getFeaturedPosts() []Post {
     return []Post{
     	{
             Name: "Post 1",
             Description: "Summary of post 1",
-            URL: "/post-1",
-            HeaderImage: "https://firebasestorage.googleapis.com/v0/b/lofi-code.appspot.com/o/images%2Ftdtm4_clown%203x1.jpg?alt=media",
+            Slug: "/post-1",
+            HeaderImage: &placeholderImage,
+            PublishDate: time.Now(),
         },
 		{
             Name: "Post 2",
             Description: "Summary of post 2",
-            URL: "/post-2",
-            HeaderImage: "https://firebasestorage.googleapis.com/v0/b/lofi-code.appspot.com/o/images%2Ftdtm4_clown%203x1.jpg?alt=media",
+            Slug: "/post-2",
+            HeaderImage: &placeholderImage,
+            PublishDate: time.Now(),
         },
     }
 }
