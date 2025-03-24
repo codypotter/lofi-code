@@ -23,7 +23,7 @@ templ YouTubePlayer(videoId string) {
             <iframe
                 width="560"
                 height="315"
-                src={ string(templ.URL(fmt.Sprintf("https://www.youtube.com/embed/%s", videoId))) }
+                src={ string(templ.URL(fmt.Sprintf("https://www.youtube-nocookie.com/embed/%s", videoId))) }
                 allowfullscreen
             ></iframe>
         </div>
