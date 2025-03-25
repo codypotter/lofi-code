@@ -1,0 +1,16 @@
+package page
+
+templ Page(headConfig HeadConfig, breadcrumbs []Breadcrumb, content templ.Component) {
+	<!DOCTYPE html>
+	<html lang="en">
+		@Head(headConfig)
+		<body>
+			@Navbar()
+			@Breadcrumbs(breadcrumbs)
+			<section>
+				@content
+			</section>
+			@Footer()
+		</body>
+	</html>
+}

@@ -1,0 +1,114 @@
+package home
+
+import (
+	"loficode/templates/components"
+	"loficode/templates/components/page"
+	"time"
+)
+
+const featuredVideoId = "Rk2SBoBwtRU"
+const featuredVideoTitle = ""
+
+var placeholderImage = "https://placehold.co/300x100"
+
+func getFeaturedPosts() []components.Post {
+	return []components.Post{
+		{
+			Name:        "Post 1",
+			Description: "Summary of post 1",
+			Slug:        "/post-1",
+			HeaderImage: &placeholderImage,
+			PublishDate: time.Now(),
+		},
+		{
+			Name:        "Post 2",
+			Description: "Summary of post 2",
+			Slug:        "/post-2",
+			HeaderImage: &placeholderImage,
+			PublishDate: time.Now(),
+		},
+	}
+}
+
+templ Home() {
+	@page.Page(
+		page.HeadConfig{
+			Title:       "Home | loficode",
+			Description: "Learn to code in byte-size pieces",
+			OgImage:     "/assets/images/logo-white.svg",
+		},
+		[]page.Breadcrumb{},
+		content(),
+	)
+}
+
+templ content() {
+	<style>
+        #intro {
+            background: linear-gradient(135deg, #FF0F7B 0%, #F89B29 100%);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            #intro {
+                background: linear-gradient(135deg, #A60950, #BA6423 100%);
+            }
+        }
+
+        #intro img {
+            height: 10rem;
+        }
+
+        #intro p {
+            text-align: center;
+        }
+
+        #featured-video {
+            background: linear-gradient(135deg, #6FEB84 0%, #1AE8FF 100%);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            #featured-video {
+                background: linear-gradient(135deg, #51aa60 0%, #1098a7 100%);
+            }
+        }
+    </style>
+	<section id="intro" class="hero is-primary is-medium">
+		<div class="hero-body is-flex is-flex-direction-column">
+			<img src="/assets/images/logo-white.svg"/>
+			<p class="subtitle has-text-white">
+				learn to code in byte-size pieces
+			</p>
+		</div>
+	</section>
+	<section class="section">
+		<div class="container">
+			<h3 class="title is-3 mb-5">Browse by Tag</h3>
+			<div class="p-3">
+				@components.Tags(components.TagsConfig{
+					Size:             "is-large",
+					Tags:             []string{"HTML", "CSS", "JavaScript", "Go", "Python"},
+					EnableNavigation: true,
+				})
+			</div>
+		</div>
+	</section>
+	<section class="section">
+		<div class="container">
+			<h3 class="title is-3 mb-5">Recent Posts</h3>
+			<div class="columns is-multiline is-flex" style="align-items: stretch;">
+				for _, post := range getFeaturedPosts() {
+					<div class="column is-one-third">
+						@components.PostPreview(post)
+					</div>
+				}
+			</div>
+		</div>
+	</section>
+	<section id="featured-video" class="section is-medium">
+		<div class="container">
+			<h3 class="title is-3">Featured Video</h3>
+			<h4 class="subtitle is-4 mb-5">{ featuredVideoTitle }</h4>
+			@YouTubePlayer(featuredVideoId)
+		</div>
+	</section>
+}
