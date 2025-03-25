@@ -1,12 +1,6 @@
 package components
 
 import "time"
-import "encoding/json"
-
-type Content struct {
-	Type  string          `json:"type"`
-	Value json.RawMessage `json:"value"`
-}
 
 type Comment struct {
 	Text      string    `json:"text"`
@@ -24,7 +18,7 @@ type Post struct {
 	CreatedOn      time.Time `json:"created_on"`
 	HeaderImage    *string   `json:"header_image"`
 	OpenGraphImage *string   `json:"open_graph_image"`
-	Content        []Content `json:"content"`
+	Content        string    `json:"content"`
 	Comments       []Comment `json:"comments"`
 	Upvotes        int       `json:"upvotes"`
 }

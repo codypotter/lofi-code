@@ -1,6 +1,7 @@
 package main
 
 import (
+	"loficode/config"
 	"loficode/templates/pages/home"
 	"loficode/templates/pages/notfound"
 	"loficode/templates/pages/privacypolicy"
@@ -12,6 +13,8 @@ import (
 )
 
 func main() {
+	cfg := config.New()
+	log.Printf("Config: %+v", cfg)
 
 	http.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("public/assets"))))
 

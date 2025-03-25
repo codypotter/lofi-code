@@ -1,0 +1,47 @@
+package components
+
+import "fmt"
+
+func buildImageUrl(img string) string {
+	//     return `${environment.storageUrl}${encodeURIComponent(this.post.open_graph_image ?? '')}?alt=media`;
+	return fmt.Sprintf("https://storage.googleapis.com/htmx-rewrite.appspot.com/%s?alt=media", img)
+}
+
+templ SearchResult(post Post) {
+	<a
+		class="columns is-clickable"
+		href="/posts/{{post.slug}}"
+	>
+		if (post.OpenGraphImage != nil) {
+			<div class="column is-one-fifth">
+				<img
+					src={ buildImageUrl(*post.OpenGraphImage) }
+					alt={ post.Name }
+					class="image"
+				/>
+			</div>
+		}
+		<div class="column">
+			<div class="level">
+				<div class="level-left">
+					<h5 class="level-item title is-5">{ post.Name }</h5>
+				</div>
+				<div class="level-right">
+					<div class="level-item">
+						@Tags(TagsConfig{
+							Size:             "is-small",
+							Tags:             post.Tags,
+							EnableNavigation: false,
+						})
+					</div>
+				</div>
+			</div>
+			<h6 class="subtitle is-6" id={ "search-result-" + post.Slug }>Loading...</h6>
+			<div class="truncated content">{ post.Description }</div>
+			<script>
+            
+            </script>
+		</div>
+	</a>
+	<hr/>
+}
