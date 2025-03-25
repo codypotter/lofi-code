@@ -16,8 +16,8 @@ type Post struct {
 	Tags           []string  `json:"tags"`
 	PublishDate    time.Time `json:"publish_date"`
 	CreatedOn      time.Time `json:"created_on"`
-	HeaderImage    *string   `json:"header_image"`
-	OpenGraphImage *string   `json:"open_graph_image"`
+	HeaderImage    string    `json:"header_image"`
+	OpenGraphImage string    `json:"open_graph_image"`
 	Content        string    `json:"content"`
 	Comments       []Comment `json:"comments"`
 	Upvotes        int       `json:"upvotes"`
@@ -41,13 +41,11 @@ templ PostPreview(post Post) {
         }
     </style>
 	<a class="post-preview-card box full-height has-background is-shadowless" href={ templ.URL("/posts/" + post.Slug) }>
-		if post.HeaderImage != nil {
-			<div class="card-image">
-				<figure class="image is-3by1">
-					<img src={ *post.HeaderImage } alt="Post Header Image"/>
-				</figure>
-			</div>
-		}
+		<div class="card-image">
+			<figure class="image is-3by1">
+				<img src={ post.HeaderImage } alt="Post Header Image"/>
+			</figure>
+		</div>
 		<div class="card-content">
 			<div class="media">
 				<div class="media-content">

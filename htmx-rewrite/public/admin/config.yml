@@ -1,0 +1,53 @@
+backend:
+  name: github
+  repo: codypotter/lofi-code
+  squash_merges: true
+
+publish_mode: editorial_workflow
+media_folder: "htmx-rewrite/public/assets/images"
+
+collections:
+  - name: posts
+    label: Posts
+    folder: "cms/_posts"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - label: "Title"
+        name: "title"
+        widget: "string"
+        hint: "The title of the post"
+      - label: "Slug"
+        name: "slug"
+        widget: "string"
+        hint: "The URL path of the post"
+      - label: "Summary"
+        name: "summary"
+        widget: "text"
+        hint: "A short summary of the post"
+      - label: "Publish Date"
+        name: "date"
+        widget: "datetime"
+        hint: "The date the post was published"
+      - label: "Header Image"
+        name: "thumbnail"
+        widget: "image"
+        hint: "The image that will be displayed at the top of the post; 3:1 aspect ratio"
+      - label: "Open Graph Image"
+        name: "og_image"
+        widget: "image"
+        hint: "The image that will be displayed when the post is shared on social media; 16:9 aspect ratio"
+      - label: "Tags"
+        name: "tags"
+        widget: "list"
+        min: 1
+        max: 5
+        label_singular: "Tag"
+        hint: "The tags that describe the post"
+        field:
+          label: "Tag"
+          name: "tag"
+          widget: "string"
+      - label: "Body"
+        name: "body"
+        widget: "markdown"

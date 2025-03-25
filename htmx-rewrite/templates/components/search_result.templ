@@ -12,15 +12,13 @@ templ SearchResult(post Post) {
 		class="columns is-clickable"
 		href="/posts/{{post.slug}}"
 	>
-		if (post.OpenGraphImage != nil) {
-			<div class="column is-one-fifth">
-				<img
-					src={ buildImageUrl(*post.OpenGraphImage) }
-					alt={ post.Name }
-					class="image"
-				/>
-			</div>
-		}
+		<div class="column is-one-fifth">
+			<img
+				src={ buildImageUrl(post.OpenGraphImage) }
+				alt={ post.Name }
+				class="image"
+			/>
+		</div>
 		<div class="column">
 			<div class="level">
 				<div class="level-left">

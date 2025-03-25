@@ -25,14 +25,14 @@ func getFeaturedPosts() []components.Post {
 			Name:        "Post 1",
 			Description: "Summary of post 1",
 			Slug:        "/post-1",
-			HeaderImage: &placeholderImage,
+			HeaderImage: placeholderImage,
 			PublishDate: time.Now(),
 		},
 		{
 			Name:        "Post 2",
 			Description: "Summary of post 2",
 			Slug:        "/post-2",
-			HeaderImage: &placeholderImage,
+			HeaderImage: placeholderImage,
 			PublishDate: time.Now(),
 		},
 	}
