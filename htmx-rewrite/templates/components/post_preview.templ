@@ -23,12 +23,7 @@ type Post struct {
 	Upvotes        int       `json:"upvotes"`
 }
 
-var formatDateScriptHandle = templ.NewOnceHandle()
-
 templ PostPreview(post Post) {
-	@formatDateScriptHandle.Once() {
-		<script src="/assets/scripts/localize.js"></script>
-	}
 	<style>
         .post-preview-card .card-content {
             text-decoration: none;

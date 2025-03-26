@@ -1,0 +1,30 @@
+package components
+
+import "strconv"
+
+templ Comments(comments []Comment) {
+	for i, comment := range comments {
+		<article class="media mb-3">
+			<figure class="media-left">
+				<p class="image is-64x64">
+					<img
+						alt="Placeholder image"
+						src="https://bulma.io/assets/images/placeholders/128x128.png"
+					/>
+				</p>
+			</figure>
+			<div class="media-content">
+				<div class="content">
+					<p>
+						<strong>{ comment.User }</strong> <small id={ "comment-timestamp-" + strconv.Itoa(i) }>Loading...</small>
+						<script>
+							localizeDate("comment-timestamp-{{ strconv.Itoa(i) }}", {{ comment.Timestamp.Unix() * 1000 }});
+						</script>
+						<br/>
+						{ comment.Text }
+					</p>
+				</div>
+			</div>
+		</article>
+	}
+}

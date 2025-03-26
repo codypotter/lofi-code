@@ -22,11 +22,60 @@ templ Post(post components.Post) {
 }
 
 templ content(post components.Post) {
-	<section class="section">
-		<div class="container content">
-			<h1 class="title is-1">404 - Page Not Found</h1>
-			<p>The page you are looking for does not exist.</p>
-			<a href="/">Go back to the homepage</a>
+	<style>
+		.related-post {
+			max-width: 450px;
+		}
+		@media (min-width: 1024px) {
+			.share-buttons {
+				position: fixed;
+				transform: translateX(calc(-1*100%));
+			}
+
+			.share-buttons .sb-group {
+				flex-direction: column;
+			}
+		}
+	</style>
+	<article class="container is-max-desktop">
+		<div class="share-buttons">
+			//   <share-buttons [title]="post.name" [description]="post.description"></share-buttons>
 		</div>
-	</section>
+		<div
+			class="card-image"
+		>
+			<figure class="image is-3by1">
+				<img
+					alt="Placeholder image"
+				/>
+			</figure>
+		</div>
+		<div class="card-content">
+			<div class="media">
+				<div class="media-content">
+					<h4 class="is-size-4">Cody Potter - Posted on { post.PublishDate.String() }</h4>
+					<h1 class="title is-size-1">{ post.Name }</h1>
+					<div class="mb-5">
+						@components.Tags(components.TagsConfig{
+							Size:             "is-medium",
+							Tags:             post.Tags,
+							EnableNavigation: true,
+						})
+					</div>
+				</div>
+			</div>
+			<div
+				class="content"
+			></div>
+		</div>
+	</article>
+	<div class="container p-5 block is-max-desktop">
+		<div id="comments-section" hx-get={ "/api/posts/" + post.Slug + "/comments" } hx-trigger="load" hx-swap="outerHTML">
+			<p>Loading comments...</p>
+		</div>
+	</div>
+	<div class="container p-5 block is-max-desktop">
+		<h4 class="title is-4 mb-5">Related Posts</h4>
+		<div hx-get={ "/api/posts/" + post.Slug + "/related" } hx-trigger="load" hx-swap="outerHTML"></div>
+	</div>
 }
