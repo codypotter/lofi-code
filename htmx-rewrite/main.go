@@ -57,13 +57,13 @@ func main() {
 			},
 			{
 				Name:        "Hello, World!",
-				Slug:        "hello-world",
+				Slug:        "hello-world-1",
 				Description: "This is a description of the post.",
 				Content:     "This is the content of the post.",
 			},
 			{
 				Name:        "Hello, World!",
-				Slug:        "hello-world",
+				Slug:        "hello-world-2",
 				Description: "This is a description of the post.",
 				Content:     "This is the content of the post.",
 			},
