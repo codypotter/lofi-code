@@ -1,0 +1,63 @@
+<!doctype html><html lang="en"><head><title>Being right is overrated | loficode</title><meta name="description" content=""><meta property="og:title" content="Being right is overrated | loficode"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:type" content="website"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="/assets/css/bulma.min.css"><style>
+            :root {
+                --bulma-primary-h: 33deg;
+                --bulma-primary-s: 94%;
+                --bulma-primary-l: 57%;
+            }
+        </style><script src="/assets/scripts/localize.js"></script><script src="https://unpkg.com/htmx.org@2.0.4"></script></head><body><style>
+        .navbar {
+            background: linear-gradient(90deg, #FF0F7B 0%, #f98039 100%);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .navbar {
+                background: linear-gradient(90deg, #A60950, #BA6423 100%);
+            }
+        }
+
+    </style><nav class="navbar is-transparent" role="navigation" aria-label="main navigation"><div class="container"><div class="navbar-brand"><a class="navbar-item has-text-white" href="/"><em>lofi<strong>code</strong></em></a> <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarMenu"><span aria-hidden="true"></span> <span aria-hidden="true"></span> <span aria-hidden="true"></span></a></div><div class="navbar-menu"><div class="navbar-end"><div class="navbar-item has-dropdown is-hoverable"><a class="navbar-link is-arrowless">@UserNamePlaceholder</a><div class="navbar-dropdown"><a class="navbar-item" href="/settings">Settings</a> <a class="navbar-item" href="#">Log out</a></div></div></div></div></div></nav><!-- Placeholder for modals --><div class="container block mt-5"><nav class="breadcrumb is-large" aria-label="breadcrumbs"><ul><li class="" style="overflow-wrap: anywhere;"><a href="/" style="overflow-wrap: anywhere;">Home</a></li><li class="" style="overflow-wrap: anywhere;"><a href="/posts" style="overflow-wrap: anywhere;">Posts</a></li><li class="" style="overflow-wrap: anywhere;"><a href="/posts/being-right-is-overrated" style="overflow-wrap: anywhere;">Being right is overrated</a></li></ul></nav></div><section><style>
+		.related-post {
+			max-width: 450px;
+		}
+		@media (min-width: 1024px) {
+			.share-buttons {
+				position: fixed;
+				transform: translateX(calc(-1*100%));
+			}
+
+			.share-buttons .sb-group {
+				flex-direction: column;
+			}
+		}
+	</style><article class="container is-max-desktop"><div class="share-buttons"></div><div class="card-image"><figure class="image is-3by1"><img alt="Placeholder image"></figure></div><div class="card-content"><div class="media"><div class="media-content"><h4 class="is-size-4">Cody Potter - Posted on 0001-01-01 00:00:00 +0000 UTC</h4><h1 class="title is-size-1">Being right is overrated</h1><div class="mb-5"><div class="container"><div class="tags"><a class="tag level-item is-primary is-medium" href="/posts?tag=tag1">#tag1</a><a class="tag level-item is-primary is-medium" href="/posts?tag=tag2">#tag2</a><a class="tag level-item is-primary is-medium" href="/posts?tag=tag3">#tag3</a></div></div></div></div></div><div class="content"><p>It's a high-stakes discussion in a boardroom at BigTek. The stakeholders are not happy with your team's progress, because they needed the &quot;Real-Time Activity Feed&quot; ™️ like two weeks ago to meet a major marketing deadline. Of course, your team has been focused on that big, surprise refactor for the last few weeks. But now that Archimedes and FooBar are PEEPEEPOOPOO compliant, we're good to start that new, all-important feature.</p>
+<p>Now it's your time to shine. You've been thinking deeply and considering every single edge case during your morning shower.</p>
+<p>&quot;I think this calls for a MariaDB with a centralized 'Activity' table. Every user action will be stored there. We can query that table in real time to retrieve the latest actions and display them to users.&quot;</p>
+<p>Your buddy Taylor chimes in, &quot;We should call it 'activities' instead because singular database names are for murderers and psychopaths.&quot;</p>
+<p>Cameron, who is often quiet in meetings raises their hand. Oh no, you think, Not Cameron, they always prove me wrong.</p>
+<p>&quot;I don't think that will work, at least not without some modifications.&quot;</p>
+<p>Your heart sinks. You have fucked up. You close your eyes for a brief moment, anticipating that everyone in the room is now turning to you and laughing. They all hate you. You absolute buffoon, you forgot to bring your clown shoes to work today. How did you manage to fuck up this bad. How could this have happened? You considered every scenario. You thought of all the foreign keys. You even drew a UML diagram in the steam on your bathroom mirror.</p>
+<p>Cameron calmly states, &quot;This would be a very write-heavy workload. Putting everything in a table would cause a serious bottleneck at our scale. I think we can make the activities table work though. If we store all recent activity in a Redis, we can use some horizontal scaling for fast reads and use an SQS queue to add eventual persistence to the database, I think that schema should work, but we also get better speed and scalability.&quot;</p>
+<p>You open your eyes, expecting your whole team to be staring at you with disappointment. The pit in your stomach disappears, because no one is looking your way. Everyone is looking at Cameron. Reese stands up and starts diagramming Cameron's solution on the whiteboard.</p>
+<p>How could this be?</p>
+<p>Being right is overrated. Getting it right matters more.</p>
+<p>There are no high scores within a team, and there are no &quot;better winners&quot; on a team. Teams win and lose together. It's a better strategy to surround yourself with people who are right a lot than to bear the burden never getting it wrong.</p>
+<p>The president has a cabinet, CEOs have boards, comprehensive care patients have teams of surgeons. You have Cameron, Taylor, Reese, and Bailey.</p>
+<p>I think this is an example where losing is winning. Sure, you were wrong champ, but at the end of the day your team got it right. There is a part of you that is actually grateful that Cameron spoke up.</p>
+<p>Wouldn't it have been much worse if your team had to spend another two weeks backtracking on your initial design after making a delivery date promise to your stakeholders?</p>
+<p>The benefits of being wrong go even further than that:</p>
+<ul>
+<li>
+<p>You're going to learn from your mistakes a lot.</p>
+</li>
+<li>
+<p>You're going to learn how to handle setbacks pretty good.</p>
+</li>
+<li>
+<p>You're going to strengthen those muscles of humility.</p>
+</li>
+<li>
+<p>Admitting you're wrong demonstrates your integrity and self-awareness, which builds credibility and trustworthiness.</p>
+</li>
+</ul>
+<p>Embrace that uncomfortable feeling of being wrong. Admit when you're wrong so your team can always be right.</p>
+</div></div></article><div class="container p-5 block is-max-desktop"><div id="comments-section" hx-get="/api/posts/being-right-is-overrated/comments" hx-trigger="load" hx-swap="outerHTML"><p>Loading comments...</p></div></div><div class="container p-5 block is-max-desktop"><h4 class="title is-4 mb-5">Related Posts</h4><div hx-get="/api/posts/being-right-is-overrated/related" hx-trigger="load" hx-swap="outerHTML"></div></div></section><footer class="footer"><div class="content has-text-centered"><p><em>lofi<strong>code</strong></em> by <a href="http://codypotter.com">Cody Potter</a>. The source code is licensed <a href="http://opensource.org/licenses/mit-license.php">MIT</a>. The website content is licensed <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY NC SA 4.0</a>.</p><p><a href="/privacy-policy">Privacy Policy</a> and <a href="/tos">Terms of Service</a></p></div></footer></body></html>
