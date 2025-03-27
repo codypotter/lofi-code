@@ -123,8 +123,8 @@ func parseMarkdownFile(path string) (*components.Post, error) {
 		Content: buf.String(),
 	}
 
-	if title, ok := metaData["title"].(string); ok {
-		post.Name = title
+	if name, ok := metaData["name"].(string); ok {
+		post.Name = name
 	}
 	if slug, ok := metaData["slug"].(string); ok {
 		post.Slug = slug

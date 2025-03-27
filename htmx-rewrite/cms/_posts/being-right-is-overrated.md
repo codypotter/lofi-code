@@ -9,8 +9,8 @@ summary: >-
     that Archimedes and FooBar are PEEPEEPOOPOO compliant, we're good to start
     that new, all-important feature.
 date: 2025-03-26T23:23:00.000Z
-thumbnail: https://firebasestorage.googleapis.com/v0/b/lofi-code.appspot.com/o/images%2Ftdtm4_clown%203x1.jpg?alt=media&token=c957fa6f-f715-4855-ae08-5c8fb0a564b4
-og_image: https://firebasestorage.googleapis.com/v0/b/lofi-code.appspot.com/o/images%2Fmkc6d_clown16x9.jpg?alt=media&token=e480a4c5-662d-41be-8d72-862bb1351e1f
+headerImage: https://firebasestorage.googleapis.com/v0/b/lofi-code.appspot.com/o/images%2Ftdtm4_clown%203x1.jpg?alt=media&token=c957fa6f-f715-4855-ae08-5c8fb0a564b4
+openGraphImage: https://firebasestorage.googleapis.com/v0/b/lofi-code.appspot.com/o/images%2Fmkc6d_clown16x9.jpg?alt=media&token=e480a4c5-662d-41be-8d72-862bb1351e1f
 tags:
   - soft-skills
   - programming

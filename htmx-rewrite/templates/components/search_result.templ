@@ -1,30 +1,23 @@
 package components
 
-import (
-	"fmt"
-	"loficode/model"
-)
-
-func buildImageUrl(img string) string {
-	return fmt.Sprintf("https://storage.googleapis.com/htmx-rewrite.appspot.com/%s?alt=media", img)
-}
+import "loficode/model"
 
 templ SearchResult(post model.Post) {
 	<a
 		class="columns is-clickable"
-		href="/posts/{{post.slug}}"
+		href={ templ.URL("/posts/" + post.Slug) }
 	>
 		<div class="column is-one-fifth">
 			<img
-				src={ buildImageUrl(post.OpenGraphImage) }
-				alt={ post.Name }
+				src={ post.OpenGraphImage }
+				alt={ post.Title }
 				class="image"
 			/>
 		</div>
 		<div class="column">
 			<div class="level">
 				<div class="level-left">
-					<h5 class="level-item title is-5">{ post.Name }</h5>
+					<h5 class="level-item title is-5">{ post.Title }</h5>
 				</div>
 				<div class="level-right">
 					<div class="level-item">
@@ -36,11 +29,8 @@ templ SearchResult(post model.Post) {
 					</div>
 				</div>
 			</div>
-			<h6 class="subtitle is-6" id={ "search-result-" + post.Slug }>Loading...</h6>
-			<div class="truncated content">{ post.Description }</div>
-			<script>
-            
-            </script>
+			<h6 class="subtitle is-6">{ post.Title }</h6>
+			<div class="truncated content">{ post.Summary }</div>
 		</div>
 	</a>
 	<hr/>

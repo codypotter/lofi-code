@@ -12,3 +12,9 @@ type Post struct {
 	OpenGraphImage string    `json:"openGraphImage"`
 	Content        string    `json:"content"`
 }
+
+type Comment struct {
+	Text      string    `json:"text"`
+	Timestamp time.Time `json:"timestamp"`
+	User      string    `json:"user"`
+}

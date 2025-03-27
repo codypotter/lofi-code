@@ -60,7 +60,6 @@ templ content() {
 	<section class="section">
 		<div class="container">
 			<h3 class="title is-3 mb-5">Browse by Tag</h3>
-			// should fetch this using htmx on load from /api/tags
 			<div class="p-3" hx-get="/api/tags" hx-trigger="load">
 				Loading tags...
 			</div>

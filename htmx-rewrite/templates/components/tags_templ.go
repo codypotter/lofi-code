@@ -51,9 +51,6 @@ func Tags(config TagsConfig) templ.Component {
 		if config.Size == "" {
 			config.Size = "is-medium"
 		}
-		if config.Tags == nil {
-			config.Tags = []string{"tag1", "tag2", "tag3"}
-		}
 		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"container\"><div class=\"tags\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -94,7 +91,7 @@ func Tags(config TagsConfig) templ.Component {
 				var templ_7745c5c3_Var5 string
 				templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(tag)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/components/tags.templ`, Line: 34, Col: 103}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/components/tags.templ`, Line: 31, Col: 103}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 				if templ_7745c5c3_Err != nil {
@@ -130,7 +127,7 @@ func Tags(config TagsConfig) templ.Component {
 				var templ_7745c5c3_Var8 string
 				templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(tag)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/components/tags.templ`, Line: 36, Col: 74}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/components/tags.templ`, Line: 33, Col: 74}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 				if templ_7745c5c3_Err != nil {
