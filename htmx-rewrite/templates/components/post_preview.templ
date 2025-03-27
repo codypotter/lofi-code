@@ -8,22 +8,7 @@ type Comment struct {
 	User      string    `json:"user"`
 }
 
-type Post struct {
-	Id             *string   `json:"id,omitempty"`
-	Name           string    `json:"name"`
-	Slug           string    `json:"slug"`
-	Description    string    `json:"description"`
-	Tags           []string  `json:"tags"`
-	PublishDate    time.Time `json:"publish_date"`
-	CreatedOn      time.Time `json:"created_on"`
-	HeaderImage    string    `json:"header_image"`
-	OpenGraphImage string    `json:"open_graph_image"`
-	Content        string    `json:"content"`
-	Comments       []Comment `json:"comments"`
-	Upvotes        int       `json:"upvotes"`
-}
-
-templ PostPreview(post Post) {
+templ PostPreview(post models.Post) {
 	<style>
         .post-preview-card .card-content {
             text-decoration: none;

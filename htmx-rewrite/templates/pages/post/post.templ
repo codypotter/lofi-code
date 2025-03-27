@@ -1,11 +1,12 @@
 package post
 
 import (
+	"loficode/model"
 	"loficode/templates/components"
 	"loficode/templates/components/page"
 )
 
-templ Post(post components.Post) {
+templ Post(post model.Post) {
 	@page.Page(
 		page.HeadConfig{
 			Title:       post.Name + " | loficode",
@@ -21,7 +22,7 @@ templ Post(post components.Post) {
 	)
 }
 
-templ content(post components.Post) {
+templ content(post model.Post) {
 	<style>
 		.related-post {
 			max-width: 450px;

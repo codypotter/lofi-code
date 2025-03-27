@@ -1,6 +1,8 @@
 package components
 
-templ SearchResults(posts []Post) {
+import "loficode/model"
+
+templ SearchResults(posts []model.Post) {
 	<div class="columns is-multiline">
 		for _, post := range posts {
 			<div class="column is-one-third">

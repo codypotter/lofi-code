@@ -1,12 +1,15 @@
 package components
 
-import "fmt"
+import (
+	"fmt"
+	"loficode/model"
+)
 
 func buildImageUrl(img string) string {
 	return fmt.Sprintf("https://storage.googleapis.com/htmx-rewrite.appspot.com/%s?alt=media", img)
 }
 
-templ SearchResult(post Post) {
+templ SearchResult(post model.Post) {
 	<a
 		class="columns is-clickable"
 		href="/posts/{{post.slug}}"
