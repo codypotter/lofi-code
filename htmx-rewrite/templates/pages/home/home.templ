@@ -1,34 +1,11 @@
 package home
 
-import (
-	"loficode/templates/components"
-	"loficode/templates/components/page"
-	"time"
-)
+import "loficode/templates/components/page"
 
 const featuredVideoId = "Rk2SBoBwtRU"
 const featuredVideoTitle = ""
 
 var placeholderImage = "https://placehold.co/300x100"
-
-func getFeaturedPosts() []components.Post {
-	return []components.Post{
-		{
-			Name:        "Post 1",
-			Description: "Summary of post 1",
-			Slug:        "/post-1",
-			HeaderImage: placeholderImage,
-			PublishDate: time.Now(),
-		},
-		{
-			Name:        "Post 2",
-			Description: "Summary of post 2",
-			Slug:        "/post-2",
-			HeaderImage: placeholderImage,
-			PublishDate: time.Now(),
-		},
-	}
-}
 
 templ Home() {
 	@page.Page(
@@ -83,24 +60,17 @@ templ content() {
 	<section class="section">
 		<div class="container">
 			<h3 class="title is-3 mb-5">Browse by Tag</h3>
-			<div class="p-3">
-				@components.Tags(components.TagsConfig{
-					Size:             "is-large",
-					Tags:             []string{"HTML", "CSS", "JavaScript", "Go", "Python"},
-					EnableNavigation: true,
-				})
+			// should fetch this using htmx on load from /api/tags
+			<div class="p-3" hx-get="/api/tags" hx-trigger="load">
+				Loading tags...
 			</div>
 		</div>
 	</section>
 	<section class="section">
 		<div class="container">
 			<h3 class="title is-3 mb-5">Recent Posts</h3>
-			<div class="columns is-multiline is-flex" style="align-items: stretch;">
-				for _, post := range getFeaturedPosts() {
-					<div class="column is-one-third">
-						@components.PostPreview(post)
-					</div>
-				}
+			<div class="columns is-multiline is-flex" style="align-items: stretch;" hx-get="/api/post-previews" hx-trigger="load">
+				Loading recent posts...
 			</div>
 		</div>
 	</section>

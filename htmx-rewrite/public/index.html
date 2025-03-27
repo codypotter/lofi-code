@@ -43,31 +43,7 @@
                 background: linear-gradient(135deg, #51aa60 0%, #1098a7 100%);
             }
         }
-    </style><section id="intro" class="hero is-primary is-medium"><div class="hero-body is-flex is-flex-direction-column"><img src="/assets/images/logo-white.svg"><p class="subtitle has-text-white">learn to code in byte-size pieces</p></div></section><section class="section"><div class="container"><h3 class="title is-3 mb-5">Browse by Tag</h3><div class="p-3"><div class="container"><div class="tags"><a class="tag level-item is-primary is-large" href="/posts.html?tag=HTML">#HTML</a><a class="tag level-item is-primary is-large" href="/posts.html?tag=CSS">#CSS</a><a class="tag level-item is-primary is-large" href="/posts.html?tag=JavaScript">#JavaScript</a><a class="tag level-item is-primary is-large" href="/posts.html?tag=Go">#Go</a><a class="tag level-item is-primary is-large" href="/posts.html?tag=Python">#Python</a></div></div></div></div></section><section class="section"><div class="container"><h3 class="title is-3 mb-5">Recent Posts</h3><div class="columns is-multiline is-flex" style="align-items: stretch;"><div class="column is-one-third"><style>
-        .post-preview-card .card-content {
-            text-decoration: none;
-        }
-        .post-preview-card .card-content:hover {
-            text-decoration: none;
-        }
-        .full-height {
-            height: 100%;
-        }
-    </style><a class="post-preview-card box full-height has-background is-shadowless" href="/posts//post-1"><div class="card-image"><figure class="image is-3by1"><img src="https://placehold.co/300x100" alt="Post Header Image"></figure></div><div class="card-content"><div class="media"><div class="media-content"><h5 class="title is-size-5 mt-5">Post 1</h5><h6 class="subtitle is-size-6" id="post-preview-publish-date-/post-1">Loading date...</h6><script>
-						localizeDate("post-preview-publish-date-\/post-1", 1743033621000);
-					</script></div></div><div class="content"><p>Summary of post 1</p><div class="container"><div class="tags"><span class="tag level-item is-primary is-small">#tag1</span><span class="tag level-item is-primary is-small">#tag2</span><span class="tag level-item is-primary is-small">#tag3</span></div></div></div></div></a></div><div class="column is-one-third"><style>
-        .post-preview-card .card-content {
-            text-decoration: none;
-        }
-        .post-preview-card .card-content:hover {
-            text-decoration: none;
-        }
-        .full-height {
-            height: 100%;
-        }
-    </style><a class="post-preview-card box full-height has-background is-shadowless" href="/posts//post-2"><div class="card-image"><figure class="image is-3by1"><img src="https://placehold.co/300x100" alt="Post Header Image"></figure></div><div class="card-content"><div class="media"><div class="media-content"><h5 class="title is-size-5 mt-5">Post 2</h5><h6 class="subtitle is-size-6" id="post-preview-publish-date-/post-2">Loading date...</h6><script>
-						localizeDate("post-preview-publish-date-\/post-2", 1743033621000);
-					</script></div></div><div class="content"><p>Summary of post 2</p><div class="container"><div class="tags"><span class="tag level-item is-primary is-small">#tag1</span><span class="tag level-item is-primary is-small">#tag2</span><span class="tag level-item is-primary is-small">#tag3</span></div></div></div></div></a></div></div></div></section><section id="featured-video" class="section is-medium"><div class="container"><h3 class="title is-3">Featured Video</h3><h4 class="subtitle is-4 mb-5"></h4><style>
+    </style><section id="intro" class="hero is-primary is-medium"><div class="hero-body is-flex is-flex-direction-column"><img src="/assets/images/logo-white.svg"><p class="subtitle has-text-white">learn to code in byte-size pieces</p></div></section><section class="section"><div class="container"><h3 class="title is-3 mb-5">Browse by Tag</h3><div class="p-3" hx-get="/api/tags" hx-trigger="load">Loading tags...</div></div></section><section class="section"><div class="container"><h3 class="title is-3 mb-5">Recent Posts</h3><div class="columns is-multiline is-flex" style="align-items: stretch;" hx-get="/api/post-previews" hx-trigger="load">Loading recent posts...</div></div></section><section id="featured-video" class="section is-medium"><div class="container"><h3 class="title is-3">Featured Video</h3><h4 class="subtitle is-4 mb-5"></h4><style>
         .youtube-container {
             position: relative;
             width: 100%;

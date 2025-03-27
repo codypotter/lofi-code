@@ -39,6 +39,7 @@ templ content(post components.Post) {
 	</style>
 	<article class="container is-max-desktop">
 		<div class="share-buttons">
+			// todo add share buttons
 			//   <share-buttons [title]="post.name" [description]="post.description"></share-buttons>
 		</div>
 		<div
@@ -78,6 +79,6 @@ templ content(post components.Post) {
 	</div>
 	<div class="container p-5 block is-max-desktop">
 		<h4 class="title is-4 mb-5">Related Posts</h4>
-		<div hx-get={ "/api/posts/" + post.Slug + "/related" } hx-trigger="load" hx-swap="outerHTML"></div>
+		<div hx-get={ "/api/post-previews" } hx-trigger="load" hx-swap="outerHTML"></div>
 	</div>
 }

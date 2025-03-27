@@ -1,10 +1,10 @@
 package components
 
-templ RelatedPosts(posts []Post) {
+templ SearchResults(posts []Post) {
 	<div class="columns is-multiline">
 		for _, post := range posts {
 			<div class="column is-one-third">
-				@PostPreview(post)
+				@SearchResult(post)
 			</div>
 		}
 	</div>

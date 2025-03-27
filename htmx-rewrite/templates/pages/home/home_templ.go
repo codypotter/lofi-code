@@ -8,35 +8,12 @@ package home
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-import (
-	"loficode/templates/components"
-	"loficode/templates/components/page"
-	"time"
-)
+import "loficode/templates/components/page"
 
 const featuredVideoId = "Rk2SBoBwtRU"
 const featuredVideoTitle = ""
 
 var placeholderImage = "https://placehold.co/300x100"
-
-func getFeaturedPosts() []components.Post {
-	return []components.Post{
-		{
-			Name:        "Post 1",
-			Description: "Summary of post 1",
-			Slug:        "/post-1",
-			HeaderImage: placeholderImage,
-			PublishDate: time.Now(),
-		},
-		{
-			Name:        "Post 2",
-			Description: "Summary of post 2",
-			Slug:        "/post-2",
-			HeaderImage: placeholderImage,
-			PublishDate: time.Now(),
-		},
-	}
-}
 
 func Home() templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
@@ -96,50 +73,20 @@ func content() templ.Component {
 			templ_7745c5c3_Var2 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<style>\n        #intro {\n            background: linear-gradient(135deg, #FF0F7B 0%, #F89B29 100%);\n        }\n\n        @media (prefers-color-scheme: dark) {\n            #intro {\n                background: linear-gradient(135deg, #A60950, #BA6423 100%);\n            }\n        }\n\n        #intro img {\n            height: 10rem;\n        }\n\n        #intro p {\n            text-align: center;\n        }\n\n        #featured-video {\n            background: linear-gradient(135deg, #6FEB84 0%, #1AE8FF 100%);\n        }\n\n        @media (prefers-color-scheme: dark) {\n            #featured-video {\n                background: linear-gradient(135deg, #51aa60 0%, #1098a7 100%);\n            }\n        }\n    </style><section id=\"intro\" class=\"hero is-primary is-medium\"><div class=\"hero-body is-flex is-flex-direction-column\"><img src=\"/assets/images/logo-white.svg\"><p class=\"subtitle has-text-white\">learn to code in byte-size pieces</p></div></section><section class=\"section\"><div class=\"container\"><h3 class=\"title is-3 mb-5\">Browse by Tag</h3><div class=\"p-3\">")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = components.Tags(components.TagsConfig{
-			Size:             "is-large",
-			Tags:             []string{"HTML", "CSS", "JavaScript", "Go", "Python"},
-			EnableNavigation: true,
-		}).Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</div></div></section><section class=\"section\"><div class=\"container\"><h3 class=\"title is-3 mb-5\">Recent Posts</h3><div class=\"columns is-multiline is-flex\" style=\"align-items: stretch;\">")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		for _, post := range getFeaturedPosts() {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<div class=\"column is-one-third\">")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = components.PostPreview(post).Render(ctx, templ_7745c5c3_Buffer)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</div>")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</div></div></section><section id=\"featured-video\" class=\"section is-medium\"><div class=\"container\"><h3 class=\"title is-3\">Featured Video</h3><h4 class=\"subtitle is-4 mb-5\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<style>\n        #intro {\n            background: linear-gradient(135deg, #FF0F7B 0%, #F89B29 100%);\n        }\n\n        @media (prefers-color-scheme: dark) {\n            #intro {\n                background: linear-gradient(135deg, #A60950, #BA6423 100%);\n            }\n        }\n\n        #intro img {\n            height: 10rem;\n        }\n\n        #intro p {\n            text-align: center;\n        }\n\n        #featured-video {\n            background: linear-gradient(135deg, #6FEB84 0%, #1AE8FF 100%);\n        }\n\n        @media (prefers-color-scheme: dark) {\n            #featured-video {\n                background: linear-gradient(135deg, #51aa60 0%, #1098a7 100%);\n            }\n        }\n    </style><section id=\"intro\" class=\"hero is-primary is-medium\"><div class=\"hero-body is-flex is-flex-direction-column\"><img src=\"/assets/images/logo-white.svg\"><p class=\"subtitle has-text-white\">learn to code in byte-size pieces</p></div></section><section class=\"section\"><div class=\"container\"><h3 class=\"title is-3 mb-5\">Browse by Tag</h3><div class=\"p-3\" hx-get=\"/api/tags\" hx-trigger=\"load\">Loading tags...</div></div></section><section class=\"section\"><div class=\"container\"><h3 class=\"title is-3 mb-5\">Recent Posts</h3><div class=\"columns is-multiline is-flex\" style=\"align-items: stretch;\" hx-get=\"/api/post-previews\" hx-trigger=\"load\">Loading recent posts...</div></div></section><section id=\"featured-video\" class=\"section is-medium\"><div class=\"container\"><h3 class=\"title is-3\">Featured Video</h3><h4 class=\"subtitle is-4 mb-5\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var3 string
 		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(featuredVideoTitle)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/home/home.templ`, Line: 110, Col: 54}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/home/home.templ`, Line: 80, Col: 54}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</h4>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</h4>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -147,7 +94,7 @@ func content() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</div></section>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</div></section>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

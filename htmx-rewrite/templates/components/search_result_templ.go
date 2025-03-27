@@ -11,7 +11,6 @@ import templruntime "github.com/a-h/templ/runtime"
 import "fmt"
 
 func buildImageUrl(img string) string {
-	//     return `${environment.storageUrl}${encodeURIComponent(this.post.open_graph_image ?? '')}?alt=media`;
 	return fmt.Sprintf("https://storage.googleapis.com/htmx-rewrite.appspot.com/%s?alt=media", img)
 }
 
@@ -43,7 +42,7 @@ func SearchResult(post Post) templ.Component {
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(buildImageUrl(post.OpenGraphImage))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/components/search_result.templ`, Line: 17, Col: 44}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/components/search_result.templ`, Line: 16, Col: 44}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
@@ -56,7 +55,7 @@ func SearchResult(post Post) templ.Component {
 		var templ_7745c5c3_Var3 string
 		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(post.Name)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/components/search_result.templ`, Line: 18, Col: 19}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/components/search_result.templ`, Line: 17, Col: 19}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 		if templ_7745c5c3_Err != nil {
@@ -69,7 +68,7 @@ func SearchResult(post Post) templ.Component {
 		var templ_7745c5c3_Var4 string
 		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(post.Name)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/components/search_result.templ`, Line: 25, Col: 50}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/components/search_result.templ`, Line: 24, Col: 50}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 		if templ_7745c5c3_Err != nil {
@@ -94,7 +93,7 @@ func SearchResult(post Post) templ.Component {
 		var templ_7745c5c3_Var5 string
 		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs("search-result-" + post.Slug)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/components/search_result.templ`, Line: 37, Col: 62}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/components/search_result.templ`, Line: 36, Col: 62}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 		if templ_7745c5c3_Err != nil {
@@ -107,7 +106,7 @@ func SearchResult(post Post) templ.Component {
 		var templ_7745c5c3_Var6 string
 		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(post.Description)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/components/search_result.templ`, Line: 38, Col: 52}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/components/search_result.templ`, Line: 37, Col: 52}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 		if templ_7745c5c3_Err != nil {

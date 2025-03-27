@@ -3,7 +3,6 @@ package components
 import "fmt"
 
 func buildImageUrl(img string) string {
-	//     return `${environment.storageUrl}${encodeURIComponent(this.post.open_graph_image ?? '')}?alt=media`;
 	return fmt.Sprintf("https://storage.googleapis.com/htmx-rewrite.appspot.com/%s?alt=media", img)
 }
 
