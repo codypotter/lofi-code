@@ -1,6 +1,7 @@
 package application
 
 import (
+	"loficode/model"
 	"loficode/templates/components"
 	"net/http"
 	"time"
@@ -23,31 +24,31 @@ func (a *application) Comments(w http.ResponseWriter, r *http.Request) {
 }
 
 func (a *application) PostPreviews(w http.ResponseWriter, r *http.Request) {
-	components.PostPreviews([]components.Post{
+	components.PostPreviews([]model.Post{
 		{
-			Name:        "Hello, World!",
-			Slug:        "hello-world",
-			Description: "This is a description of the post.",
+			Title:   "Hello, World!",
+			Slug:    "hello-world",
+			Summary: "This is a description of the post.",
 		},
 		{
-			Name:        "Hello, World!",
-			Slug:        "hello-world-1",
-			Description: "This is a description of the post.",
+			Title:   "Hello, World!",
+			Slug:    "hello-world-1",
+			Summary: "This is a description of the post.",
 		},
 		{
-			Name:        "Hello, World!",
-			Slug:        "hello-world-2",
-			Description: "This is a description of the post.",
+			Title:   "Hello, World!",
+			Slug:    "hello-world-2",
+			Summary: "This is a description of the post.",
 		},
 	}).Render(r.Context(), w)
 }
 
 func (a *application) SearchResults(w http.ResponseWriter, r *http.Request) {
-	components.SearchResults([]components.Post{
+	components.SearchResults([]model.Post{
 		{
-			Name:        "Hello, World!",
-			Slug:        "hello-world",
-			Description: "This is a description of the post.",
+			Title:   "Hello, World!",
+			Slug:    "hello-world",
+			Summary: "This is a description of the post.",
 		},
 	}).Render(r.Context(), w)
 }

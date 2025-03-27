@@ -3,16 +3,18 @@ package main
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
+	"loficode/model"
 	"loficode/templates/pages/home"
 	"loficode/templates/pages/notfound"
 	"loficode/templates/pages/post"
 	"loficode/templates/pages/posts"
 	"loficode/templates/pages/privacypolicy"
 	"loficode/templates/pages/tos"
+	"sort"
 
 	"io/fs"
-	"loficode/templates/components"
 	"os"
 	"path/filepath"
 	"strings"
@@ -32,7 +34,7 @@ func main() {
 }
 
 func run() error {
-	var ps []components.Post
+	var ps []model.Post
 
 	err := os.MkdirAll("public/posts", 0755)
 	if err != nil {
@@ -60,8 +62,13 @@ func run() error {
 
 	fmt.Printf("Parsed %d posts\n", len(ps))
 
+	allTags := extractTags(ps)
+	fmt.Printf("Found %d tags\n", len(allTags))
+
+	recentPosts := extractRecentPosts(ps)
+
 	staticPages := map[string]templ.Component{
-		"index.html":          home.Home(),
+		"index.html":          home.Home(allTags, recentPosts),
 		"posts.html":          posts.Posts(),
 		"tos.html":            tos.TermsOfService(),
 		"privacy-policy.html": privacypolicy.PrivacyPolicy(),
@@ -97,7 +104,7 @@ func renderStaticPage(name string, component templ.Component) error {
 	return nil
 }
 
-func parseMarkdownFile(path string) (*components.Post, error) {
+func parseMarkdownFile(path string) (*model.Post, error) {
 	input, err := os.ReadFile(path)
 	if err != nil {
 		return nil, err
@@ -118,17 +125,51 @@ func parseMarkdownFile(path string) (*components.Post, error) {
 		return nil, err
 	}
 
+	var post model.Post
+
 	metaData := meta.Get(context)
-	post := &components.Post{
-		Content: buf.String(),
+	metaJson, err := json.Marshal(metaData)
+	if err != nil {
+		return nil, err
+	}
+	err = json.Unmarshal(metaJson, &post)
+	if err != nil {
+		return nil, err
 	}
 
-	if name, ok := metaData["name"].(string); ok {
-		post.Name = name
-	}
-	if slug, ok := metaData["slug"].(string); ok {
-		post.Slug = slug
-	}
+	fmt.Printf("Parsed: %s\n", post.Title)
 
-	return post, nil
+	post.Content = buf.String()
+	return &post, nil
+}
+
+// extractTags extracts all the tags from the posts.
+// It returns a unique list of tags.
+func extractTags(ps []model.Post) []string {
+	var tags []string
+	tagMap := make(map[string]bool)
+	for _, p := range ps {
+		for _, t := range p.Tags {
+			if _, ok := tagMap[t]; !ok {
+				tagMap[t] = true
+				tags = append(tags, t)
+			}
+		}
+	}
+	return tags
+}
+
+// extractRecentPosts extracts the 3 most recent posts.
+func extractRecentPosts(ps []model.Post) []model.Post {
+	sorted := make([]model.Post, len(ps))
+	copy(sorted, ps)
+
+	sort.Slice(sorted, func(i, j int) bool {
+		return sorted[i].Date.After(sorted[j].Date)
+	})
+
+	if len(sorted) > 3 {
+		return sorted[:3]
+	}
+	return sorted
 }

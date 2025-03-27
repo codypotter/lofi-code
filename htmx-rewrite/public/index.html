@@ -43,7 +43,24 @@
                 background: linear-gradient(135deg, #51aa60 0%, #1098a7 100%);
             }
         }
-    </style><section id="intro" class="hero is-primary is-medium"><div class="hero-body is-flex is-flex-direction-column"><img src="/assets/images/logo-white.svg"><p class="subtitle has-text-white">learn to code in byte-size pieces</p></div></section><section class="section"><div class="container"><h3 class="title is-3 mb-5">Browse by Tag</h3><div class="p-3" hx-get="/api/tags" hx-trigger="load">Loading tags...</div></div></section><section class="section"><div class="container"><h3 class="title is-3 mb-5">Recent Posts</h3><div class="columns is-multiline is-flex" style="align-items: stretch;" hx-get="/api/post-previews" hx-trigger="load">Loading recent posts...</div></div></section><section id="featured-video" class="section is-medium"><div class="container"><h3 class="title is-3">Featured Video</h3><h4 class="subtitle is-4 mb-5"></h4><style>
+    </style><section id="intro" class="hero is-primary is-medium"><div class="hero-body is-flex is-flex-direction-column"><img src="/assets/images/logo-white.svg"><p class="subtitle has-text-white">learn to code in byte-size pieces</p></div></section><section class="section"><div class="container"><h3 class="title is-3 mb-5">Browse by Tag</h3><div class="p-3"><div class="container"><div class="tags"><a class="tag level-item is-primary is-large" href="/posts.html?tag=soft-skills">#soft-skills</a><a class="tag level-item is-primary is-large" href="/posts.html?tag=programming">#programming</a></div></div></div></div></section><section class="section"><div class="container"><h3 class="title is-3 mb-5">Recent Posts</h3><div class="columns is-multiline is-flex" style="align-items: stretch;"><div class="columns is-multiline"><div class="column is-one-third"><style>
+        .post-preview-card .card-content {
+            text-decoration: none;
+        }
+        .post-preview-card .card-content:hover {
+            text-decoration: none;
+        }
+        .full-height {
+            height: 100%;
+        }
+    </style><a class="post-preview-card box full-height has-background is-shadowless" href="/posts/being-right-is-overrated"><div class="card-image"><figure class="image is-3by1"><img src="https://firebasestorage.googleapis.com/v0/b/lofi-code.appspot.com/o/images%2Ftdtm4_clown%203x1.jpg?alt=media&amp;token=c957fa6f-f715-4855-ae08-5c8fb0a564b4" alt="Post Header Image"></figure></div><div class="card-content"><div class="media"><div class="media-content"><h5 class="title is-size-5 mt-5">Being right is overrated</h5><h6 class="subtitle is-size-6" id="post-preview-publish-date-being-right-is-overrated">Loading date...</h6><script>
+						localizeDate("post-preview-publish-date-being-right-is-overrated", 1743031380000);
+					</script></div></div><div class="content"><p>It&#39;s a high-stakes discussion in a boardroom at BigTek. The
+  stakeholders are not happy with your team&#39;s progress, because they needed the
+  &#34;Real-Time Activity Feed&#34; ™️ like two weeks ago. Of course, your team has been
+  focused on that big, surprise refactor for the last few weeks, but now that
+  that Archimedes and FooBar are PEEPEEPOOPOO compliant, we&#39;re good to start
+  that new, all-important feature.</p><div class="container"><div class="tags"><span class="tag level-item is-primary is-small">#soft-skills</span><span class="tag level-item is-primary is-small">#programming</span></div></div></div></div></a></div></div></div></div></section><section id="featured-video" class="section is-medium"><div class="container"><h3 class="title is-3">Featured Video</h3><h4 class="subtitle is-4 mb-5"></h4><style>
         .youtube-container {
             position: relative;
             width: 100%;

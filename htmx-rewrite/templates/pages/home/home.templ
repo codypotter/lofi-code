@@ -1,13 +1,15 @@
 package home
 
 import "loficode/templates/components/page"
+import "loficode/model"
+import "loficode/templates/components"
 
 const featuredVideoId = "Rk2SBoBwtRU"
 const featuredVideoTitle = ""
 
 var placeholderImage = "https://placehold.co/300x100"
 
-templ Home() {
+templ Home(tags []string, posts []model.Post) {
 	@page.Page(
 		page.HeadConfig{
 			Title:       "Home | loficode",
@@ -15,11 +17,11 @@ templ Home() {
 			OgImage:     "/assets/images/logo-white.svg",
 		},
 		[]page.Breadcrumb{},
-		content(),
+		content(tags, posts),
 	)
 }
 
-templ content() {
+templ content(tags []string, posts []model.Post) {
 	<style>
         #intro {
             background: linear-gradient(135deg, #FF0F7B 0%, #F89B29 100%);
@@ -60,16 +62,20 @@ templ content() {
 	<section class="section">
 		<div class="container">
 			<h3 class="title is-3 mb-5">Browse by Tag</h3>
-			<div class="p-3" hx-get="/api/tags" hx-trigger="load">
-				Loading tags...
+			<div class="p-3">
+				@components.Tags(components.TagsConfig{
+					Size:             "is-large",
+					Tags:             tags,
+					EnableNavigation: true,
+				})
 			</div>
 		</div>
 	</section>
 	<section class="section">
 		<div class="container">
 			<h3 class="title is-3 mb-5">Recent Posts</h3>
-			<div class="columns is-multiline is-flex" style="align-items: stretch;" hx-get="/api/post-previews" hx-trigger="load">
-				Loading recent posts...
+			<div class="columns is-multiline is-flex" style="align-items: stretch;">
+				@components.PostPreviews(posts)
 			</div>
 		</div>
 	</section>
