@@ -29,7 +29,7 @@ func Footer() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<footer class=\"footer\"><div class=\"content has-text-centered\"><p><em>lofi<strong>code</strong></em> by <a href=\"http://codypotter.com\">Cody Potter</a>. The source code is licensed <a href=\"http://opensource.org/licenses/mit-license.php\">MIT</a>. The website content is licensed <a href=\"http://creativecommons.org/licenses/by-nc-sa/4.0/\">CC BY NC SA 4.0</a>.</p><p><a href=\"/privacy-policy\">Privacy Policy</a> and <a href=\"/tos\">Terms of Service</a></p></div></footer>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<footer class=\"footer\"><div class=\"content has-text-centered\"><p><em>lofi<strong>code</strong></em> by <a href=\"http://codypotter.com\">Cody Potter</a>. The source code is licensed <a href=\"http://opensource.org/licenses/mit-license.php\">MIT</a>. The website content is licensed <a href=\"http://creativecommons.org/licenses/by-nc-sa/4.0/\">CC BY NC SA 4.0</a>.</p><p><a href=\"/privacy-policy.html\">Privacy Policy</a> and <a href=\"/tos.html\">Terms of Service</a></p></div></footer>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

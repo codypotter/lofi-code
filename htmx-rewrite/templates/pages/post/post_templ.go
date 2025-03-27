@@ -43,7 +43,7 @@ func Post(post components.Post) templ.Component {
 			[]page.Breadcrumb{
 				{Text: "Home", Url: "/"},
 				{Text: "Posts", Url: "/posts"},
-				{Text: post.Name, Url: "/posts/" + post.Slug},
+				{Text: post.Name, Url: "/posts/" + post.Slug + ".html"},
 			},
 			content(post),
 		).Render(ctx, templ_7745c5c3_Buffer)
@@ -128,7 +128,7 @@ func content(post components.Post) templ.Component {
 		var templ_7745c5c3_Var5 string
 		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs("/api/posts/" + post.Slug + "/comments")
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/post/post.templ`, Line: 74, Col: 77}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/post/post.templ`, Line: 75, Col: 77}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 		if templ_7745c5c3_Err != nil {
@@ -141,7 +141,7 @@ func content(post components.Post) templ.Component {
 		var templ_7745c5c3_Var6 string
 		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs("/api/posts/" + post.Slug + "/related")
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/post/post.templ`, Line: 80, Col: 54}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/post/post.templ`, Line: 81, Col: 54}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 		if templ_7745c5c3_Err != nil {

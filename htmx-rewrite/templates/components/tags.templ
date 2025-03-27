@@ -10,7 +10,7 @@ type TagsConfig struct {
 
 func getUrl(tag string) string {
 	u := url.URL{
-		Path: "/posts",
+		Path: "/posts.html",
 	}
 	query := url.Values{}
 	query.Set("tag", tag)

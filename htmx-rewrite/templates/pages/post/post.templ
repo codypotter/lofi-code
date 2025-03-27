@@ -15,7 +15,7 @@ templ Post(post components.Post) {
 		[]page.Breadcrumb{
 			{Text: "Home", Url: "/"},
 			{Text: "Posts", Url: "/posts"},
-			{Text: post.Name, Url: "/posts/" + post.Slug},
+			{Text: post.Name, Url: "/posts/" + post.Slug + ".html"},
 		},
 		content(post),
 	)
@@ -66,8 +66,9 @@ templ content(post components.Post) {
 			</div>
 			<div
 				class="content"
-			>@templ.Raw(post.Content)
-</div>
+			>
+				@templ.Raw(post.Content)
+			</div>
 		</div>
 	</article>
 	<div class="container p-5 block is-max-desktop">

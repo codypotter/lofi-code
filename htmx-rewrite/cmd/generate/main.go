@@ -7,6 +7,7 @@ import (
 	"loficode/templates/pages/home"
 	"loficode/templates/pages/notfound"
 	"loficode/templates/pages/post"
+	"loficode/templates/pages/posts"
 	"loficode/templates/pages/privacypolicy"
 	"loficode/templates/pages/tos"
 
@@ -31,7 +32,7 @@ func main() {
 }
 
 func run() error {
-	var posts []components.Post
+	var ps []components.Post
 
 	err := os.MkdirAll("public/posts", 0755)
 	if err != nil {
@@ -50,22 +51,23 @@ func run() error {
 		if err != nil {
 			return fmt.Errorf("failed to parse markdown file: %w", err)
 		}
-		posts = append(posts, *p)
+		ps = append(ps, *p)
 		return nil
 	})
 	if err != nil {
 		return fmt.Errorf("failed to walk directory: %w", err)
 	}
 
-	fmt.Printf("Parsed %d posts\n", len(posts))
+	fmt.Printf("Parsed %d posts\n", len(ps))
 
 	staticPages := map[string]templ.Component{
 		"index.html":          home.Home(),
+		"posts.html":          posts.Posts(),
 		"tos.html":            tos.TermsOfService(),
 		"privacy-policy.html": privacypolicy.PrivacyPolicy(),
 		"404.html":            notfound.NotFound(),
 	}
-	for _, p := range posts {
+	for _, p := range ps {
 		htmlOut := filepath.Join("posts", p.Slug+".html")
 		staticPages[htmlOut] = post.Post(p)
 	}

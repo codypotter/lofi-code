@@ -1,0 +1,39 @@
+package posts
+
+import "loficode/templates/components/page"
+
+templ Posts() {
+	@page.Page(
+		page.HeadConfig{
+			Title:       "Posts | loficode",
+			Description: "A collection of posts by Cody Potter",
+		},
+		[]page.Breadcrumb{
+			{Text: "Home", Url: "/"},
+			{Text: "Posts", Url: "/posts"},
+		},
+		content(),
+	)
+}
+
+templ content() {
+	<div class="p-3">
+		// we need to load tags with htmx
+		<hr/>
+		<section class="container mt-5">
+			// we need to load posts with htmx
+			// for _, post := range posts {
+			// 	<div class="block">
+			// 		if post.Slug != "" {
+			// 			// <app-search-result [post]="post"></app-search-result>
+			// 		}
+			// 	</div>
+			// }
+			<div class="level">
+				<button
+					class="button level-item mb-5"
+				>Load More</button>
+			</div>
+		</section>
+	</div>
+}
