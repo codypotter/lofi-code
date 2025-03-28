@@ -38,8 +38,8 @@ func Posts(allTags []string) templ.Component {
 				Description: "A collection of posts by Cody Potter",
 			},
 			[]page.Breadcrumb{
-				{Text: "Home", Url: "/"},
-				{Text: "Posts", Url: "/posts"},
+				{Text: "home", Url: "/"},
+				{Text: "posts", Url: "/posts.html"},
 			},
 			content(allTags),
 		).Render(ctx, templ_7745c5c3_Buffer)
@@ -76,14 +76,14 @@ func content(allTags []string) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		templ_7745c5c3_Err = components.Tags(components.TagsConfig{
-			Size:             "is-large",
+			Size:             "is-medium",
 			Tags:             allTags,
 			EnableNavigation: true,
 		}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<hr><section class=\"container mt-5\" hx-get=\"/api/search-results\" hx-trigger=\"load\" hx-swap=\"inner\">Loading...<div class=\"level\"><button class=\"button level-item mb-5\">Load More</button></div></section></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<hr><section class=\"container mt-5\" hx-get=\"/api/search-results\" hx-trigger=\"load\" hx-swap=\"inner\">Loading...</section></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

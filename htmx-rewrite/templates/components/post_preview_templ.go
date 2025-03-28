@@ -44,7 +44,7 @@ func PostPreview(post model.Post) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var2 templ.SafeURL = templ.URL("/posts/" + post.Slug)
+		var templ_7745c5c3_Var2 templ.SafeURL = templ.URL("/posts/" + post.Slug + ".html")
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(string(templ_7745c5c3_Var2)))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err

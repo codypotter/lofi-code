@@ -14,9 +14,9 @@ templ Post(post model.Post) {
 			OgImage:     post.OpenGraphImage,
 		},
 		[]page.Breadcrumb{
-			{Text: "Home", Url: "/"},
-			{Text: "Posts", Url: "/posts"},
-			{Text: post.Title, Url: "/posts/" + post.Slug + ".html"},
+			{Text: "home", Url: "/"},
+			{Text: "posts", Url: "/posts.html"},
+			{Text: post.Slug, Url: "/posts/" + post.Slug + ".html"},
 		},
 		content(post),
 	)

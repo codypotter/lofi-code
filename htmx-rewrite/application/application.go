@@ -47,7 +47,7 @@ func (a *application) PostPreviews(w http.ResponseWriter, r *http.Request) {
 
 func (a *application) SearchResults(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query()
-
+	cursor := query.Get("cursor")
 	if currentURL := r.Header.Get("HX-Current-URL"); currentURL != "" {
 		parsedURL, err := url.Parse(currentURL)
 		if err == nil {
@@ -57,6 +57,7 @@ func (a *application) SearchResults(w http.ResponseWriter, r *http.Request) {
 
 	tags := query["tag"]
 	fmt.Printf("SearchResults: %+v\n", tags)
+	fmt.Printf("SearchResults: %+v\n", cursor)
 	components.SearchResults([]model.Post{
 		{
 			Title:          "Hello, World!",
@@ -67,7 +68,34 @@ func (a *application) SearchResults(w http.ResponseWriter, r *http.Request) {
 			HeaderImage:    "https://firebasestorage.googleapis.com/v0/b/lofi-code.appspot.com/o/images%2Ftdtm4_clown%203x1.jpg?alt=media&token=c957fa6f-f715-4855-ae08-5c8fb0a564b4",
 			OpenGraphImage: "https://firebasestorage.googleapis.com/v0/b/lofi-code.appspot.com/o/images%2Fmkc6d_clown16x9.jpg?alt=media&token=e480a4c5-662d-41be-8d72-862bb1351e1f",
 		},
-	}).Render(r.Context(), w)
+		{
+			Title:          "Hello, World!",
+			Slug:           "being-right-is-overrated",
+			Summary:        "This is a description of the post.",
+			Tags:           []string{"foo", "bar"},
+			Date:           time.Now(),
+			HeaderImage:    "https://firebasestorage.googleapis.com/v0/b/lofi-code.appspot.com/o/images%2Ftdtm4_clown%203x1.jpg?alt=media&token=c957fa6f-f715-4855-ae08-5c8fb0a564b4",
+			OpenGraphImage: "https://firebasestorage.googleapis.com/v0/b/lofi-code.appspot.com/o/images%2Fmkc6d_clown16x9.jpg?alt=media&token=e480a4c5-662d-41be-8d72-862bb1351e1f",
+		},
+		{
+			Title:          "Hello, World!",
+			Slug:           "being-right-is-overrated",
+			Summary:        "This is a description of the post.",
+			Tags:           []string{"foo", "bar"},
+			Date:           time.Now(),
+			HeaderImage:    "https://firebasestorage.googleapis.com/v0/b/lofi-code.appspot.com/o/images%2Ftdtm4_clown%203x1.jpg?alt=media&token=c957fa6f-f715-4855-ae08-5c8fb0a564b4",
+			OpenGraphImage: "https://firebasestorage.googleapis.com/v0/b/lofi-code.appspot.com/o/images%2Fmkc6d_clown16x9.jpg?alt=media&token=e480a4c5-662d-41be-8d72-862bb1351e1f",
+		},
+		{
+			Title:          "Hello, World!",
+			Slug:           "being-right-is-overrated",
+			Summary:        "This is a description of the post.",
+			Tags:           []string{"foo", "bar"},
+			Date:           time.Now(),
+			HeaderImage:    "https://firebasestorage.googleapis.com/v0/b/lofi-code.appspot.com/o/images%2Ftdtm4_clown%203x1.jpg?alt=media&token=c957fa6f-f715-4855-ae08-5c8fb0a564b4",
+			OpenGraphImage: "https://firebasestorage.googleapis.com/v0/b/lofi-code.appspot.com/o/images%2Fmkc6d_clown16x9.jpg?alt=media&token=e480a4c5-662d-41be-8d72-862bb1351e1f",
+		},
+	}, "foo").Render(r.Context(), w)
 }
 
 func (a *application) Tags(w http.ResponseWriter, r *http.Request) {

@@ -23,7 +23,7 @@ templ PostPreview(post model.Post) {
             height: 100%;
         }
     </style>
-	<a class="post-preview-card box full-height has-background is-shadowless" href={ templ.URL("/posts/" + post.Slug) }>
+	<a class="post-preview-card box full-height has-background is-shadowless" href={ templ.URL("/posts/" + post.Slug + ".html") }>
 		<div class="card-image">
 			<figure class="image is-3by1">
 				<img src={ post.HeaderImage } alt="Post Header Image"/>

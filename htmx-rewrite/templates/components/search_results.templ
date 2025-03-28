@@ -2,10 +2,27 @@ package components
 
 import "loficode/model"
 
-templ SearchResults(posts []model.Post) {
-	for _, post := range posts {
-		<div class="block">
-			@SearchResult(post)
+templ SearchResults(posts []model.Post, cursor string) {
+	<div id="search-results">
+		for _, post := range posts {
+			<div class="block">
+				@SearchResult(post)
+			</div>
+		}
+	</div>
+	if cursor != "" {
+		<div id="load-more-container">
+			<section class="container mt-5">
+				<div class="level">
+					<button
+						class="button level-item mb-5 is-info"
+						hx-get={ "/api/search-results?cursor=" + cursor }
+						hx-trigger="click"
+						hx-target="#load-more-container"
+						hx-swap="outerHTML"
+					>Load More</button>
+				</div>
+			</section>
 		</div>
 	}
 }
