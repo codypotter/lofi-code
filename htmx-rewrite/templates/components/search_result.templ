@@ -5,7 +5,7 @@ import "loficode/model"
 templ SearchResult(post model.Post) {
 	<a
 		class="columns is-clickable"
-		href={ templ.URL("/posts/" + post.Slug) }
+		href={ templ.URL("/posts/" + post.Slug + ".html") }
 	>
 		<div class="column is-one-fifth">
 			<img

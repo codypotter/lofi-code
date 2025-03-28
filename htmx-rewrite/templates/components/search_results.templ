@@ -3,11 +3,9 @@ package components
 import "loficode/model"
 
 templ SearchResults(posts []model.Post) {
-	<div class="columns is-multiline">
-		for _, post := range posts {
-			<div class="column is-one-third">
-				@SearchResult(post)
-			</div>
-		}
-	</div>
+	for _, post := range posts {
+		<div class="block">
+			@SearchResult(post)
+		</div>
+	}
 }

@@ -1,9 +1,11 @@
 package application
 
 import (
+	"fmt"
 	"loficode/model"
 	"loficode/templates/components"
 	"net/http"
+	"net/url"
 	"time"
 )
 
@@ -44,11 +46,26 @@ func (a *application) PostPreviews(w http.ResponseWriter, r *http.Request) {
 }
 
 func (a *application) SearchResults(w http.ResponseWriter, r *http.Request) {
+	query := r.URL.Query()
+
+	if currentURL := r.Header.Get("HX-Current-URL"); currentURL != "" {
+		parsedURL, err := url.Parse(currentURL)
+		if err == nil {
+			query = parsedURL.Query()
+		}
+	}
+
+	tags := query["tag"]
+	fmt.Printf("SearchResults: %+v\n", tags)
 	components.SearchResults([]model.Post{
 		{
-			Title:   "Hello, World!",
-			Slug:    "hello-world",
-			Summary: "This is a description of the post.",
+			Title:          "Hello, World!",
+			Slug:           "being-right-is-overrated",
+			Summary:        "This is a description of the post.",
+			Tags:           []string{"foo", "bar"},
+			Date:           time.Now(),
+			HeaderImage:    "https://firebasestorage.googleapis.com/v0/b/lofi-code.appspot.com/o/images%2Ftdtm4_clown%203x1.jpg?alt=media&token=c957fa6f-f715-4855-ae08-5c8fb0a564b4",
+			OpenGraphImage: "https://firebasestorage.googleapis.com/v0/b/lofi-code.appspot.com/o/images%2Fmkc6d_clown16x9.jpg?alt=media&token=e480a4c5-662d-41be-8d72-862bb1351e1f",
 		},
 	}).Render(r.Context(), w)
 }

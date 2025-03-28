@@ -1,8 +1,9 @@
 package posts
 
 import "loficode/templates/components/page"
+import "loficode/templates/components"
 
-templ Posts() {
+templ Posts(allTags []string) {
 	@page.Page(
 		page.HeadConfig{
 			Title:       "Posts | loficode",
@@ -12,23 +13,20 @@ templ Posts() {
 			{Text: "Home", Url: "/"},
 			{Text: "Posts", Url: "/posts"},
 		},
-		content(),
+		content(allTags),
 	)
 }
 
-templ content() {
+templ content(allTags []string) {
 	<div class="p-3">
-		// we need to load tags with htmx
+		@components.Tags(components.TagsConfig{
+			Size:             "is-large",
+			Tags:             allTags,
+			EnableNavigation: true,
+		})
 		<hr/>
-		<section class="container mt-5">
-			// we need to load posts with htmx
-			// for _, post := range posts {
-			// 	<div class="block">
-			// 		if post.Slug != "" {
-			// 			// <app-search-result [post]="post"></app-search-result>
-			// 		}
-			// 	</div>
-			// }
+		<section class="container mt-5" hx-get="/api/search-results" hx-trigger="load" hx-swap="inner">
+			Loading...
 			<div class="level">
 				<button
 					class="button level-item mb-5"

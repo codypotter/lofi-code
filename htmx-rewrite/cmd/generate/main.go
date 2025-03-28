@@ -69,7 +69,7 @@ func run() error {
 
 	staticPages := map[string]templ.Component{
 		"index.html":          home.Home(allTags, recentPosts),
-		"posts.html":          posts.Posts(),
+		"posts.html":          posts.Posts(allTags),
 		"tos.html":            tos.TermsOfService(),
 		"privacy-policy.html": privacypolicy.PrivacyPolicy(),
 		"404.html":            notfound.NotFound(),
