@@ -13,9 +13,7 @@ import "loficode/model"
 import "loficode/templates/components"
 
 const featuredVideoId = "Rk2SBoBwtRU"
-const featuredVideoTitle = ""
-
-var placeholderImage = "https://placehold.co/300x100"
+const featuredVideoTitle = "HTML Containers"
 
 func Home(tags []string, posts []model.Post) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
@@ -110,7 +108,7 @@ func content(tags []string, posts []model.Post) templ.Component {
 		var templ_7745c5c3_Var3 string
 		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(featuredVideoTitle)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/home/home.templ`, Line: 94, Col: 54}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/home/home.templ`, Line: 92, Col: 54}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 		if templ_7745c5c3_Err != nil {

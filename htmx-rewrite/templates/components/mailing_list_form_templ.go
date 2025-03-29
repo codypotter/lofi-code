@@ -29,7 +29,7 @@ func MailingListForm() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<form hx-post=\"/api/subscribe\" hx-target=\"this\" hx-swap=\"outerHTML\" class=\"p-5\"><h2 class=\"title is-4 has-text-centered\">Join the Mailing List</h2><p class=\"has-text-centered mb-4\">Stay updated with the latest news and updates. Enter your email below to subscribe.</p><div class=\"field\"><label class=\"label\">Email</label><div class=\"control has-icons-left\"><input class=\"input is-medium\" type=\"email\" name=\"email\" placeholder=\"Your Email\" required> <span class=\"icon is-small is-left\"><span>✉️</span></span></div></div><div class=\"field\"><div class=\"control\"><button class=\"button is-primary is-fullwidth is-medium\" type=\"submit\">Subscribe</button></div></div></form>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<form hx-post=\"/api/subscribe\" hx-target=\"this\" hx-swap=\"outerHTML\" class=\"p-5\"><h2 class=\"title is-4 has-text-centered\">Join the Mailing List</h2><p class=\"has-text-centered mb-4\">Get notified when I post updates. Enter your email below to subscribe.</p><div class=\"field\"><label class=\"label\">Email</label><div class=\"control has-icons-left\"><input class=\"input is-medium\" type=\"email\" name=\"email\" placeholder=\"Your Email\" required> <span class=\"icon is-small is-left\"><span>✉️</span></span></div></div><div class=\"field\"><div class=\"control\"><button class=\"button is-primary is-fullwidth is-medium\" type=\"submit\">Subscribe</button></div></div></form>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

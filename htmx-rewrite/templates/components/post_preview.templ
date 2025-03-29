@@ -33,16 +33,15 @@ templ PostPreview(post model.Post) {
 			<div class="media">
 				<div class="media-content">
 					<h5 class="title is-size-5 mt-5">{ post.Title }</h5>
-					// probably want to format the date on the client side with a script
-					<h6 class="subtitle is-size-6" id={ "post-preview-publish-date-" + post.Slug }>Loading date...</h6>
+					<h6 class="subtitle is-size-6 my-3" id={ "post-preview-publish-date-" + post.Slug }>Loading date...</h6>
 					<script>
 						localizeDate("post-preview-publish-date-{{ post.Slug }}", {{ post.Date.Unix() * 1000 }});
 					</script>
+					<div class="content">
+						<p>{ post.Summary }</p>
+						@Tags(TagsConfig{Size: "is-small", Tags: post.Tags})
+					</div>
 				</div>
-			</div>
-			<div class="content">
-				<p>{ post.Summary }</p>
-				@Tags(TagsConfig{Size: "is-small", Tags: post.Tags})
 			</div>
 		</div>
 	</a>
