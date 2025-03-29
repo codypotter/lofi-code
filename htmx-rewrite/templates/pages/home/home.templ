@@ -27,12 +27,6 @@ templ content(tags []string, posts []model.Post) {
             background: linear-gradient(135deg, #FF0F7B 0%, #F89B29 100%);
         }
 
-        @media (prefers-color-scheme: dark) {
-            #intro {
-                background: linear-gradient(135deg, #A60950, #BA6423 100%);
-            }
-        }
-
         #intro img {
             height: 10rem;
         }
@@ -45,9 +39,19 @@ templ content(tags []string, posts []model.Post) {
             background: linear-gradient(135deg, #6FEB84 0%, #1AE8FF 100%);
         }
 
+		#recent-posts {
+            background: linear-gradient(135deg, #80eefa 0%, #914ecf 100%);
+        }
+
         @media (prefers-color-scheme: dark) {
+            #intro {
+                background: linear-gradient(135deg, #A60950, #BA6423 100%);
+            }
             #featured-video {
                 background: linear-gradient(135deg, #51aa60 0%, #1098a7 100%);
+            }
+            #recent-posts {
+                background: linear-gradient(135deg, #53247f 0%, #0c9cac 100%);
             }
         }
     </style>
@@ -71,12 +75,17 @@ templ content(tags []string, posts []model.Post) {
 			</div>
 		</div>
 	</section>
-	<section class="section">
+	<section id="recent-posts" class="section">
 		<div class="container">
 			<h3 class="title is-3 mb-5">Recent Posts</h3>
-			<div class="columns is-multiline is-flex" style="align-items: stretch;">
+			<div class="columns is-multiline is-flex is-desktop" style="align-items: stretch;">
 				@components.PostPreviews(posts)
 			</div>
+		</div>
+	</section>
+	<section class="section">
+		<div class="container is-max-desktop">
+			@components.MailingListForm()
 		</div>
 	</section>
 	<section id="featured-video" class="section is-medium">
