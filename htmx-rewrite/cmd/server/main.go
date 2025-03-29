@@ -14,5 +14,6 @@ func main() {
 	http.HandleFunc("/api/post-previews", app.PostPreviews)
 	http.HandleFunc("/api/search-results", app.SearchResults)
 	http.HandleFunc("/api/tags", app.Tags)
+	http.HandleFunc("/api/subscribe", app.Subscribe)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }

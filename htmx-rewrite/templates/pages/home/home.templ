@@ -83,7 +83,7 @@ templ content(tags []string, posts []model.Post) {
 	</section>
 	<section class="section">
 		<div class="container is-max-desktop">
-			@components.MailingListForm()
+			@components.MailingListForm(components.MailingListConfig{})
 		</div>
 	</section>
 	<section id="featured-video" class="section is-medium">

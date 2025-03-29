@@ -106,3 +106,16 @@ func (a *application) Tags(w http.ResponseWriter, r *http.Request) {
 		EnableNavigation: true,
 	}).Render(r.Context(), w)
 }
+
+func (a *application) Subscribe(w http.ResponseWriter, r *http.Request) {
+	email := r.FormValue("email")
+	if email == "" {
+		components.MailingListForm(components.MailingListConfig{
+			ErrorMessage: "Please enter a valid email address.",
+		})
+		return
+	}
+	components.MailingListForm(components.MailingListConfig{
+		SuccessMessage: "Thank you for subscribing!",
+	}).Render(r.Context(), w)
+}
