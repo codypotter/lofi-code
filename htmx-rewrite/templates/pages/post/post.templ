@@ -6,7 +6,7 @@ import (
 	"loficode/templates/components/page"
 )
 
-templ Post(post model.Post) {
+templ Post(post model.Post, baseUrl string) {
 	@page.Page(
 		page.HeadConfig{
 			Title:       post.Title + " | loficode",
@@ -18,25 +18,15 @@ templ Post(post model.Post) {
 			{Text: "posts", Url: "/posts.html"},
 			{Text: post.Slug, Url: "/posts/" + post.Slug + ".html"},
 		},
-		content(post),
+		content(post, baseUrl),
 	)
 }
 
-templ content(post model.Post) {
+templ content(post model.Post, baseUrl string) {
 	<style>
 		.related-post {
 			max-width: 450px;
 		}
-		// @media (min-width: 1024px) {
-		// 	.share-buttons {
-		// 		position: fixed;
-		// 		transform: translateX(calc(-1*100%));
-		// 	}
-
-		// 	.share-buttons .sb-group {
-		// 		flex-direction: column;
-		// 	}
-		// }
 	</style>
 	<article class="container is-max-desktop">
 		<div class="card-image">
@@ -59,15 +49,13 @@ templ content(post model.Post) {
 							EnableNavigation: true,
 						})
 					</div>
-					@SocialButtons(post)
+					@SocialButtons(post, baseUrl)
 				</div>
 			</div>
-			<div
-				class="content"
-			>
+			<div class="content">
 				@templ.Raw(post.Content)
 			</div>
-			@SocialButtons(post)
+			@SocialButtons(post, baseUrl)
 		</div>
 	</article>
 	<div class="container p-5 block is-max-desktop">

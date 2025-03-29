@@ -8,9 +8,12 @@ package post
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-import "loficode/model"
+import (
+	"loficode/model"
+	"net/url"
+)
 
-func SocialButtons(post model.Post) templ.Component {
+func SocialButtons(post model.Post, baseUrl string) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -31,34 +34,40 @@ func SocialButtons(post model.Post) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<style>\n        .twitter {\n            background-color: #000000;\n            color: #FFFFFF;\n        }\n        .facebook {\n            background-color: #0866FF;\n            color: #FFFFFF;\n        }\n        .reddit {\n            background-color: #FF4500;\n            color: #FFFFFF;\n        }\n        .button .icon {\n            display: inline-block;\n            width: 1em;\n            height: 1em;\n            mask-size: contain;\n            mask-repeat: no-repeat;\n            background-color: currentColor;\n        }\n        .twitter .icon {\n            mask: url('/assets/images/social-icons/x.svg');\n        }\n        .facebook .icon {\n            mask: url('/assets/images/social-icons/facebook.svg');\n        }\n        .reddit .icon {\n            mask: url('/assets/images/social-icons/reddit.svg');\n        }\n    </style><a href=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<style>\n        .twitter {\n            background-color: #000000;\n            color: #FFFFFF;\n        }\n        .facebook {\n            background-color: #0866FF;\n            color: #FFFFFF;\n        }\n        .reddit {\n            background-color: #FF4500;\n            color: #FFFFFF;\n        }\n        .button .icon {\n            display: inline-block;\n            width: 1em;\n            height: 1em;\n            mask-size: contain;\n            mask-repeat: no-repeat;\n            background-color: currentColor;\n        }\n        .twitter .icon {\n            mask: url('/assets/images/social-icons/x.svg');\n        }\n        .facebook .icon {\n            mask: url('/assets/images/social-icons/facebook.svg');\n        }\n        .reddit .icon {\n            mask: url('/assets/images/social-icons/reddit.svg');\n        }\n    </style>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var2 templ.SafeURL = "https://twitter.com/intent/tweet?url=" + templ.URL(post.Slug) + "&text=" + templ.URL(post.Title)
+		encodedPostURL := url.QueryEscape(baseUrl + "/posts/" + post.Slug + ".html")
+		encodedTitle := url.QueryEscape(post.Title)
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<a href=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var2 templ.SafeURL = templ.URL("https://twitter.com/intent/tweet?url=" + encodedPostURL + "&text=" + encodedTitle)
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(string(templ_7745c5c3_Var2)))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\" class=\"button is-medium twitter\" target=\"_blank\" rel=\"noopener\" aria-label=\"Share on X\"><span class=\"icon\"></span></a> <a href=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "\" class=\"button is-medium twitter\" target=\"_blank\" rel=\"noopener\" aria-label=\"Share on X\"><span class=\"icon\"></span></a> <a href=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var3 templ.SafeURL = "https://www.facebook.com/sharer/sharer.php?u=" + templ.URL(post.Slug)
+		var templ_7745c5c3_Var3 templ.SafeURL = templ.URL("https://www.facebook.com/sharer/sharer.php?u=" + encodedPostURL)
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(string(templ_7745c5c3_Var3)))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "\" class=\"button is-medium facebook\" target=\"_blank\" rel=\"noopener\" aria-label=\"Share on Facebook\"><span class=\"icon\"></span></a> <a href=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "\" class=\"button is-medium facebook\" target=\"_blank\" rel=\"noopener\" aria-label=\"Share on Facebook\"><span class=\"icon\"></span></a> <a href=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var4 templ.SafeURL = "https://www.reddit.com/submit?url=" + templ.URL(post.Slug) + "&title=" + templ.URL(post.Title)
+		var templ_7745c5c3_Var4 templ.SafeURL = templ.URL("https://www.reddit.com/submit?url=" + encodedPostURL + "&title=" + encodedTitle)
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(string(templ_7745c5c3_Var4)))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "\" class=\"button is-medium reddit\" target=\"_blank\" rel=\"noopener\" aria-label=\"Share on Reddit\"><span class=\"icon\"></span></a>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "\" class=\"button is-medium reddit\" target=\"_blank\" rel=\"noopener\" aria-label=\"Share on Reddit\"><span class=\"icon\"></span></a>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

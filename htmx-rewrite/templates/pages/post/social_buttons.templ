@@ -1,8 +1,11 @@
 package post
 
-import "loficode/model"
+import (
+	"loficode/model"
+	"net/url"
+)
 
-templ SocialButtons(post model.Post) {
+templ SocialButtons(post model.Post, baseUrl string) {
 	<style>
         .twitter {
             background-color: #000000;
@@ -34,8 +37,10 @@ templ SocialButtons(post model.Post) {
             mask: url('/assets/images/social-icons/reddit.svg');
         }
     </style>
+	{{ encodedPostURL := url.QueryEscape(baseUrl + "/posts/" + post.Slug + ".html") }}
+	{{ encodedTitle := url.QueryEscape(post.Title) }}
 	<a
-		href={ "https://twitter.com/intent/tweet?url=" + templ.URL(post.Slug) + "&text=" + templ.URL(post.Title) }
+		href={ templ.URL("https://twitter.com/intent/tweet?url=" + encodedPostURL + "&text=" + encodedTitle) }
 		class="button is-medium twitter"
 		target="_blank"
 		rel="noopener"
@@ -44,7 +49,7 @@ templ SocialButtons(post model.Post) {
 		<span class="icon"></span>
 	</a>
 	<a
-		href={ "https://www.facebook.com/sharer/sharer.php?u=" + templ.URL(post.Slug) }
+		href={ templ.URL("https://www.facebook.com/sharer/sharer.php?u=" + encodedPostURL) }
 		class="button is-medium facebook"
 		target="_blank"
 		rel="noopener"
@@ -53,7 +58,7 @@ templ SocialButtons(post model.Post) {
 		<span class="icon"></span>
 	</a>
 	<a
-		href={ "https://www.reddit.com/submit?url=" + templ.URL(post.Slug) + "&title=" + templ.URL(post.Title) }
+		href={ templ.URL("https://www.reddit.com/submit?url=" + encodedPostURL + "&title=" + encodedTitle) }
 		class="button is-medium reddit"
 		target="_blank"
 		rel="noopener"

@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"loficode/config"
 	"loficode/model"
 	"loficode/templates/pages/home"
 	"loficode/templates/pages/notfound"
@@ -74,9 +75,10 @@ func run() error {
 		"privacy-policy.html": privacypolicy.PrivacyPolicy(),
 		"404.html":            notfound.NotFound(),
 	}
+	baseUrl := config.New().BaseUrl
 	for _, p := range ps {
 		htmlOut := filepath.Join("posts", p.Slug+".html")
-		staticPages[htmlOut] = post.Post(p)
+		staticPages[htmlOut] = post.Post(p, baseUrl)
 	}
 
 	for name, component := range staticPages {
