@@ -48,7 +48,8 @@ func (a *application) PostPreviews(w http.ResponseWriter, r *http.Request) {
 func (a *application) SearchResults(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query()
 	cursor := query.Get("cursor")
-	if currentURL := r.Header.Get("HX-Current-URL"); currentURL != "" {
+	currentURL := r.Header.Get("HX-Current-URL")
+	if currentURL != "" {
 		parsedURL, err := url.Parse(currentURL)
 		if err == nil {
 			query = parsedURL.Query()

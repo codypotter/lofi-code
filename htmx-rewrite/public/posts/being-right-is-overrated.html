@@ -29,17 +29,47 @@
 		.related-post {
 			max-width: 450px;
 		}
-		@media (min-width: 1024px) {
-			.share-buttons {
-				position: fixed;
-				transform: translateX(calc(-1*100%));
-			}
+		// @media (min-width: 1024px) {
+		// 	.share-buttons {
+		// 		position: fixed;
+		// 		transform: translateX(calc(-1*100%));
+		// 	}
 
-			.share-buttons .sb-group {
-				flex-direction: column;
-			}
-		}
-	</style><article class="container is-max-desktop"><div class="share-buttons"></div><div class="card-image"><figure class="image is-3by1"><img alt="Header Image" src="https://firebasestorage.googleapis.com/v0/b/lofi-code.appspot.com/o/images%2Ftdtm4_clown%203x1.jpg?alt=media&amp;token=c957fa6f-f715-4855-ae08-5c8fb0a564b4"></figure></div><div class="card-content"><div class="media"><div class="media-content"><h4 class="is-size-4">Cody Potter - Posted on 2025-03-26 23:23:00 +0000 UTC</h4><h1 class="title is-size-1">Being right is overrated</h1><div class="mb-5"><div class="container"><div class="tags"><a class="tag level-item is-primary is-medium" href="/posts.html?tag=soft-skills">#soft-skills</a><a class="tag level-item is-primary is-medium" href="/posts.html?tag=programming">#programming</a></div></div></div></div></div><div class="content"><p>It's a high-stakes discussion in a boardroom at BigTek. The stakeholders are not happy with your team's progress, because they needed the &quot;Real-Time Activity Feed&quot; ™️ like two weeks ago to meet a major marketing deadline. Of course, your team has been focused on that big, surprise refactor for the last few weeks. But now that Archimedes and FooBar are PEEPEEPOOPOO compliant, we're good to start that new, all-important feature.</p>
+		// 	.share-buttons .sb-group {
+		// 		flex-direction: column;
+		// 	}
+		// }
+	</style><article class="container is-max-desktop"><div class="card-image"><figure class="image is-3by1"><img alt="Header Image" src="https://firebasestorage.googleapis.com/v0/b/lofi-code.appspot.com/o/images%2Ftdtm4_clown%203x1.jpg?alt=media&amp;token=c957fa6f-f715-4855-ae08-5c8fb0a564b4"></figure></div><div class="card-content"><div class="media"><div class="media-content"><h4 class="is-size-4">Cody Potter - Posted on 2025-03-26 23:23:00 +0000 UTC</h4><h1 class="title is-size-1">Being right is overrated</h1><div class="mb-5"><div class="container"><div class="tags"><a class="tag level-item is-primary is-medium" href="/posts.html?tag=soft-skills">#soft-skills</a><a class="tag level-item is-primary is-medium" href="/posts.html?tag=programming">#programming</a></div></div></div><style>
+        .twitter {
+            background-color: #000000;
+            color: #FFFFFF;
+        }
+        .facebook {
+            background-color: #0866FF;
+            color: #FFFFFF;
+        }
+        .reddit {
+            background-color: #FF4500;
+            color: #FFFFFF;
+        }
+        .button .icon {
+            display: inline-block;
+            width: 1em;
+            height: 1em;
+            mask-size: contain;
+            mask-repeat: no-repeat;
+            background-color: currentColor;
+        }
+        .twitter .icon {
+            mask: url('/assets/images/social-icons/x.svg');
+        }
+        .facebook .icon {
+            mask: url('/assets/images/social-icons/facebook.svg');
+        }
+        .reddit .icon {
+            mask: url('/assets/images/social-icons/reddit.svg');
+        }
+    </style><a href="https://twitter.com/intent/tweet?url=being-right-is-overrated&amp;text=Being right is overrated" class="button is-medium twitter" target="_blank" rel="noopener" aria-label="Share on X"><span class="icon"></span></a> <a href="https://www.facebook.com/sharer/sharer.php?u=being-right-is-overrated" class="button is-medium facebook" target="_blank" rel="noopener" aria-label="Share on Facebook"><span class="icon"></span></a> <a href="https://www.reddit.com/submit?url=being-right-is-overrated&amp;title=Being right is overrated" class="button is-medium reddit" target="_blank" rel="noopener" aria-label="Share on Reddit"><span class="icon"></span></a></div></div><div class="content"><p>It's a high-stakes discussion in a boardroom at BigTek. The stakeholders are not happy with your team's progress, because they needed the &quot;Real-Time Activity Feed&quot; ™️ like two weeks ago to meet a major marketing deadline. Of course, your team has been focused on that big, surprise refactor for the last few weeks. But now that Archimedes and FooBar are PEEPEEPOOPOO compliant, we're good to start that new, all-important feature.</p>
 <p>Now it's your time to shine. You've been thinking deeply and considering every single edge case during your morning shower.</p>
 <p>&quot;I think this calls for a MariaDB with a centralized 'Activity' table. Every user action will be stored there. We can query that table in real time to retrieve the latest actions and display them to users.&quot;</p>
 <p>Your buddy Taylor chimes in, &quot;We should call it 'activities' instead because singular database names are for murderers and psychopaths.&quot;</p>
@@ -63,4 +93,34 @@
 <li>Admitting you're wrong demonstrates your integrity and self-awareness, which builds credibility and trustworthiness.</li>
 </ul>
 <p>Embrace that uncomfortable feeling of being wrong. Admit when you're wrong so your team can always be right.</p>
-</div></div></article><div class="container p-5 block is-max-desktop"><div id="comments-section" hx-get="/api/posts/being-right-is-overrated/comments" hx-trigger="load" hx-swap="outerHTML"><p>Loading comments...</p></div></div><div class="container p-5 block is-max-desktop"><h4 class="title is-4 mb-5">Related Posts</h4><div hx-get="/api/post-previews" hx-trigger="load" hx-swap="outerHTML"></div></div></section><footer class="footer"><div class="content has-text-centered"><p><em>lofi<strong>code</strong></em> by <a href="http://codypotter.com">Cody Potter</a>. The source code is licensed <a href="http://opensource.org/licenses/mit-license.php">MIT</a>. The website content is licensed <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY NC SA 4.0</a>.</p><p><a href="/privacy-policy.html">Privacy Policy</a> and <a href="/tos.html">Terms of Service</a></p></div></footer></body></html>
+</div><style>
+        .twitter {
+            background-color: #000000;
+            color: #FFFFFF;
+        }
+        .facebook {
+            background-color: #0866FF;
+            color: #FFFFFF;
+        }
+        .reddit {
+            background-color: #FF4500;
+            color: #FFFFFF;
+        }
+        .button .icon {
+            display: inline-block;
+            width: 1em;
+            height: 1em;
+            mask-size: contain;
+            mask-repeat: no-repeat;
+            background-color: currentColor;
+        }
+        .twitter .icon {
+            mask: url('/assets/images/social-icons/x.svg');
+        }
+        .facebook .icon {
+            mask: url('/assets/images/social-icons/facebook.svg');
+        }
+        .reddit .icon {
+            mask: url('/assets/images/social-icons/reddit.svg');
+        }
+    </style><a href="https://twitter.com/intent/tweet?url=being-right-is-overrated&amp;text=Being right is overrated" class="button is-medium twitter" target="_blank" rel="noopener" aria-label="Share on X"><span class="icon"></span></a> <a href="https://www.facebook.com/sharer/sharer.php?u=being-right-is-overrated" class="button is-medium facebook" target="_blank" rel="noopener" aria-label="Share on Facebook"><span class="icon"></span></a> <a href="https://www.reddit.com/submit?url=being-right-is-overrated&amp;title=Being right is overrated" class="button is-medium reddit" target="_blank" rel="noopener" aria-label="Share on Reddit"><span class="icon"></span></a></div></article><div class="container p-5 block is-max-desktop"><div id="comments-section" hx-get="/api/posts/being-right-is-overrated/comments" hx-trigger="load" hx-swap="outerHTML"><p>Loading comments...</p></div></div><div class="container p-5 block is-max-desktop"><h4 class="title is-4 mb-5">Related Posts</h4><div hx-get="/api/post-previews" hx-trigger="load" hx-swap="outerHTML"></div></div></section><footer class="footer"><div class="content has-text-centered"><p><em>lofi<strong>code</strong></em> by <a href="http://codypotter.com">Cody Potter</a>. The source code is licensed <a href="http://opensource.org/licenses/mit-license.php">MIT</a>. The website content is licensed <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY NC SA 4.0</a>.</p><p><a href="/privacy-policy.html">Privacy Policy</a> and <a href="/tos.html">Terms of Service</a></p></div></footer></body></html>

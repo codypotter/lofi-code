@@ -27,22 +27,18 @@ templ content(post model.Post) {
 		.related-post {
 			max-width: 450px;
 		}
-		@media (min-width: 1024px) {
-			.share-buttons {
-				position: fixed;
-				transform: translateX(calc(-1*100%));
-			}
+		// @media (min-width: 1024px) {
+		// 	.share-buttons {
+		// 		position: fixed;
+		// 		transform: translateX(calc(-1*100%));
+		// 	}
 
-			.share-buttons .sb-group {
-				flex-direction: column;
-			}
-		}
+		// 	.share-buttons .sb-group {
+		// 		flex-direction: column;
+		// 	}
+		// }
 	</style>
 	<article class="container is-max-desktop">
-		<div class="share-buttons">
-			// todo add share buttons
-			//   <share-buttons [title]="post.name" [description]="post.description"></share-buttons>
-		</div>
 		<div class="card-image">
 			<figure class="image is-3by1">
 				<img
@@ -63,6 +59,7 @@ templ content(post model.Post) {
 							EnableNavigation: true,
 						})
 					</div>
+					@SocialButtons(post)
 				</div>
 			</div>
 			<div
@@ -70,6 +67,7 @@ templ content(post model.Post) {
 			>
 				@templ.Raw(post.Content)
 			</div>
+			@SocialButtons(post)
 		</div>
 	</article>
 	<div class="container p-5 block is-max-desktop">
