@@ -1,6 +1,9 @@
 package components
 
-import "strconv"
+import (
+	"fmt"
+	"strconv"
+)
 
 templ Comments(comments []Comment) {
 	for i, comment := range comments {
@@ -8,8 +11,8 @@ templ Comments(comments []Comment) {
 			<figure class="media-left">
 				<p class="image is-64x64">
 					<img
-						alt="Placeholder image"
-						src="https://bulma.io/assets/images/placeholders/128x128.png"
+						alt="User's avatar"
+						src={ avatarUrl(comment.User) }
 					/>
 				</p>
 			</figure>
@@ -27,4 +30,12 @@ templ Comments(comments []Comment) {
 			</div>
 		</article>
 	}
+}
+
+func avatarUrl(email string) string {
+	hash := 0
+	for _, char := range email {
+		hash = (hash << 5) - hash + int(char)
+	}
+	return fmt.Sprintf("https://api.dicebear.com/8.x/bottts/png?seed=%s", email)
 }

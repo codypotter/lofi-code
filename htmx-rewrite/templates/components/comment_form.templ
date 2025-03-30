@@ -1,26 +1,52 @@
 package components
 
-templ CommentForm(errorMessage string) {
-	<form hx-post="/submit-comment" hx-target="this" hx-swap="outerHTML">
-		<div class="field">
-			<label class="label">Name</label>
-			<input class="input" type="text" name="name" placeholder="Your Name" required/>
-		</div>
-		<div class="field">
-			<label class="label">Email</label>
-			<input class="input" type="email" name="email" placeholder="Your Email" required/>
+type CommentFormConfig struct {
+	ErrorMessage string `json:"errorMessage"`
+	Slug         string `json:"slug"`
+	Name         string `json:"name"`
+	Email        string `json:"email"`
+	Comment      string `json:"comment"`
+}
+
+templ CommentForm(cfg CommentFormConfig) {
+	<form class="box has-background" hx-post={ "/api/posts/" + cfg.Slug + "/comments" } hx-target="this" hx-swap="outerHTML" id="commentForm">
+		<div class="columns">
+			<div class="column">
+				<div class="field">
+					<label class="label">Name</label>
+					<input class="input" type="text" name="name" id="nameInput" placeholder="Lizard King" required maxlength="100" value={ cfg.Name }/>
+				</div>
+			</div>
+			<div class="column">
+				<div class="field">
+					<label class="label">Email</label>
+					<input class="input" type="email" name="email" id="emailInput" placeholder="lizard@king.com" required maxlength="254" value={ cfg.Email }/>
+				</div>
+			</div>
 		</div>
 		<div class="field">
 			<label class="label">Comment</label>
-			<textarea class="textarea" name="comment" placeholder="Your Comment" required></textarea>
+			<textarea class="textarea" name="comment" placeholder="..." required maxlength="1000">{ cfg.Comment }</textarea>
 		</div>
-		<label class="checkbox">
-			<input type="checkbox" name="mailingList"/>
-			Sign me up for the mailing list.
-		</label>
-		<button class="button is-primary" type="submit">Submit Comment</button>
-		if (errorMessage != "") {
-			<div class="notification is-danger">{ errorMessage }</div>
+		<div class="field" id="mailingListCheckbox">
+			<label class="checkbox">
+				<input type="checkbox" name="mailingList"/>
+				Sign me up for the mailing list.
+			</label>
+		</div>
+		<div class="field" id="termsField">
+			<label class="checkbox">
+				<input type="checkbox" name="terms" required/>
+				I agree to the <a href="/tos.html" target="_blank">Terms of Service</a> and <a href="/privacy-policy.html" target="_blank">Privacy Policy</a>.
+			</label>
+		</div>
+		<div class="field">
+			<div class="control">
+				<button class="button is-primary is-fullwidth" type="submit">Submit Comment</button>
+			</div>
+		</div>
+		if (cfg.ErrorMessage != "") {
+			<div class="notification is-danger">{ cfg.ErrorMessage }</div>
 		}
 	</form>
 }

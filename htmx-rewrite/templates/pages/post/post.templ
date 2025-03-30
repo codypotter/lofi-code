@@ -59,6 +59,8 @@ templ content(post model.Post, baseUrl string) {
 		</div>
 	</article>
 	<div class="container p-5 block is-max-desktop">
+		<h4 class="title is-4 mb-5">Comments</h4>
+		@components.CommentForm(components.CommentFormConfig{Slug: post.Slug})
 		<div id="comments-section" hx-get={ "/api/posts/" + post.Slug + "/comments" } hx-trigger="load" hx-swap="outerHTML">
 			<p>Loading comments...</p>
 		</div>
@@ -67,4 +69,70 @@ templ content(post model.Post, baseUrl string) {
 		<h4 class="title is-4 mb-5">Related Posts</h4>
 		<div hx-get={ "/api/post-previews" } hx-trigger="load" hx-swap="outerHTML"></div>
 	</div>
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			function getElementById(id) {
+				const element = document.getElementById(id);
+				if (!element) {
+					console.debug(`${id} not found.`);
+				}
+				return element;
+			}
+
+			function handleLocalStorage(key, elementId) {
+				const value = localStorage.getItem("loficode."+key);
+				const element = getElementById(elementId);
+				if (value === "true" && element) {
+					console.debug(`${key} is true, hiding ${elementId}.`);
+					element.style.display = "none";
+				} else if (element) {
+					console.debug(`${key} is not true, keeping ${elementId} visible.`);
+				}
+			}
+
+			function prefillField(localStorageKey, inputId) {
+				const value = localStorage.getItem(localStorageKey);
+				const input = getElementById(inputId);
+				if (value && input) {
+					console.debug(`${localStorageKey} found in localStorage, populating ${inputId}.`);
+					input.value = value;
+				}
+			}
+
+			function saveFieldToLocalStorage(inputId, localStorageKey) {
+				const input = getElementById(inputId);
+				if (input) {
+					console.debug(`Saving ${inputId} to ${localStorageKey}.`);
+					localStorage.setItem("loficode."+localStorageKey, input.value);
+				}
+			}
+
+			function saveCheckboxToLocalStorage(checkboxName, localStorageKey) {
+				const checkbox = document.querySelector(`input[name='${checkboxName}']`);
+				if (checkbox && checkbox.checked) {
+					console.debug(`${checkboxName} is checked, saving to ${localStorageKey}.`);
+					localStorage.setItem("loficode."+localStorageKey, "true");
+				}
+			}
+
+			prefillField("commentFormName", "nameInput");
+			prefillField("commentFormEmail", "emailInput");
+
+			handleLocalStorage("mailingListSignedUp", "mailingListCheckbox");
+			handleLocalStorage("termsAccepted", "termsField");
+
+			const commentForm = getElementById("commentForm");
+			if (commentForm) {
+				console.debug("Comment form found, setting up event listener.");
+				commentForm.addEventListener("submit", function () {
+					saveFieldToLocalStorage("nameInput", "commentFormName");
+					saveFieldToLocalStorage("emailInput", "commentFormEmail");
+					saveCheckboxToLocalStorage("mailingList", "mailingListSignedUp");
+					saveCheckboxToLocalStorage("terms", "termsAccepted");
+				});
+			} else {
+				console.debug("Comment form not found, skipping event listener setup.");
+			}
+		});
+	</script>
 }

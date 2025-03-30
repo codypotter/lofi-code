@@ -1,12 +1,15 @@
 package application
 
 import (
+	"context"
 	"fmt"
 	"loficode/model"
 	"loficode/templates/components"
 	"net/http"
 	"net/url"
 	"time"
+
+	"github.com/go-chi/chi"
 )
 
 type application struct{}
@@ -15,6 +18,7 @@ func New() application {
 	return application{}
 }
 
+// /api/posts/:slug/comments
 func (a *application) Comments(w http.ResponseWriter, r *http.Request) {
 	components.Comments([]components.Comment{
 		{
@@ -22,7 +26,26 @@ func (a *application) Comments(w http.ResponseWriter, r *http.Request) {
 			Timestamp: time.Now(),
 			User:      "Alice",
 		},
+		{
+			Text:      "This is another comment.",
+			Timestamp: time.Now(),
+			User:      "Bob",
+		},
 	}).Render(r.Context(), w)
+}
+
+func (a *application) CommentForm(w http.ResponseWriter, r *http.Request) {
+	slug := chi.URLParam(r, "slug")
+	name := r.FormValue("name")
+	email := r.FormValue("email")
+	comment := r.FormValue("comment")
+	components.CommentForm(components.CommentFormConfig{
+		Slug:         slug,
+		Name:         name,
+		Email:        email,
+		Comment:      comment,
+		ErrorMessage: "Please enter a valid comment.",
+	}).Render(context.Background(), w)
 }
 
 func (a *application) PostPreviews(w http.ResponseWriter, r *http.Request) {

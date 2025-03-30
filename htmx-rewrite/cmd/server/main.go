@@ -4,16 +4,30 @@ import (
 	"loficode/application"
 	"log"
 	"net/http"
+
+	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/v5/middleware"
 )
 
 func main() {
-	http.Handle("/", http.StripPrefix("/", http.FileServer(http.Dir("public"))))
+	r := chi.NewRouter()
+	r.Use(middleware.Logger)
+
+	r.Get("/*", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		http.StripPrefix("/", http.FileServer(http.Dir("public"))).ServeHTTP(w, r)
+	}))
 
 	app := application.New()
-	http.HandleFunc("/api/posts/{slug}/comments", app.Comments)
-	http.HandleFunc("/api/post-previews", app.PostPreviews)
-	http.HandleFunc("/api/search-results", app.SearchResults)
-	http.HandleFunc("/api/tags", app.Tags)
-	http.HandleFunc("/api/subscribe", app.Subscribe)
-	log.Fatal(http.ListenAndServe(":8080", nil))
+
+	r.Route("/api/posts/{slug}/comments", func(r chi.Router) {
+		r.Get("/", app.Comments)
+		r.Post("/", app.CommentForm)
+	})
+
+	r.Get("/api/post-previews", app.PostPreviews)
+	r.Get("/api/search-results", app.SearchResults)
+	r.Get("/api/tags", app.Tags)
+	r.Post("/api/subscribe", app.Subscribe)
+
+	log.Fatal(http.ListenAndServe(":8080", r))
 }

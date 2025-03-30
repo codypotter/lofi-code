@@ -8,7 +8,15 @@ package components
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-func CommentForm(errorMessage string) templ.Component {
+type CommentFormConfig struct {
+	ErrorMessage string `json:"errorMessage"`
+	Slug         string `json:"slug"`
+	Name         string `json:"name"`
+	Email        string `json:"email"`
+	Comment      string `json:"comment"`
+}
+
+func CommentForm(cfg CommentFormConfig) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -29,30 +37,82 @@ func CommentForm(errorMessage string) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<form hx-post=\"/submit-comment\" hx-target=\"this\" hx-swap=\"outerHTML\"><div class=\"field\"><label class=\"label\">Name</label> <input class=\"input\" type=\"text\" name=\"name\" placeholder=\"Your Name\" required></div><div class=\"field\"><label class=\"label\">Email</label> <input class=\"input\" type=\"email\" name=\"email\" placeholder=\"Your Email\" required></div><div class=\"field\"><label class=\"label\">Comment</label> <textarea class=\"textarea\" name=\"comment\" placeholder=\"Your Comment\" required></textarea></div><label class=\"checkbox\"><input type=\"checkbox\" name=\"mailingList\"> Sign me up for the mailing list.</label> <button class=\"button is-primary\" type=\"submit\">Submit Comment</button> ")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<form class=\"box has-background\" hx-post=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		if errorMessage != "" {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<div class=\"notification is-danger\">")
+		var templ_7745c5c3_Var2 string
+		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs("/api/posts/" + cfg.Slug + "/comments")
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/components/comment_form.templ`, Line: 12, Col: 82}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\" hx-target=\"this\" hx-swap=\"outerHTML\" id=\"commentForm\"><div class=\"columns\"><div class=\"column\"><div class=\"field\"><label class=\"label\">Name</label> <input class=\"input\" type=\"text\" name=\"name\" id=\"nameInput\" placeholder=\"Lizard King\" required maxlength=\"100\" value=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var3 string
+		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(cfg.Name)
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/components/comment_form.templ`, Line: 17, Col: 132}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "\"></div></div><div class=\"column\"><div class=\"field\"><label class=\"label\">Email</label> <input class=\"input\" type=\"email\" name=\"email\" id=\"emailInput\" placeholder=\"lizard@king.com\" required maxlength=\"254\" value=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var4 string
+		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(cfg.Email)
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/components/comment_form.templ`, Line: 23, Col: 140}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "\"></div></div></div><div class=\"field\"><label class=\"label\">Comment</label> <textarea class=\"textarea\" name=\"comment\" placeholder=\"...\" required maxlength=\"1000\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var5 string
+		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(cfg.Comment)
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/components/comment_form.templ`, Line: 29, Col: 102}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</textarea></div><div class=\"field\" id=\"mailingListCheckbox\"><label class=\"checkbox\"><input type=\"checkbox\" name=\"mailingList\"> Sign me up for the mailing list.</label></div><div class=\"field\" id=\"termsField\"><label class=\"checkbox\"><input type=\"checkbox\" name=\"terms\" required> I agree to the <a href=\"/tos.html\" target=\"_blank\">Terms of Service</a> and <a href=\"/privacy-policy.html\" target=\"_blank\">Privacy Policy</a>.</label></div><div class=\"field\"><div class=\"control\"><button class=\"button is-primary is-fullwidth\" type=\"submit\">Submit Comment</button></div></div>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		if cfg.ErrorMessage != "" {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "<div class=\"notification is-danger\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var2 string
-			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(errorMessage)
+			var templ_7745c5c3_Var6 string
+			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(cfg.ErrorMessage)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/components/comment_form.templ`, Line: 23, Col: 53}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/components/comment_form.templ`, Line: 49, Col: 57}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</form>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "</form>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

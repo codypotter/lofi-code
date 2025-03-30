@@ -8,7 +8,10 @@ package components
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-import "strconv"
+import (
+	"fmt"
+	"strconv"
+)
 
 func Comments(comments []Comment) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
@@ -32,76 +35,98 @@ func Comments(comments []Comment) templ.Component {
 		}
 		ctx = templ.ClearChildren(ctx)
 		for i, comment := range comments {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<article class=\"media mb-3\"><figure class=\"media-left\"><p class=\"image is-64x64\"><img alt=\"Placeholder image\" src=\"https://bulma.io/assets/images/placeholders/128x128.png\"></p></figure><div class=\"media-content\"><div class=\"content\"><p><strong>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<article class=\"media mb-3\"><figure class=\"media-left\"><p class=\"image is-64x64\"><img alt=\"Placeholder image\" src=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var2 string
-			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(comment.User)
+			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(gravatarUrl(comment.User))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/components/comments.templ`, Line: 19, Col: 28}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/components/comments.templ`, Line: 15, Col: 37}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</strong> <small id=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\"></p></figure><div class=\"media-content\"><div class=\"content\"><p><strong>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var3 string
-			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs("comment-timestamp-" + strconv.Itoa(i))
+			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(comment.User)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/components/comments.templ`, Line: 19, Col: 90}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/components/comments.templ`, Line: 22, Col: 28}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "\">Loading...</small><script>\n\t\t\t\t\t\t\tlocalizeDate(\"comment-timestamp-")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</strong> <small id=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Var4, templ_7745c5c3_Err := templruntime.ScriptContentInsideStringLiteral(strconv.Itoa(i))
+			var templ_7745c5c3_Var4 string
+			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs("comment-timestamp-" + strconv.Itoa(i))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/components/comments.templ`, Line: 21, Col: 57}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/components/comments.templ`, Line: 22, Col: 90}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var4)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "\", ")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "\">Loading...</small><script>\n\t\t\t\t\t\t\tlocalizeDate(\"comment-timestamp-")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Var5, templ_7745c5c3_Err := templruntime.ScriptContentOutsideStringLiteral(comment.Timestamp.Unix() * 1000)
+			templ_7745c5c3_Var5, templ_7745c5c3_Err := templruntime.ScriptContentInsideStringLiteral(strconv.Itoa(i))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/components/comments.templ`, Line: 21, Col: 97}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/components/comments.templ`, Line: 24, Col: 57}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var5)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, ");\n\t\t\t\t\t\t</script><br>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "\", ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var6 string
-			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(comment.Text)
+			templ_7745c5c3_Var6, templ_7745c5c3_Err := templruntime.ScriptContentOutsideStringLiteral(comment.Timestamp.Unix() * 1000)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/components/comments.templ`, Line: 24, Col: 20}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/components/comments.templ`, Line: 24, Col: 97}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var6)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</p></div></div></article>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, ");\n\t\t\t\t\t\t</script><br>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var7 string
+			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(comment.Text)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/components/comments.templ`, Line: 27, Col: 20}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</p></div></div></article>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
 		return nil
 	})
+}
+
+func gravatarUrl(email string) string {
+	hash := 0
+	for _, char := range email {
+		hash = (hash << 5) - hash + int(char)
+	}
+	// return "https://www.gravatar.com/avatar/" + strconv.Itoa(hash) + "?d=identicon"
+	return fmt.Sprintf("https://api.dicebear.com/8.x/bottts/png?seed=%s", email)
 }
 
 var _ = templruntime.GeneratedTemplate
