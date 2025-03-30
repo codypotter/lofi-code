@@ -58,11 +58,13 @@ templ content(post model.Post, baseUrl string) {
 			@SocialButtons(post, baseUrl)
 		</div>
 	</article>
-	<div class="container p-5 block is-max-desktop">
+	<div class="container block is-max-desktop mt-5">
 		<h4 class="title is-4 mb-5">Comments</h4>
 		@components.CommentForm(components.CommentFormConfig{Slug: post.Slug})
-		<div id="comments-section" hx-get={ "/api/posts/" + post.Slug + "/comments" } hx-trigger="load" hx-swap="outerHTML">
-			<p>Loading comments...</p>
+		<div class="mt-5">
+			<div id="comments-section" hx-get={ "/api/posts/" + post.Slug + "/comments" } hx-trigger="load" hx-swap="outerHTML">
+				<p>Loading comments...</p>
+			</div>
 		</div>
 	</div>
 	<div class="container p-5 block is-max-desktop">

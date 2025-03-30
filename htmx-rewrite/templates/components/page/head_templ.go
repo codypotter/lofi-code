@@ -100,7 +100,7 @@ func Head(hc HeadConfig) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "\"><meta property=\"og:type\" content=\"website\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><link rel=\"stylesheet\" href=\"/assets/css/bulma.min.css\"><style>\n            :root {\n                --bulma-primary-h: 33deg;\n                --bulma-primary-s: 94%;\n                --bulma-primary-l: 57%;\n            }\n        </style><script src=\"/assets/scripts/localize.js\"></script><script src=\"https://unpkg.com/htmx.org@2.0.4\"></script></head>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "\"><meta property=\"og:type\" content=\"website\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><link rel=\"stylesheet\" href=\"/assets/css/bulma.min.css\"><link rel=\"stylesheet\" href=\"/assets/css/styles.css\"><style>\n            :root {\n                --bulma-primary-h: 33deg;\n                --bulma-primary-s: 94%;\n                --bulma-primary-l: 57%;\n            }\n        </style><script src=\"/assets/scripts/localize.js\"></script><script src=\"https://unpkg.com/htmx.org@2.0.4\"></script></head>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

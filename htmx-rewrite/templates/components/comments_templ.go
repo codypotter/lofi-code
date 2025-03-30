@@ -35,14 +35,14 @@ func Comments(comments []Comment) templ.Component {
 		}
 		ctx = templ.ClearChildren(ctx)
 		for i, comment := range comments {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<article class=\"media mb-3\"><figure class=\"media-left\"><p class=\"image is-64x64\"><img alt=\"Placeholder image\" src=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<article class=\"media mb-3\"><figure class=\"media-left\"><p class=\"image is-64x64\"><img alt=\"User&#39;s avatar\" src=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var2 string
-			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(gravatarUrl(comment.User))
+			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(avatarUrl(comment.User))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/components/comments.templ`, Line: 15, Col: 37}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/components/comments.templ`, Line: 15, Col: 35}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 			if templ_7745c5c3_Err != nil {
@@ -120,12 +120,11 @@ func Comments(comments []Comment) templ.Component {
 	})
 }
 
-func gravatarUrl(email string) string {
+func avatarUrl(email string) string {
 	hash := 0
 	for _, char := range email {
 		hash = (hash << 5) - hash + int(char)
 	}
-	// return "https://www.gravatar.com/avatar/" + strconv.Itoa(hash) + "?d=identicon"
 	return fmt.Sprintf("https://api.dicebear.com/8.x/bottts/png?seed=%s", email)
 }
 

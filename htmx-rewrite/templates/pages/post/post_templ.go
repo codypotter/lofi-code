@@ -151,7 +151,7 @@ func content(post model.Post, baseUrl string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "</div></article><div class=\"container p-5 block is-max-desktop\"><h4 class=\"title is-4 mb-5\">Comments</h4>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "</div></article><div class=\"container block is-max-desktop mt-5\"><h4 class=\"title is-4 mb-5\">Comments</h4>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -159,27 +159,27 @@ func content(post model.Post, baseUrl string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<div id=\"comments-section\" hx-get=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<div class=\"mt-5\"><div id=\"comments-section\" hx-get=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var6 string
 		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs("/api/posts/" + post.Slug + "/comments")
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/post/post.templ`, Line: 64, Col: 77}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/post/post.templ`, Line: 65, Col: 78}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "\" hx-trigger=\"load\" hx-swap=\"outerHTML\"><p>Loading comments...</p></div></div><div class=\"container p-5 block is-max-desktop\"><h4 class=\"title is-4 mb-5\">Related Posts</h4><div hx-get=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "\" hx-trigger=\"load\" hx-swap=\"outerHTML\"><p>Loading comments...</p></div></div></div><div class=\"container p-5 block is-max-desktop\"><h4 class=\"title is-4 mb-5\">Related Posts</h4><div hx-get=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var7 string
 		templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs("/api/post-previews")
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/post/post.templ`, Line: 70, Col: 36}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/post/post.templ`, Line: 72, Col: 36}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 		if templ_7745c5c3_Err != nil {
