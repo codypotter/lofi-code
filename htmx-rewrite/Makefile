@@ -22,6 +22,9 @@ up: ## Start the Dynamo db
 down: ## Stop the Dynamo db
 	docker compose down
 
+reload: ## Start livereload server
+	livereload public
+
 restart: ## Restart the Dynamo db
 	$(MAKE) down
 	$(MAKE) up
