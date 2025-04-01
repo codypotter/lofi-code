@@ -8,3 +8,9 @@
 body {
     font-family: 'IBM Plex Sans', sans-serif !important;
 }
+
+:root {
+    --bulma-primary-h: 33deg;
+    --bulma-primary-s: 94%;
+    --bulma-primary-l: 57%;
+}
