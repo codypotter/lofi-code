@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"loficode/config"
+	"loficode/db"
 	"loficode/model"
 	"loficode/templates/pages/home"
 	"loficode/templates/pages/notfound"
@@ -13,6 +14,7 @@ import (
 	"loficode/templates/pages/posts"
 	"loficode/templates/pages/privacypolicy"
 	"loficode/templates/pages/tos"
+	"log"
 	"sort"
 
 	"io/fs"
@@ -28,54 +30,41 @@ import (
 )
 
 func main() {
-	err := run()
+	ctx := context.Background()
+	cfg := config.New(ctx)
+	db := db.New(ctx, cfg)
+	db.CreateTable()
+
+	ps, err := parseMarkdownFiles()
 	if err != nil {
-		panic(err)
+		log.Printf("Error parsing markdown files: %v\n", err)
+		return
 	}
-}
-
-func run() error {
-	var ps []model.Post
-
-	err := os.MkdirAll("public/posts", 0755)
-	if err != nil {
-		return fmt.Errorf("failed to create public/posts directory: %w", err)
-	}
-
-	err = filepath.WalkDir("cms/_posts", func(path string, d fs.DirEntry, err error) error {
-		if err != nil {
-			return fmt.Errorf("failed to walk directory: %w", err)
-		}
-		if d.IsDir() || !strings.HasSuffix(path, ".md") {
-			fmt.Printf("Skipping: %s\n", path)
-			return nil
-		}
-		p, err := parseMarkdownFile(path)
-		if err != nil {
-			return fmt.Errorf("failed to parse markdown file: %w", err)
-		}
-		ps = append(ps, *p)
-		return nil
-	})
-	if err != nil {
-		return fmt.Errorf("failed to walk directory: %w", err)
-	}
-
 	fmt.Printf("Parsed %d posts\n", len(ps))
 
-	allTags := extractTags(ps)
-	fmt.Printf("Found %d tags\n", len(allTags))
+	tags := extractTags(ps)
+	fmt.Printf("Found %d tags\n", len(tags))
 
 	recentPosts := extractRecentPosts(ps)
 
+	err = renderStaticPages(ps, tags, recentPosts)
+	if err != nil {
+		log.Printf("Error rendering static pages: %v\n", err)
+		return
+	}
+
+	db.UpsertPosts(ps)
+}
+
+func renderStaticPages(ps []model.Post, tags []string, recentPosts []model.Post) error {
 	staticPages := map[string]templ.Component{
-		"index.html":          home.Home(allTags, recentPosts),
-		"posts.html":          posts.Posts(allTags),
+		"index.html":          home.Home(tags, recentPosts),
+		"posts.html":          posts.Posts(tags),
 		"tos.html":            tos.TermsOfService(),
 		"privacy-policy.html": privacypolicy.PrivacyPolicy(),
 		"404.html":            notfound.NotFound(),
 	}
-	baseUrl := config.New().BaseUrl
+	baseUrl := config.New(context.Background()).BaseUrl
 	for _, p := range ps {
 		htmlOut := filepath.Join("posts", p.Slug+".html")
 		staticPages[htmlOut] = post.Post(p, baseUrl)
@@ -87,8 +76,37 @@ func run() error {
 			return fmt.Errorf("failed to render static page: %w", err)
 		}
 	}
-
 	return nil
+}
+
+func parseMarkdownFiles() ([]model.Post, error) {
+	var ps []model.Post
+
+	err := os.MkdirAll("public/posts", 0755)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create public/posts directory: %w", err)
+	}
+
+	err = filepath.WalkDir("cms/_posts", func(path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return fmt.Errorf("failed to walk directory: %w", err)
+		}
+		if d.IsDir() || !strings.HasSuffix(path, ".md") {
+			log.Printf("Skipping %s\n", path)
+			return nil
+		}
+		p, err := parseMarkdownFile(path)
+		if err != nil {
+			return fmt.Errorf("failed to parse markdown file: %w", err)
+		}
+		ps = append(ps, *p)
+		return nil
+	})
+	if err != nil {
+		return nil, fmt.Errorf("failed to walk directory: %w", err)
+	}
+
+	return ps, nil
 }
 
 func renderStaticPage(name string, component templ.Component) error {
@@ -102,7 +120,7 @@ func renderStaticPage(name string, component templ.Component) error {
 	if err := component.Render(context.Background(), f); err != nil {
 		return fmt.Errorf("failed to render %s: %w", path, err)
 	}
-	fmt.Println("Wrote:", path)
+	log.Printf("Rendered %s\n", path)
 	return nil
 }
 
@@ -139,7 +157,7 @@ func parseMarkdownFile(path string) (*model.Post, error) {
 		return nil, err
 	}
 
-	fmt.Printf("Parsed: %s\n", post.Title)
+	log.Printf("Parsed post: %s\n", post.Slug)
 
 	post.Content = buf.String()
 	return &post, nil

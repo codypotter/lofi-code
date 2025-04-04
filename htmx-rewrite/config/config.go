@@ -1,28 +1,34 @@
 package config
 
 import (
+	"context"
 	"log"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/caarlos0/env/v8"
 )
 
 type Config struct {
-	StorageUrl       string `json:"-" env:"STORAGE_URL"`
-	BaseUrl          string `json:"-" env:"BASE_URL"`
-	LogLevel         string `json:"-" env:"LOG_LEVEL"`
-	DynamoDBRegion   string `json:"-" env:"DYNAMODB_REGION"`
-	DynamoDBEndpoint string `json:"-" env:"DYNAMODB_ENDPOINT"`
+	BaseUrl     string     `json:"-" env:"BASE_URL"`
+	LogLevel    string     `json:"-" env:"LOG_LEVEL"`
+	Environment string     `json:"-" env:"ENVIRONMENT" envDefault:"development"`
+	AwsConfig   aws.Config `json:"-" env:"AWS_CONFIG"`
 }
 
 func (c *Config) String() string {
 	return "Config{[REDACTED]}"
 }
 
-func New() *Config {
-	c := &Config{}
-	err := env.Parse(c)
+func New(ctx context.Context) *Config {
+	var c Config
+	err := env.Parse(&c)
 	if err != nil {
 		log.Fatalf("Failed to load config: %v", err)
 	}
-	return c
+	c.AwsConfig, err = config.LoadDefaultConfig(ctx)
+	if err != nil {
+		log.Fatalf("Failed to load AWS config: %v", err)
+	}
+	return &c
 }

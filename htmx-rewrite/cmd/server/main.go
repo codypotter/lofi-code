@@ -1,7 +1,10 @@
 package main
 
 import (
+	"context"
 	"loficode/application"
+	"loficode/config"
+	"loficode/db"
 	"log"
 	"net/http"
 
@@ -10,6 +13,9 @@ import (
 )
 
 func main() {
+	ctx := context.Background()
+	cfg := config.New(ctx)
+	db.New(ctx, cfg)
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 
