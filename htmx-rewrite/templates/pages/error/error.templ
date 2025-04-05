@@ -1,0 +1,30 @@
+package error
+
+import "loficode/templates/components/page"
+
+templ Error() {
+	@page.Page(
+		page.HeadConfig{
+			Title:       "Error | loficode",
+			Description: "Error",
+			OgImage:     "/assets/images/logo-white.svg",
+		},
+		[]page.Breadcrumb{},
+		content(),
+	)
+}
+
+templ content() {
+	<section class="section">
+		<div class="container notification is-danger">
+			<h1 class="title is-4 has-text-centered">Error</h1>
+			<p class="has-text-centered mb-4">
+				An error occurred while processing your request.
+				Please try again later.
+			</p>
+			<p class="has-text-centered mb-4">
+				<a href="/">Go Home</a>
+			</p>
+		</div>
+	</section>
+}

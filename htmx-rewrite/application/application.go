@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"loficode/config"
 	"loficode/db"
+	"loficode/email"
 	"loficode/model"
 	"loficode/templates/components"
 	"log"
@@ -16,16 +17,25 @@ import (
 )
 
 type application struct {
-	db *db.Db
+	db          *db.Db
+	cfg         *config.Config
+	emailSender email.EmailSender
 }
 
 func New(ctx context.Context, c *config.Config) application {
-	return application{
-		db: db.New(context.Background(), c),
+
+	app := application{
+		db:  db.New(context.Background(), c),
+		cfg: c,
 	}
+	if c.Environment == "development" {
+		app.emailSender = email.NewNoopEmailSender()
+	} else {
+		app.emailSender = email.NewAwsSesEmailSender(c)
+	}
+	return app
 }
 
-// /api/posts/:slug/comments
 func (a *application) Comments(w http.ResponseWriter, r *http.Request) {
 	slug := chi.URLParam(r, "slug")
 	comments, err := a.db.GetCommentsBySlug(slug)
@@ -72,26 +82,6 @@ func (a *application) CommentForm(w http.ResponseWriter, r *http.Request) {
 	}).Render(context.Background(), w)
 }
 
-func (a *application) PostPreviews(w http.ResponseWriter, r *http.Request) {
-	components.PostPreviews([]model.Post{
-		{
-			Title:   "Hello, World!",
-			Slug:    "hello-world",
-			Summary: "This is a description of the post.",
-		},
-		{
-			Title:   "Hello, World!",
-			Slug:    "hello-world-1",
-			Summary: "This is a description of the post.",
-		},
-		{
-			Title:   "Hello, World!",
-			Slug:    "hello-world-2",
-			Summary: "This is a description of the post.",
-		},
-	}).Render(r.Context(), w)
-}
-
 func (a *application) SearchResults(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query()
 	cursor := query.Get("cursor")
@@ -127,14 +117,36 @@ func (a *application) Tags(w http.ResponseWriter, r *http.Request) {
 }
 
 func (a *application) Subscribe(w http.ResponseWriter, r *http.Request) {
-	email := r.FormValue("email")
-	if email == "" {
-		components.MailingListForm(components.MailingListConfig{
-			ErrorMessage: "Please enter a valid email address.",
-		})
+	e := r.FormValue("email")
+	token, err := a.db.NewVerificationToken(e, 86400)
+	if err != nil {
+		log.Printf("Error creating verification token: %v\n", err)
+		components.Notification("is-danger", "Error creating verification token").Render(r.Context(), w)
 		return
 	}
-	components.MailingListForm(components.MailingListConfig{
-		SuccessMessage: "Thank you for subscribing!",
-	}).Render(r.Context(), w)
+	err = a.emailSender.SendVerificationEmail(e, token)
+	if err != nil {
+		log.Printf("Error sending verification email: %v\n", err)
+		components.Notification("is-danger", "Error sending verification email").Render(r.Context(), w)
+		return
+	}
+	components.Notification("is-link", "Verification email sent!").Render(r.Context(), w)
+}
+
+func (a *application) VerifyEmail(w http.ResponseWriter, r *http.Request) {
+	token := r.URL.Query().Get("token")
+	if token == "" {
+		http.Error(w, "Missing token", http.StatusBadRequest)
+		return
+	}
+
+	log.Printf("Verifying email with token: %s\n", token)
+	_, err := a.db.VerifyEmail(token)
+	if err != nil {
+		log.Printf("Error verifying email: %v\n", err)
+		http.Redirect(w, r, "/error.html", http.StatusSeeOther)
+		return
+	}
+
+	http.Redirect(w, r, "/verified.html", http.StatusSeeOther)
 }

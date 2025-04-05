@@ -28,10 +28,10 @@ func main() {
 		r.Post("/", app.CommentForm)
 	})
 
-	r.Get("/api/post-previews", app.PostPreviews)
 	r.Get("/api/search-results", app.SearchResults)
 	r.Get("/api/tags", app.Tags)
 	r.Post("/api/subscribe", app.Subscribe)
+	r.Get("/api/verify", app.VerifyEmail)
 
 	log.Fatal(http.ListenAndServe(":8080", r))
 }
