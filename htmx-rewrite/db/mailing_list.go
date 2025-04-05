@@ -36,7 +36,22 @@ func generateToken() string {
 	return uuid.New().String()
 }
 
-func (db *Db) VerifyEmail(token string) (string, error) {
+func (db *Db) IsEmailVerified(email string) (bool, error) {
+	ctx := context.Background()
+	result, err := db.client.GetItem(ctx, &dynamodb.GetItemInput{
+		TableName: aws.String("blog"),
+		Key: map[string]types.AttributeValue{
+			"pk": &types.AttributeValueMemberS{Value: "EMAIL"},
+			"sk": &types.AttributeValueMemberS{Value: email},
+		},
+	})
+	if err != nil {
+		return false, err
+	}
+	return len(result.Item) > 0, nil
+}
+
+func (db *Db) VerifyEmail(token string, subscribed bool) (string, error) {
 	ctx := context.Background()
 	pk := "EMAIL_TOKEN#" + token
 
@@ -62,8 +77,9 @@ func (db *Db) VerifyEmail(token string) (string, error) {
 	_, err = db.client.PutItem(ctx, &dynamodb.PutItemInput{
 		TableName: aws.String("blog"),
 		Item: map[string]types.AttributeValue{
-			"pk": &types.AttributeValueMemberS{Value: "MAILING_LIST"},
-			"sk": &types.AttributeValueMemberS{Value: email},
+			"pk":         &types.AttributeValueMemberS{Value: "EMAIL"},
+			"sk":         &types.AttributeValueMemberS{Value: email},
+			"subscribed": &types.AttributeValueMemberBOOL{Value: subscribed},
 		},
 	})
 	if err != nil {
@@ -79,23 +95,4 @@ func (db *Db) VerifyEmail(token string) (string, error) {
 	})
 
 	return email, nil
-}
-
-func (db *Db) Subscribe(email string) error {
-	ctx := context.Background()
-
-	pk := "MAILING_LIST"
-	sk := email
-
-	_, err := db.client.PutItem(ctx, &dynamodb.PutItemInput{
-		TableName: aws.String("blog"),
-		Item: map[string]types.AttributeValue{
-			"pk": &types.AttributeValueMemberS{Value: pk},
-			"sk": &types.AttributeValueMemberS{Value: sk},
-		},
-	})
-	if err != nil {
-		return err
-	}
-	return nil
 }

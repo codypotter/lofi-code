@@ -1,7 +1,7 @@
 package components
 
 type CommentFormConfig struct {
-	ErrorMessage string `json:"errorMessage"`
+	Notification templ.Component
 	Success      bool   `json:"success"`
 	Slug         string `json:"slug"`
 	Name         string `json:"name"`
@@ -46,11 +46,10 @@ templ CommentForm(cfg CommentFormConfig) {
 				<button class="button is-primary is-fullwidth" type="submit">Submit Comment</button>
 			</div>
 		</div>
-		if (cfg.ErrorMessage != "") {
-			@Notification("is-danger", "Error: "+cfg.ErrorMessage)
+		if cfg.Notification != nil {
+			@cfg.Notification
 		}
 		if cfg.Success {
-			@Notification("is-success", "Comment posted successfully.")
 			<script>
 				console.warn('displatching a commentPosted event');
 				document.getElementById("comments-section")

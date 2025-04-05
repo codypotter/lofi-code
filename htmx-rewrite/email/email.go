@@ -14,7 +14,7 @@ import (
 )
 
 type EmailSender interface {
-	SendVerificationEmail(to, token string) error
+	SendVerificationEmail(to, token string, subscribe bool) error
 }
 
 type NoopEmailSender struct{}
@@ -23,9 +23,9 @@ func NewNoopEmailSender() EmailSender {
 	return NoopEmailSender{}
 }
 
-func (s NoopEmailSender) SendVerificationEmail(to, token string) error {
+func (s NoopEmailSender) SendVerificationEmail(to, token string, subscribe bool) error {
 	log.Printf("Sending verification email to %s with token %s", to, token)
-	log.Printf("Verify email link: http://localhost:8080/api/verify?token=%s", token)
+	log.Printf("Verify email link: http://localhost:8080/api/verify?token=%s&subscribe=%t", token, subscribe)
 	return nil
 }
 
@@ -39,8 +39,8 @@ func NewAwsSesEmailSender(cfg *config.Config) EmailSender {
 	}
 }
 
-func (s AwsSesEmailSender) SendVerificationEmail(to, token string) error {
-	url := fmt.Sprintf("https://loficode.com/api/verify?token=%s", token)
+func (s AwsSesEmailSender) SendVerificationEmail(to, token string, subscribe bool) error {
+	url := fmt.Sprintf("https://loficode.com/api/verify?token=%s&subscribe=%t", token, subscribe)
 
 	var sb strings.Builder
 	err := components.VerifyEmail(to, token).Render(context.Background(), &sb)

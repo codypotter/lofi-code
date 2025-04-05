@@ -9,7 +9,7 @@ import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
 type CommentFormConfig struct {
-	ErrorMessage string `json:"errorMessage"`
+	Notification templ.Component
 	Success      bool   `json:"success"`
 	Slug         string `json:"slug"`
 	Name         string `json:"name"`
@@ -94,18 +94,14 @@ func CommentForm(cfg CommentFormConfig) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		if cfg.ErrorMessage != "" {
-			templ_7745c5c3_Err = Notification("is-danger", "Error: "+cfg.ErrorMessage).Render(ctx, templ_7745c5c3_Buffer)
+		if cfg.Notification != nil {
+			templ_7745c5c3_Err = cfg.Notification.Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
 		if cfg.Success {
-			templ_7745c5c3_Err = Notification("is-success", "Comment posted successfully.").Render(ctx, templ_7745c5c3_Buffer)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, " <script>\n\t\t\t\tconsole.warn('displatching a commentPosted event');\n\t\t\t\tdocument.getElementById(\"comments-section\")\n\t\t\t\t\t?.dispatchEvent(new CustomEvent(\"commentPosted\", { bubbles: true }));\n\t\t\t</script>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "<script>\n\t\t\t\tconsole.warn('displatching a commentPosted event');\n\t\t\t\tdocument.getElementById(\"comments-section\")\n\t\t\t\t\t?.dispatchEvent(new CustomEvent(\"commentPosted\", { bubbles: true }));\n\t\t\t</script>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
