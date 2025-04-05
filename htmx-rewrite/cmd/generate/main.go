@@ -14,6 +14,7 @@ import (
 	"loficode/templates/pages/posts"
 	"loficode/templates/pages/privacypolicy"
 	"loficode/templates/pages/tos"
+	"loficode/templates/pages/unsubscribe"
 	"log"
 	"sort"
 
@@ -63,6 +64,7 @@ func renderStaticPages(ps []model.Post, tags []string, recentPosts []model.Post)
 		"tos.html":            tos.TermsOfService(),
 		"privacy-policy.html": privacypolicy.PrivacyPolicy(),
 		"404.html":            notfound.NotFound(),
+		"unsubscribe.html":    unsubscribe.Unsubscribe(),
 	}
 	baseUrl := config.New(context.Background()).BaseUrl
 	for _, p := range ps {
