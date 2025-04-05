@@ -1,0 +1,30 @@
+package verified
+
+import "loficode/internal/templates/components/page"
+
+templ Verified() {
+	@page.Page(
+		page.HeadConfig{
+			Title:       "Verified Email! | loficode",
+			Description: "Verified Email",
+			OgImage:     "/assets/images/logo-white.svg",
+		},
+		[]page.Breadcrumb{},
+		content(),
+	)
+}
+
+templ content() {
+	<section class="section">
+		<div class="container notification is-success">
+			<h1 class="title is-4 has-text-centered">Email Verified</h1>
+			<p class="has-text-centered mb-4">
+				Your email address has been successfully verified.
+				You may close this tab.
+			</p>
+			<p class="has-text-centered mb-4">
+				<a href="/">Go Home</a>
+			</p>
+		</div>
+	</section>
+}

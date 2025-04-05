@@ -1,0 +1,13 @@
+package components
+
+import "loficode/internal/model"
+
+templ PostPreviews(posts []model.Post) {
+	<div class="columns is-multiline">
+		for _, post := range posts {
+			<div class="column is-one-third">
+				@PostPreview(post)
+			</div>
+		}
+	</div>
+}

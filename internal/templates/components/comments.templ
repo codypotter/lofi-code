@@ -1,0 +1,42 @@
+package components
+
+import (
+	"fmt"
+	"loficode/internal/model"
+	"strconv"
+)
+
+templ Comments(comments []model.Comment) {
+	for i, comment := range comments {
+		<article class="media mb-3">
+			<figure class="media-left">
+				<p class="image is-64x64">
+					<img
+						alt="User's avatar"
+						src={ avatarUrl(comment.Email) }
+					/>
+				</p>
+			</figure>
+			<div class="media-content">
+				<div class="content">
+					<p>
+						<strong>{ comment.Name }</strong> <small id={ "comment-timestamp-" + strconv.Itoa(i) }>Loading...</small>
+						<script>
+							localizeDate("comment-timestamp-{{ strconv.Itoa(i) }}", {{ comment.Date.Unix() * 1000 }});
+						</script>
+						<br/>
+						{ comment.Text }
+					</p>
+				</div>
+			</div>
+		</article>
+	}
+}
+
+func avatarUrl(email string) string {
+	hash := 0
+	for _, char := range email {
+		hash = (hash << 5) - hash + int(char)
+	}
+	return fmt.Sprintf("https://api.dicebear.com/8.x/bottts/png?seed=%s", email)
+}
