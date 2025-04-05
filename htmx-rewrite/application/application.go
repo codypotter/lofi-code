@@ -7,6 +7,7 @@ import (
 	"loficode/db"
 	"loficode/model"
 	"loficode/templates/components"
+	"log"
 	"net/http"
 	"net/url"
 	"time"
@@ -26,18 +27,14 @@ func New(ctx context.Context, c *config.Config) application {
 
 // /api/posts/:slug/comments
 func (a *application) Comments(w http.ResponseWriter, r *http.Request) {
-	components.Comments([]components.Comment{
-		{
-			Text:      "This is a comment.",
-			Timestamp: time.Now(),
-			User:      "Alice",
-		},
-		{
-			Text:      "This is another comment.",
-			Timestamp: time.Now(),
-			User:      "Bob",
-		},
-	}).Render(r.Context(), w)
+	slug := chi.URLParam(r, "slug")
+	comments, err := a.db.GetCommentsBySlug(slug)
+	if err != nil {
+		log.Printf("Error getting comments: %v\n", err)
+		components.Notification("is-warning", "Error getting comments").Render(r.Context(), w)
+	}
+
+	components.Comments(comments).Render(r.Context(), w)
 }
 
 func (a *application) CommentForm(w http.ResponseWriter, r *http.Request) {
@@ -45,12 +42,33 @@ func (a *application) CommentForm(w http.ResponseWriter, r *http.Request) {
 	name := r.FormValue("name")
 	email := r.FormValue("email")
 	comment := r.FormValue("comment")
+
+	if name == "" || email == "" || comment == "" {
+		components.CommentForm(components.CommentFormConfig{
+			Slug:         slug,
+			Name:         name,
+			Email:        email,
+			Comment:      comment,
+			ErrorMessage: "Please enter a valid name, email, and comment.",
+		}).Render(context.Background(), w)
+		return
+	}
+	if err := a.db.AddComment(slug, model.Comment{
+		Name:  name,
+		Email: email,
+		Text:  comment,
+		Date:  time.Now(),
+	}); err != nil {
+		log.Printf("Error adding comment: %v\n", err)
+		components.Notification("is-danger", "Error adding comment").Render(r.Context(), w)
+		return
+	}
 	components.CommentForm(components.CommentFormConfig{
-		Slug:         slug,
-		Name:         name,
-		Email:        email,
-		Comment:      comment,
-		ErrorMessage: "Please enter a valid comment.",
+		Slug:    slug,
+		Name:    name,
+		Email:   email,
+		Comment: comment,
+		Success: true,
 	}).Render(context.Background(), w)
 }
 

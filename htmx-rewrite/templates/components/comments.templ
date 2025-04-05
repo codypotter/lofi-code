@@ -2,26 +2,27 @@ package components
 
 import (
 	"fmt"
+	"loficode/model"
 	"strconv"
 )
 
-templ Comments(comments []Comment) {
+templ Comments(comments []model.Comment) {
 	for i, comment := range comments {
 		<article class="media mb-3">
 			<figure class="media-left">
 				<p class="image is-64x64">
 					<img
 						alt="User's avatar"
-						src={ avatarUrl(comment.User) }
+						src={ avatarUrl(comment.Email) }
 					/>
 				</p>
 			</figure>
 			<div class="media-content">
 				<div class="content">
 					<p>
-						<strong>{ comment.User }</strong> <small id={ "comment-timestamp-" + strconv.Itoa(i) }>Loading...</small>
+						<strong>{ comment.Name }</strong> <small id={ "comment-timestamp-" + strconv.Itoa(i) }>Loading...</small>
 						<script>
-							localizeDate("comment-timestamp-{{ strconv.Itoa(i) }}", {{ comment.Timestamp.Unix() * 1000 }});
+							localizeDate("comment-timestamp-{{ strconv.Itoa(i) }}", {{ comment.Date.Unix() * 1000 }});
 						</script>
 						<br/>
 						{ comment.Text }

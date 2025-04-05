@@ -65,7 +65,7 @@ templ content(post model.Post, baseUrl string, relatedPosts []model.Post) {
 		<h4 class="title is-4 mb-5">Comments</h4>
 		@components.CommentForm(components.CommentFormConfig{Slug: post.Slug})
 		<div class="mt-5">
-			<div id="comments-section" hx-get={ "/api/posts/" + post.Slug + "/comments" } hx-trigger="load" hx-swap="outerHTML">
+			<div id="comments-section" hx-get={ "/api/posts/" + post.Slug + "/comments" } hx-trigger="load, commentPosted" hx-swap="innerHTML">
 				<p>Loading comments...</p>
 			</div>
 		</div>
@@ -90,6 +90,8 @@ templ content(post model.Post, baseUrl string, relatedPosts []model.Post) {
 				if (value === "true" && element) {
 					console.debug(`${key} is true, hiding ${elementId}.`);
 					element.style.display = "none";
+					const input = element.querySelector("input");
+					if (input) input.removeAttribute("required");
 				} else if (element) {
 					console.debug(`${key} is not true, keeping ${elementId} visible.`);
 				}

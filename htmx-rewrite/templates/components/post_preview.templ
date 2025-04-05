@@ -1,15 +1,6 @@
 package components
 
-import (
-	"loficode/model"
-	"time"
-)
-
-type Comment struct {
-	Text      string    `json:"text"`
-	Timestamp time.Time `json:"timestamp"`
-	User      string    `json:"user"`
-}
+import "loficode/model"
 
 templ PostPreview(post model.Post) {
 	<style>

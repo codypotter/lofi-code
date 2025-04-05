@@ -2,6 +2,7 @@ package components
 
 type CommentFormConfig struct {
 	ErrorMessage string `json:"errorMessage"`
+	Success      bool   `json:"success"`
 	Slug         string `json:"slug"`
 	Name         string `json:"name"`
 	Email        string `json:"email"`
@@ -46,7 +47,15 @@ templ CommentForm(cfg CommentFormConfig) {
 			</div>
 		</div>
 		if (cfg.ErrorMessage != "") {
-			<div class="notification is-danger">{ cfg.ErrorMessage }</div>
+			@Notification("is-danger", "Error: "+cfg.ErrorMessage)
+		}
+		if cfg.Success {
+			@Notification("is-success", "Comment posted successfully.")
+			<script>
+				console.warn('displatching a commentPosted event');
+				document.getElementById("comments-section")
+					?.dispatchEvent(new CustomEvent("commentPosted", { bubbles: true }));
+			</script>
 		}
 	</form>
 }

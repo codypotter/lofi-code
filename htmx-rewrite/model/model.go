@@ -14,7 +14,8 @@ type Post struct {
 }
 
 type Comment struct {
-	Text      string    `json:"text"`
-	Timestamp time.Time `json:"timestamp"`
-	User      string    `json:"user"`
+	Name  string    `json:"name"`
+	Email string    `json:"email"`
+	Text  string    `json:"text"`
+	Date  time.Time `json:"date"`
 }
