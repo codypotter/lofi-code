@@ -10,7 +10,7 @@ import templruntime "github.com/a-h/templ/runtime"
 
 import "loficode/model"
 
-func SearchResults(posts []model.Post, cursor string) templ.Component {
+func SearchResults(posts []model.Post, cursor *string) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -53,15 +53,15 @@ func SearchResults(posts []model.Post, cursor string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		if cursor != "" {
+		if cursor != nil {
 			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<div id=\"load-more-container\"><section class=\"container mt-5\"><div class=\"level\"><button class=\"button level-item mb-5 is-info\" hx-get=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var2 string
-			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs("/api/search-results?cursor=" + cursor)
+			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs("/api/search-results?cursor=" + *cursor)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/components/search_results.templ`, Line: 19, Col: 53}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/components/search_results.templ`, Line: 19, Col: 54}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 			if templ_7745c5c3_Err != nil {

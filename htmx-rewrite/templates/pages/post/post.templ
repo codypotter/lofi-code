@@ -6,7 +6,7 @@ import (
 	"loficode/templates/components/page"
 )
 
-templ Post(post model.Post, baseUrl string) {
+templ Post(post model.Post, baseUrl string, relatedPosts []model.Post) {
 	@page.Page(
 		page.HeadConfig{
 			Title:       post.Title + " | loficode",
@@ -18,11 +18,11 @@ templ Post(post model.Post, baseUrl string) {
 			{Text: "posts", Url: "/posts.html"},
 			{Text: post.Slug, Url: "/posts/" + post.Slug + ".html"},
 		},
-		content(post, baseUrl),
+		content(post, baseUrl, relatedPosts),
 	)
 }
 
-templ content(post model.Post, baseUrl string) {
+templ content(post model.Post, baseUrl string, relatedPosts []model.Post) {
 	<style>
 		.related-post {
 			max-width: 450px;
@@ -40,7 +40,10 @@ templ content(post model.Post, baseUrl string) {
 		<div class="card-content">
 			<div class="media">
 				<div class="media-content">
-					<h4 class="is-size-4">Cody Potter - Posted on { post.Date.String() }</h4>
+					<h4 class="is-size-4">Cody Potter - Posted on <span id="post-date"></span></h4>
+					<script>
+						localizeDate("post-date", {{ post.Date.Unix() * 1000 }});
+					</script>
 					<h1 class="title is-size-1">{ post.Title }</h1>
 					<div class="mb-5">
 						@components.Tags(components.TagsConfig{
@@ -69,7 +72,7 @@ templ content(post model.Post, baseUrl string) {
 	</div>
 	<div class="container p-5 block is-max-desktop">
 		<h4 class="title is-4 mb-5">Related Posts</h4>
-		<div hx-get={ "/api/post-previews" } hx-trigger="load" hx-swap="outerHTML"></div>
+		@components.PostPreviews(relatedPosts)
 	</div>
 	<script>
 		document.addEventListener("DOMContentLoaded", function () {

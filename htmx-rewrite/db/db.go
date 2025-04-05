@@ -78,7 +78,8 @@ func (db *Db) UpsertPosts(posts []model.Post) {
 	ctx := context.Background()
 
 	for _, post := range posts {
-		for _, tag := range post.Tags {
+		tags := append(post.Tags, "all")
+		for _, tag := range tags {
 			db.upsertPost(ctx, tag, post)
 			log.Println("Upserted post:", post.Slug, "for tag:", tag)
 		}
@@ -90,14 +91,14 @@ func (db *Db) upsertPost(ctx context.Context, tag string, post model.Post) {
 	sk := "POST#" + post.Date.Format(time.RFC3339) + "#" + post.Slug
 
 	item := map[string]types.AttributeValue{
-		"pk":          &types.AttributeValueMemberS{Value: pk},
-		"sk":          &types.AttributeValueMemberS{Value: sk},
-		"slug":        &types.AttributeValueMemberS{Value: post.Slug},
-		"title":       &types.AttributeValueMemberS{Value: post.Title},
-		"summary":     &types.AttributeValueMemberS{Value: post.Summary},
-		"date":        &types.AttributeValueMemberS{Value: post.Date.Format(time.RFC3339)},
-		"tags":        &types.AttributeValueMemberSS{Value: post.Tags},
-		"headerImage": &types.AttributeValueMemberS{Value: post.HeaderImage},
+		"pk":             &types.AttributeValueMemberS{Value: pk},
+		"sk":             &types.AttributeValueMemberS{Value: sk},
+		"slug":           &types.AttributeValueMemberS{Value: post.Slug},
+		"title":          &types.AttributeValueMemberS{Value: post.Title},
+		"summary":        &types.AttributeValueMemberS{Value: post.Summary},
+		"date":           &types.AttributeValueMemberS{Value: post.Date.Format(time.RFC3339)},
+		"tags":           &types.AttributeValueMemberSS{Value: post.Tags},
+		"openGraphImage": &types.AttributeValueMemberS{Value: post.OpenGraphImage},
 	}
 
 	_, err := db.client.PutItem(ctx, &dynamodb.PutItemInput{
@@ -107,4 +108,53 @@ func (db *Db) upsertPost(ctx context.Context, tag string, post model.Post) {
 	if err != nil {
 		log.Fatalf("failed to upsert post %s for tag %s: %v", post.Slug, tag, err)
 	}
+}
+
+func (db *Db) GetPostsByTag(tag string, cursor string) ([]model.Post, *string, error) {
+	ctx := context.Background()
+	var posts []model.Post
+	var nextCursor *string
+
+	pk := "TAG#" + tag
+	params := &dynamodb.QueryInput{
+		TableName:              aws.String("blog"),
+		KeyConditionExpression: aws.String("pk = :pk"),
+		ExpressionAttributeValues: map[string]types.AttributeValue{
+			":pk": &types.AttributeValueMemberS{Value: pk},
+		},
+	}
+
+	if cursor != "" {
+		params.ExclusiveStartKey = map[string]types.AttributeValue{
+			"pk": &types.AttributeValueMemberS{Value: pk},
+			"sk": &types.AttributeValueMemberS{Value: cursor},
+		}
+	}
+
+	result, err := db.client.Query(ctx, params)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	for _, item := range result.Items {
+		post := model.Post{
+			Slug:           item["slug"].(*types.AttributeValueMemberS).Value,
+			Title:          item["title"].(*types.AttributeValueMemberS).Value,
+			Summary:        item["summary"].(*types.AttributeValueMemberS).Value,
+			Date:           time.Time{},
+			Tags:           item["tags"].(*types.AttributeValueMemberSS).Value,
+			OpenGraphImage: item["openGraphImage"].(*types.AttributeValueMemberS).Value,
+		}
+		dateStr := item["date"].(*types.AttributeValueMemberS).Value
+		post.Date, _ = time.Parse(time.RFC3339, dateStr)
+		posts = append(posts, post)
+	}
+
+	if result.LastEvaluatedKey != nil {
+		if skAttr, ok := result.LastEvaluatedKey["sk"].(*types.AttributeValueMemberS); ok {
+			nextCursor = aws.String(skAttr.Value)
+		}
+	}
+
+	return posts, nextCursor, nil
 }

@@ -4,7 +4,6 @@ import (
 	"context"
 	"loficode/application"
 	"loficode/config"
-	"loficode/db"
 	"log"
 	"net/http"
 
@@ -13,9 +12,6 @@ import (
 )
 
 func main() {
-	ctx := context.Background()
-	cfg := config.New(ctx)
-	db.New(ctx, cfg)
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 
@@ -23,7 +19,9 @@ func main() {
 		http.StripPrefix("/", http.FileServer(http.Dir("public"))).ServeHTTP(w, r)
 	}))
 
-	app := application.New()
+	ctx := context.Background()
+	cfg := config.New(ctx)
+	app := application.New(ctx, cfg)
 
 	r.Route("/api/posts/{slug}/comments", func(r chi.Router) {
 		r.Get("/", app.Comments)

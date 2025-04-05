@@ -14,7 +14,7 @@ import (
 	"loficode/templates/components/page"
 )
 
-func Post(post model.Post, baseUrl string) templ.Component {
+func Post(post model.Post, baseUrl string, relatedPosts []model.Post) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -46,7 +46,7 @@ func Post(post model.Post, baseUrl string) templ.Component {
 				{Text: "posts", Url: "/posts.html"},
 				{Text: post.Slug, Url: "/posts/" + post.Slug + ".html"},
 			},
-			content(post, baseUrl),
+			content(post, baseUrl, relatedPosts),
 		).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -55,7 +55,7 @@ func Post(post model.Post, baseUrl string) templ.Component {
 	})
 }
 
-func content(post model.Post, baseUrl string) templ.Component {
+func content(post model.Post, baseUrl string, relatedPosts []model.Post) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -89,27 +89,26 @@ func content(post model.Post, baseUrl string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\"></figure></div><div class=\"card-content\"><div class=\"media\"><div class=\"media-content\"><h4 class=\"is-size-4\">Cody Potter - Posted on ")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\"></figure></div><div class=\"card-content\"><div class=\"media\"><div class=\"media-content\"><h4 class=\"is-size-4\">Cody Potter - Posted on <span id=\"post-date\"></span></h4><script>\n\t\t\t\t\t\tlocalizeDate(\"post-date\", ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var4 string
-		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(post.Date.String())
+		templ_7745c5c3_Var4, templ_7745c5c3_Err := templruntime.ScriptContentOutsideStringLiteral(post.Date.Unix() * 1000)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/post/post.templ`, Line: 43, Col: 71}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/post/post.templ`, Line: 45, Col: 58}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var4)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</h4><h1 class=\"title is-size-1\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, ");\n\t\t\t\t\t</script><h1 class=\"title is-size-1\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var5 string
 		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(post.Title)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/post/post.templ`, Line: 44, Col: 45}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/post/post.templ`, Line: 47, Col: 45}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 		if templ_7745c5c3_Err != nil {
@@ -166,26 +165,21 @@ func content(post model.Post, baseUrl string) templ.Component {
 		var templ_7745c5c3_Var6 string
 		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs("/api/posts/" + post.Slug + "/comments")
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/post/post.templ`, Line: 65, Col: 78}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/post/post.templ`, Line: 68, Col: 78}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "\" hx-trigger=\"load\" hx-swap=\"outerHTML\"><p>Loading comments...</p></div></div></div><div class=\"container p-5 block is-max-desktop\"><h4 class=\"title is-4 mb-5\">Related Posts</h4><div hx-get=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "\" hx-trigger=\"load\" hx-swap=\"outerHTML\"><p>Loading comments...</p></div></div></div><div class=\"container p-5 block is-max-desktop\"><h4 class=\"title is-4 mb-5\">Related Posts</h4>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var7 string
-		templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs("/api/post-previews")
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/pages/post/post.templ`, Line: 72, Col: 36}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
+		templ_7745c5c3_Err = components.PostPreviews(relatedPosts).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "\" hx-trigger=\"load\" hx-swap=\"outerHTML\"></div></div><script>\n\t\tdocument.addEventListener(\"DOMContentLoaded\", function () {\n\t\t\tfunction getElementById(id) {\n\t\t\t\tconst element = document.getElementById(id);\n\t\t\t\tif (!element) {\n\t\t\t\t\tconsole.debug(`${id} not found.`);\n\t\t\t\t}\n\t\t\t\treturn element;\n\t\t\t}\n\n\t\t\tfunction handleLocalStorage(key, elementId) {\n\t\t\t\tconst value = localStorage.getItem(\"loficode.\"+key);\n\t\t\t\tconst element = getElementById(elementId);\n\t\t\t\tif (value === \"true\" && element) {\n\t\t\t\t\tconsole.debug(`${key} is true, hiding ${elementId}.`);\n\t\t\t\t\telement.style.display = \"none\";\n\t\t\t\t} else if (element) {\n\t\t\t\t\tconsole.debug(`${key} is not true, keeping ${elementId} visible.`);\n\t\t\t\t}\n\t\t\t}\n\n\t\t\tfunction prefillField(localStorageKey, inputId) {\n\t\t\t\tconst value = localStorage.getItem(localStorageKey);\n\t\t\t\tconst input = getElementById(inputId);\n\t\t\t\tif (value && input) {\n\t\t\t\t\tconsole.debug(`${localStorageKey} found in localStorage, populating ${inputId}.`);\n\t\t\t\t\tinput.value = value;\n\t\t\t\t}\n\t\t\t}\n\n\t\t\tfunction saveFieldToLocalStorage(inputId, localStorageKey) {\n\t\t\t\tconst input = getElementById(inputId);\n\t\t\t\tif (input) {\n\t\t\t\t\tconsole.debug(`Saving ${inputId} to ${localStorageKey}.`);\n\t\t\t\t\tlocalStorage.setItem(\"loficode.\"+localStorageKey, input.value);\n\t\t\t\t}\n\t\t\t}\n\n\t\t\tfunction saveCheckboxToLocalStorage(checkboxName, localStorageKey) {\n\t\t\t\tconst checkbox = document.querySelector(`input[name='${checkboxName}']`);\n\t\t\t\tif (checkbox && checkbox.checked) {\n\t\t\t\t\tconsole.debug(`${checkboxName} is checked, saving to ${localStorageKey}.`);\n\t\t\t\t\tlocalStorage.setItem(\"loficode.\"+localStorageKey, \"true\");\n\t\t\t\t}\n\t\t\t}\n\n\t\t\tprefillField(\"commentFormName\", \"nameInput\");\n\t\t\tprefillField(\"commentFormEmail\", \"emailInput\");\n\n\t\t\thandleLocalStorage(\"mailingListSignedUp\", \"mailingListCheckbox\");\n\t\t\thandleLocalStorage(\"termsAccepted\", \"termsField\");\n\n\t\t\tconst commentForm = getElementById(\"commentForm\");\n\t\t\tif (commentForm) {\n\t\t\t\tconsole.debug(\"Comment form found, setting up event listener.\");\n\t\t\t\tcommentForm.addEventListener(\"submit\", function () {\n\t\t\t\t\tsaveFieldToLocalStorage(\"nameInput\", \"commentFormName\");\n\t\t\t\t\tsaveFieldToLocalStorage(\"emailInput\", \"commentFormEmail\");\n\t\t\t\t\tsaveCheckboxToLocalStorage(\"mailingList\", \"mailingListSignedUp\");\n\t\t\t\t\tsaveCheckboxToLocalStorage(\"terms\", \"termsAccepted\");\n\t\t\t\t});\n\t\t\t} else {\n\t\t\t\tconsole.debug(\"Comment form not found, skipping event listener setup.\");\n\t\t\t}\n\t\t});\n\t</script>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "</div><script>\n\t\tdocument.addEventListener(\"DOMContentLoaded\", function () {\n\t\t\tfunction getElementById(id) {\n\t\t\t\tconst element = document.getElementById(id);\n\t\t\t\tif (!element) {\n\t\t\t\t\tconsole.debug(`${id} not found.`);\n\t\t\t\t}\n\t\t\t\treturn element;\n\t\t\t}\n\n\t\t\tfunction handleLocalStorage(key, elementId) {\n\t\t\t\tconst value = localStorage.getItem(\"loficode.\"+key);\n\t\t\t\tconst element = getElementById(elementId);\n\t\t\t\tif (value === \"true\" && element) {\n\t\t\t\t\tconsole.debug(`${key} is true, hiding ${elementId}.`);\n\t\t\t\t\telement.style.display = \"none\";\n\t\t\t\t} else if (element) {\n\t\t\t\t\tconsole.debug(`${key} is not true, keeping ${elementId} visible.`);\n\t\t\t\t}\n\t\t\t}\n\n\t\t\tfunction prefillField(localStorageKey, inputId) {\n\t\t\t\tconst value = localStorage.getItem(localStorageKey);\n\t\t\t\tconst input = getElementById(inputId);\n\t\t\t\tif (value && input) {\n\t\t\t\t\tconsole.debug(`${localStorageKey} found in localStorage, populating ${inputId}.`);\n\t\t\t\t\tinput.value = value;\n\t\t\t\t}\n\t\t\t}\n\n\t\t\tfunction saveFieldToLocalStorage(inputId, localStorageKey) {\n\t\t\t\tconst input = getElementById(inputId);\n\t\t\t\tif (input) {\n\t\t\t\t\tconsole.debug(`Saving ${inputId} to ${localStorageKey}.`);\n\t\t\t\t\tlocalStorage.setItem(\"loficode.\"+localStorageKey, input.value);\n\t\t\t\t}\n\t\t\t}\n\n\t\t\tfunction saveCheckboxToLocalStorage(checkboxName, localStorageKey) {\n\t\t\t\tconst checkbox = document.querySelector(`input[name='${checkboxName}']`);\n\t\t\t\tif (checkbox && checkbox.checked) {\n\t\t\t\t\tconsole.debug(`${checkboxName} is checked, saving to ${localStorageKey}.`);\n\t\t\t\t\tlocalStorage.setItem(\"loficode.\"+localStorageKey, \"true\");\n\t\t\t\t}\n\t\t\t}\n\n\t\t\tprefillField(\"commentFormName\", \"nameInput\");\n\t\t\tprefillField(\"commentFormEmail\", \"emailInput\");\n\n\t\t\thandleLocalStorage(\"mailingListSignedUp\", \"mailingListCheckbox\");\n\t\t\thandleLocalStorage(\"termsAccepted\", \"termsField\");\n\n\t\t\tconst commentForm = getElementById(\"commentForm\");\n\t\t\tif (commentForm) {\n\t\t\t\tconsole.debug(\"Comment form found, setting up event listener.\");\n\t\t\t\tcommentForm.addEventListener(\"submit\", function () {\n\t\t\t\t\tsaveFieldToLocalStorage(\"nameInput\", \"commentFormName\");\n\t\t\t\t\tsaveFieldToLocalStorage(\"emailInput\", \"commentFormEmail\");\n\t\t\t\t\tsaveCheckboxToLocalStorage(\"mailingList\", \"mailingListSignedUp\");\n\t\t\t\t\tsaveCheckboxToLocalStorage(\"terms\", \"termsAccepted\");\n\t\t\t\t});\n\t\t\t} else {\n\t\t\t\tconsole.debug(\"Comment form not found, skipping event listener setup.\");\n\t\t\t}\n\t\t});\n\t</script>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

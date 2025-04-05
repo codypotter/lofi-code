@@ -40,10 +40,10 @@ func main() {
 		log.Printf("Error parsing markdown files: %v\n", err)
 		return
 	}
-	fmt.Printf("Parsed %d posts\n", len(ps))
+	log.Printf("Parsed %d posts\n", len(ps))
 
 	tags := extractTags(ps)
-	fmt.Printf("Found %d tags\n", len(tags))
+	log.Printf("Found tags: %v\n", tags)
 
 	recentPosts := extractRecentPosts(ps)
 
@@ -66,8 +66,9 @@ func renderStaticPages(ps []model.Post, tags []string, recentPosts []model.Post)
 	}
 	baseUrl := config.New(context.Background()).BaseUrl
 	for _, p := range ps {
+		relatedPosts := getRelatedPosts(p, ps)
 		htmlOut := filepath.Join("posts", p.Slug+".html")
-		staticPages[htmlOut] = post.Post(p, baseUrl)
+		staticPages[htmlOut] = post.Post(p, baseUrl, relatedPosts)
 	}
 
 	for name, component := range staticPages {
@@ -77,6 +78,28 @@ func renderStaticPages(ps []model.Post, tags []string, recentPosts []model.Post)
 		}
 	}
 	return nil
+}
+
+func getRelatedPosts(p model.Post, ps []model.Post) []model.Post {
+	var relatedPosts []model.Post
+	for _, post := range ps {
+		var intersection []string
+		for _, t1 := range p.Tags {
+			for _, t2 := range post.Tags {
+				if t1 == t2 {
+					intersection = append(intersection, t1)
+				}
+			}
+		}
+		if post.Slug != p.Slug && len(relatedPosts) < 3 && len(intersection) > 0 {
+			relatedPosts = append(relatedPosts, post)
+		}
+
+		sort.Slice(relatedPosts, func(i, j int) bool {
+			return len(relatedPosts[i].Tags) > len(relatedPosts[j].Tags)
+		})
+	}
+	return relatedPosts
 }
 
 func parseMarkdownFiles() ([]model.Post, error) {
