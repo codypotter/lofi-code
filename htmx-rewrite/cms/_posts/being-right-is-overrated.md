@@ -13,7 +13,6 @@ headerImage: https://firebasestorage.googleapis.com/v0/b/lofi-code.appspot.com/o
 openGraphImage: https://firebasestorage.googleapis.com/v0/b/lofi-code.appspot.com/o/images%2Fmkc6d_clown16x9.jpg?alt=media&token=e480a4c5-662d-41be-8d72-862bb1351e1f
 tags:
   - soft-skills
-  - programming
 ---
 It's a high-stakes discussion in a boardroom at BigTek. The stakeholders are not happy with your team's progress, because they needed the "Real-Time Activity Feed" ™️ like two weeks ago to meet a major marketing deadline. Of course, your team has been focused on that big, surprise refactor for the last few weeks. But now that Archimedes and FooBar are PEEPEEPOOPOO compliant, we're good to start that new, all-important feature.
 
