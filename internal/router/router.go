@@ -1,24 +1,20 @@
-package main
+package router
 
 import (
 	"context"
 	"loficode/internal/application"
 	"loficode/internal/config"
-	"log"
-	"net/http"
+	"time"
 
-	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 )
 
-func main() {
+func NewRouter() *chi.Mux {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
-
-	r.Get("/*", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		http.StripPrefix("/", http.FileServer(http.Dir("public"))).ServeHTTP(w, r)
-	}))
-
+	r.Use(middleware.Recoverer)
+	r.Use(middleware.Timeout(60 * time.Second))
 	ctx := context.Background()
 	cfg := config.New(ctx)
 	app := application.New(ctx, cfg)
@@ -32,5 +28,5 @@ func main() {
 	r.Post("/api/subscribe", app.Subscribe)
 	r.Get("/api/verify", app.VerifyEmail)
 
-	log.Fatal(http.ListenAndServe(":8080", r))
+	return r
 }

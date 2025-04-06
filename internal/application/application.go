@@ -146,14 +146,6 @@ func (a *application) SearchResults(w http.ResponseWriter, r *http.Request) {
 	components.SearchResults(posts, nextCursor).Render(r.Context(), w)
 }
 
-func (a *application) Tags(w http.ResponseWriter, r *http.Request) {
-	components.Tags(components.TagsConfig{
-		Size:             "is-large",
-		Tags:             []string{"tag1", "tag2", "tag3"},
-		EnableNavigation: true,
-	}).Render(r.Context(), w)
-}
-
 func (a *application) Subscribe(w http.ResponseWriter, r *http.Request) {
 	e := r.FormValue("email")
 	token, err := a.db.NewVerificationToken(e, 86400)
