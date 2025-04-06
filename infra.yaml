@@ -13,7 +13,7 @@ Resources:
     Type: AWS::DynamoDB::Table
     Properties:
       TableName: blog
-      BillingMode: PAYPERREQUEST
+      BillingMode: PAY_PER_REQUEST
       AttributeDefinitions:
         - AttributeName: pk
           AttributeType: S
@@ -140,12 +140,6 @@ Resources:
                   - logs:CreateLogStream
                   - logs:PutLogEvents
                 Resource: "arn:aws:logs:*:*:*"
-
-  ### ECR Repository ###
-  BlogEcrRepo:
-    Type: AWS::ECR::Repository
-    Properties:
-      RepositoryName: blog-api
 
   ### Lambda Function (Function URL only) ###
   BlogLambda:

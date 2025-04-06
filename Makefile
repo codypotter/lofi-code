@@ -60,7 +60,11 @@ cf-deploy: ## Deploy CloudFormation stack
 		--parameter-overrides LambdaImageUri=$(lambda_repo):$(git_sha) \
 		--region $(lambda_region)
 
-deploy: build-lambda push-lambda cf-deploy ## Build, push, and deploy the Lambda
+deploy: check-clean build-lambda push-lambda cf-deploy ## Build, push, and deploy the Lambda
+
+check-clean:
+	@git diff-index --quiet HEAD -- || { echo "❌ Uncommitted changes. Commit them before deploying."; exit 1; }
+
 
 help: ## Show this help message
 	@echo "Available commands:"
