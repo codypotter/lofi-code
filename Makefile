@@ -62,9 +62,19 @@ cf-deploy: ## Deploy CloudFormation stack
 
 deploy: check-clean build-lambda push-lambda cf-deploy ## Build, push, and deploy the Lambda
 
+nuke: ## Delete the CloudFormation stack
+	aws cloudformation delete-stack --stack-name loficode-blog --region us-east-1
+
 check-clean:
 	@git diff-index --quiet HEAD -- || { echo "❌ Uncommitted changes. Commit them before deploying."; exit 1; }
 
+upload-static: ## Sync public/ to the S3 static site bucket
+	aws s3 sync public/ s3://loficode-site --delete
+
+invalidate-cache: ## Invalidate CloudFront cache
+	aws cloudfront create-invalidation \
+		--distribution-id E2PTHK2S97TEHJ \
+		--paths "/*"
 
 help: ## Show this help message
 	@echo "Available commands:"

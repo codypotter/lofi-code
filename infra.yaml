@@ -42,6 +42,18 @@ Resources:
         IgnorePublicAcls: false
         RestrictPublicBuckets: false
 
+  StaticSiteBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref StaticSiteBucket
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal: "*"
+            Action: "s3:GetObject"
+            Resource: !Sub "${StaticSiteBucket.Arn}/*"
+
   ### S3 Bucket for Media ###
   MediaBucket:
     Type: AWS::S3::Bucket
@@ -217,3 +229,7 @@ Outputs:
   MediaUploaderUserName:
     Value: !Ref MediaUploaderUser
     Description: IAM username for uploading media files to the media bucket
+  
+  CloudFrontDistributionId:
+    Value: !Ref BlogCloudFrontDistribution
+    Description: CloudFront distribution ID
