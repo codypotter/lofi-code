@@ -1,0 +1,225 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: loficode blog stack
+
+Parameters:
+  LambdaImageUri:
+    Type: String
+    Description: URI of the Lambda container image (e.g. <account>.dkr.ecr.<region>.amazonaws.com/blog-api:latest)
+
+Resources:
+
+  ### DynamoDB Table ###
+  BlogTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: blog
+      BillingMode: PAYPERREQUEST
+      AttributeDefinitions:
+        - AttributeName: pk
+          AttributeType: S
+        - AttributeName: sk
+          AttributeType: S
+      KeySchema:
+        - AttributeName: pk
+          KeyType: HASH
+        - AttributeName: sk
+          KeyType: RANGE
+      TimeToLiveSpecification:
+        AttributeName: ttl
+        Enabled: true
+
+  ### S3 Bucket for Static Site ###
+  StaticSiteBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: loficode-site
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: 404.html
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: false
+        BlockPublicPolicy: false
+        IgnorePublicAcls: false
+        RestrictPublicBuckets: false
+
+  ### S3 Bucket for Media ###
+  MediaBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: loficode-media
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: false
+        BlockPublicPolicy: false
+        IgnorePublicAcls: false
+        RestrictPublicBuckets: false
+      OwnershipControls:
+        Rules:
+          - ObjectOwnership: BucketOwnerPreferred
+      CorsConfiguration:
+        CorsRules:
+          - AllowedOrigins: ["*"]
+            AllowedMethods: ["GET", "PUT", "POST"]
+            AllowedHeaders: ["*"]
+
+  ### IAM User for Media Uploads ###
+  MediaUploaderUser:
+    Type: AWS::IAM::User
+    Properties:
+      UserName: media-uploader
+
+  MediaUploaderPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: MediaUploaderAccess
+      Users:
+        - !Ref MediaUploaderUser
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              - s3:PutObject
+              - s3:PutObjectAcl
+              - s3:ListBucket
+            Resource:
+              - !Sub "${MediaBucket.Arn}"
+              - !Sub "${MediaBucket.Arn}/*"
+
+  MediaBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref MediaBucket
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal: "*"
+            Action: "s3:GetObject"
+            Resource: !Sub "${MediaBucket.Arn}/*"
+          - Effect: Allow
+            Principal:
+              AWS: !GetAtt MediaUploaderUser.Arn
+            Action: ["s3:PutObject", "s3:PutObjectAcl"]
+            Resource: !Sub "${MediaBucket.Arn}/*"
+
+  ### IAM Role for Lambda ###
+  BlogLambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: blog-lambda-exec
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: BlogLambdaPermissions
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - dynamodb:*
+                Resource: !GetAtt BlogTable.Arn
+              - Effect: Allow
+                Action:
+                  - s3:GetObject
+                  - s3:PutObject
+                Resource:
+                  - !Sub "${MediaBucket.Arn}/*"
+              - Effect: Allow
+                Action:
+                  - ses:SendEmail
+                  - ses:SendRawEmail
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: "arn:aws:logs:*:*:*"
+
+  ### ECR Repository ###
+  BlogEcrRepo:
+    Type: AWS::ECR::Repository
+    Properties:
+      RepositoryName: blog-api
+
+  ### Lambda Function (Function URL only) ###
+  BlogLambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: blog-api
+      PackageType: Image
+      Code:
+        ImageUri: !Ref LambdaImageUri
+      Role: !GetAtt BlogLambdaRole.Arn
+      Timeout: 15
+
+  BlogLambdaUrl:
+    Type: AWS::Lambda::Url
+    Properties:
+      AuthType: NONE
+      TargetFunctionArn: !Ref BlogLambda
+
+  ### CloudFront Distribution ###
+  BlogCloudFrontDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Enabled: true
+        DefaultRootObject: index.html
+        Origins:
+          - Id: StaticSiteOrigin
+            DomainName: !GetAtt StaticSiteBucket.RegionalDomainName
+            S3OriginConfig: {}
+          - Id: LambdaOrigin
+            DomainName: !Select [2, !Split ["/", !GetAtt BlogLambdaUrl.FunctionUrl]]
+            CustomOriginConfig:
+              OriginProtocolPolicy: https-only
+        DefaultCacheBehavior:
+          TargetOriginId: StaticSiteOrigin
+          ViewerProtocolPolicy: redirect-to-https
+          AllowedMethods: [GET, HEAD]
+          CachedMethods: [GET, HEAD]
+          ForwardedValues:
+            QueryString: false
+            Cookies:
+              Forward: none
+        CacheBehaviors:
+          - PathPattern: /api/*
+            TargetOriginId: LambdaOrigin
+            ViewerProtocolPolicy: https-only
+            AllowedMethods: [GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE]
+            CachedMethods: [GET, HEAD]
+            ForwardedValues:
+              QueryString: true
+              Headers: ["*"]
+              Cookies:
+                Forward: all
+        ViewerCertificate:
+          CloudFrontDefaultCertificate: true
+        HttpVersion: http2
+
+Outputs:
+  SiteBucket:
+    Value: !Ref StaticSiteBucket
+    Description: Static site bucket name
+
+  MediaBucket:
+    Value: !Ref MediaBucket
+    Description: S3 bucket for blog media uploads
+
+  CloudFrontURL:
+    Value: !Sub "https://${BlogCloudFrontDistribution.DomainName}"
+    Description: CloudFront URL for blog site
+
+  LambdaFunctionURL:
+    Value: !GetAtt BlogLambdaUrl.FunctionUrl
+    Description: Lambda Function URL (raw)
+
+  MediaUploaderUserName:
+    Value: !Ref MediaUploaderUser
+    Description: IAM username for uploading media files to the media bucket
