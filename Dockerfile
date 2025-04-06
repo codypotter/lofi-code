@@ -1,11 +1,16 @@
 FROM golang:1.24 as build
-WORKDIR /helloworld
-# Copy dependencies list
+
+WORKDIR /app
+
 COPY go.mod go.sum ./
-# Build with optional lambda.norpc tag
-COPY lambda/main.go .
-RUN go build -tags lambda.norpc -o main main.go
-# Copy artifacts to a clean image
+RUN go mod download
+
+COPY . .
+
+RUN go build -tags lambda.norpc -o main ./cmd/lambda
+
 FROM public.ecr.aws/lambda/provided:al2023
-COPY --from=build /helloworld/main ./main
-ENTRYPOINT [ "./main" ]
+
+COPY --from=build /app/main ./main
+
+ENTRYPOINT ["./main"]
