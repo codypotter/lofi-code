@@ -232,6 +232,9 @@ Resources:
             DomainName: !Select [2, !Split ["/", !Sub "https://${BlogApi}.execute-api.${AWS::Region}.amazonaws.com"]]
             CustomOriginConfig:
               OriginProtocolPolicy: https-only
+          - Id: MediaBucketOrigin
+            DomainName: !GetAtt MediaBucket.DomainName
+            S3OriginConfig: {}
         DefaultCacheBehavior:
           TargetOriginId: StaticSiteOrigin
           ViewerProtocolPolicy: redirect-to-https
@@ -254,6 +257,15 @@ Resources:
               Cookies:
                 Forward: all
             OriginRequestPolicyId: !Ref ApiOriginRequestPolicy
+          - PathPattern: /media/*
+            TargetOriginId: MediaBucketOrigin
+            ViewerProtocolPolicy: redirect-to-https
+            AllowedMethods: [GET, HEAD]
+            CachedMethods: [GET, HEAD]
+            ForwardedValues:
+              QueryString: false
+              Cookies:
+                Forward: none
         ViewerCertificate:
           CloudFrontDefaultCertificate: true
         HttpVersion: http2
