@@ -23,3 +23,8 @@ Trigger a deployment by creating a GitHub release from a tag.
 ### Local Deployment
 
 This project is configured for deployment on AWS. To deploy the application, ensure you have a valid `environments.prod.ts` file. Then authenticate your command line with aws by adding your aws credentials to `~/aws/.credentials` and running `npm run deploy`.
+
+
+### Infra Diagram
+
+![Diagram](./infra.png)
