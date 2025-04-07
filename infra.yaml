@@ -209,6 +209,8 @@ Resources:
       DistributionConfig:
         Enabled: true
         DefaultRootObject: index.html
+        Aliases:
+          - "htmx.loficode.com"
         Origins:
           - Id: StaticSiteOrigin
             DomainName: !GetAtt StaticSiteBucket.DomainName
