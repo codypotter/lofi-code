@@ -202,6 +202,20 @@ Resources:
       Principal: apigateway.amazonaws.com
       SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${BlogApi}/*/*/*
 
+  ApiOriginRequestPolicy:
+    Type: AWS::CloudFront::OriginRequestPolicy
+    Properties:
+      OriginRequestPolicyConfig:
+        Name: "ExcludeHostHeaderPolicy"
+        Comment: "Exclude Host header so CloudFront uses the origin's domain name"
+        HeadersConfig:
+          HeaderBehavior: whitelist
+          Headers: []
+        QueryStringsConfig:
+          QueryStringBehavior: none
+        CookiesConfig:
+          CookieBehavior: none
+
   ### CloudFront Distribution ###
   BlogCloudFrontDistribution:
     Type: AWS::CloudFront::Distribution
@@ -239,6 +253,7 @@ Resources:
               Headers: ["*"]
               Cookies:
                 Forward: all
+            OriginRequestPolicyId: !Ref ApiOriginRequestPolicy
         ViewerCertificate:
           CloudFrontDefaultCertificate: true
         HttpVersion: http2
