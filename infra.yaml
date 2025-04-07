@@ -5,6 +5,13 @@ Parameters:
   LambdaImageUri:
     Type: String
     Description: URI of the Lambda container image (e.g. <account>.dkr.ecr.<region>.amazonaws.com/blog-api:latest)
+  CustomDomainName:
+    Type: String
+    Default: htmx.loficode.com
+    Description: The custom domain name for the API 
+  CertificateArn:
+    Type: String
+    Description: ARN of the ACM certificate for the custom domain (must be in the same region as the API)
 
 Resources:
 
@@ -205,6 +212,22 @@ Resources:
       Principal: apigateway.amazonaws.com
       SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${BlogApi}/*/*/*
 
+  ### API Gateway Custom Domain (for HTTP API) ###
+  ApiCustomDomain:
+    Type: AWS::ApiGatewayV2::DomainName
+    Properties:
+      DomainName: !Ref CustomDomainName
+      DomainNameConfigurations:
+        - CertificateArn: !Ref CertificateArn
+          EndpointType: REGIONAL
+
+  ApiMapping:
+    Type: AWS::ApiGatewayV2::ApiMapping
+    Properties:
+      ApiId: !Ref BlogApi
+      DomainName: !Ref ApiCustomDomain
+      Stage: "$default"
+
   ### CloudFront Distribution ###
   BlogCloudFrontDistribution:
     Type: AWS::CloudFront::Distribution
@@ -217,12 +240,9 @@ Resources:
             DomainName: !GetAtt StaticSiteBucket.RegionalDomainName
             S3OriginConfig: {}
           - Id: ApiGatewayOrigin
-            DomainName: !Select [2, !Split ["/", !Sub "https://${BlogApi}.execute-api.${AWS::Region}.amazonaws.com"]]
+            DomainName: !Ref CustomDomainName
             CustomOriginConfig:
               OriginProtocolPolicy: https-only
-            OriginCustomHeaders:
-              - HeaderName: Host
-                HeaderValue: !Select [2, !Split ["/", !Sub "https://${BlogApi}.execute-api.${AWS::Region}.amazonaws.com"]]
         DefaultCacheBehavior:
           TargetOriginId: StaticSiteOrigin
           ViewerProtocolPolicy: redirect-to-https
@@ -271,3 +291,7 @@ Outputs:
   BlogApiUrl:
     Value: !Sub "https://${BlogApi}.execute-api.${AWS::Region}.amazonaws.com"
     Description: Root URL of the API Gateway
+
+  CustomDomain:
+    Value: !Ref CustomDomainName
+    Description: Custom domain name for the API
