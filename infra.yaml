@@ -214,8 +214,9 @@ Resources:
         DefaultRootObject: index.html
         Origins:
           - Id: StaticSiteOrigin
-            DomainName: !GetAtt StaticSiteBucket.RegionalDomainName
-            S3OriginConfig: {}
+            DomainName: !Sub "loficode-site.s3-website-${AWS::Region}.amazonaws.com"
+            CustomOriginConfig:
+              OriginProtocolPolicy: http-only
           - Id: ApiGatewayOrigin
             DomainName: !Select [2, !Split ["/", !Sub "https://${BlogApi}.execute-api.${AWS::Region}.amazonaws.com"]]
             CustomOriginConfig:
@@ -243,7 +244,6 @@ Resources:
         ViewerCertificate:
           CloudFrontDefaultCertificate: true
         HttpVersion: http2
-
 Outputs:
   SiteBucket:
     Value: !Ref StaticSiteBucket
