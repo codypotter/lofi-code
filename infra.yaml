@@ -5,13 +5,6 @@ Parameters:
   LambdaImageUri:
     Type: String
     Description: URI of the Lambda container image (e.g. <account>.dkr.ecr.<region>.amazonaws.com/blog-api:latest)
-  CustomDomainName:
-    Type: String
-    Default: htmx.loficode.com
-    Description: The custom domain name for the API 
-  CertificateArn:
-    Type: String
-    Description: ARN of the ACM certificate for the custom domain (must be in the same region as the API)
 
 Resources:
 
@@ -212,22 +205,6 @@ Resources:
       Principal: apigateway.amazonaws.com
       SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${BlogApi}/*/*/*
 
-  ### API Gateway Custom Domain (for HTTP API) ###
-  ApiCustomDomain:
-    Type: AWS::ApiGatewayV2::DomainName
-    Properties:
-      DomainName: !Ref CustomDomainName
-      DomainNameConfigurations:
-        - CertificateArn: !Ref CertificateArn
-          EndpointType: REGIONAL
-
-  ApiMapping:
-    Type: AWS::ApiGatewayV2::ApiMapping
-    Properties:
-      ApiId: !Ref BlogApi
-      DomainName: !Ref ApiCustomDomain
-      Stage: "$default"
-
   ### CloudFront Distribution ###
   BlogCloudFrontDistribution:
     Type: AWS::CloudFront::Distribution
@@ -240,7 +217,7 @@ Resources:
             DomainName: !GetAtt StaticSiteBucket.RegionalDomainName
             S3OriginConfig: {}
           - Id: ApiGatewayOrigin
-            DomainName: !Ref CustomDomainName
+            DomainName: !Select [2, !Split ["/", !Sub "https://${BlogApi}.execute-api.${AWS::Region}.amazonaws.com"]]
             CustomOriginConfig:
               OriginProtocolPolicy: https-only
         DefaultCacheBehavior:
@@ -278,20 +255,8 @@ Outputs:
 
   CloudFrontURL:
     Value: !Sub "https://${BlogCloudFrontDistribution.DomainName}"
-    Description: CloudFront URL for blog site
-
-  MediaUploaderUserName:
-    Value: !Ref MediaUploaderUser
-    Description: IAM username for uploading media files to the media bucket
-
-  CloudFrontDistributionId:
-    Value: !Ref BlogCloudFrontDistribution
-    Description: CloudFront distribution ID
-
+    Description: CloudFront URL for the new stack (htmx.loficode.com after DNS is configured)
+    
   BlogApiUrl:
     Value: !Sub "https://${BlogApi}.execute-api.${AWS::Region}.amazonaws.com"
     Description: Root URL of the API Gateway
-
-  CustomDomain:
-    Value: !Ref CustomDomainName
-    Description: Custom domain name for the API
