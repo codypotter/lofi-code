@@ -209,8 +209,7 @@ Resources:
         Name: "ExcludeHostHeaderPolicy"
         Comment: "Exclude Host header so CloudFront uses the origin's domain name"
         HeadersConfig:
-          HeaderBehavior: whitelist
-          Headers: []
+          HeaderBehavior: none
         QueryStringsConfig:
           QueryStringBehavior: none
         CookiesConfig:
