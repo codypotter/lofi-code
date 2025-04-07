@@ -166,7 +166,6 @@ Resources:
       Environment:
         LOG_LEVEL: "info"
         ENVIRONMENT: "production"
-        BASE_URL: !Sub "https://${BlogCloudFrontDistribution.DomainName}"
 
   BlogLambdaUrl:
     Type: AWS::Lambda::Url
