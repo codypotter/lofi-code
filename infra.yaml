@@ -168,6 +168,14 @@ Resources:
           LOG_LEVEL: "info"
           ENVIRONMENT: "production"
 
+  BlogLambdaUrlPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunctionUrl
+      FunctionName: !Ref BlogLambda
+      Principal: "*"
+      FunctionUrlAuthType: NONE
+
   BlogLambdaUrl:
     Type: AWS::Lambda::Url
     Properties:
