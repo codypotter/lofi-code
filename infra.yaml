@@ -218,6 +218,7 @@ Resources:
             S3OriginConfig: {}
           - Id: ApiGatewayOrigin
             DomainName: !Select [2, !Split ["/", !Sub "https://${BlogApi}.execute-api.${AWS::Region}.amazonaws.com"]]
+            OriginPath: "/"
             CustomOriginConfig:
               OriginProtocolPolicy: https-only
         DefaultCacheBehavior:
