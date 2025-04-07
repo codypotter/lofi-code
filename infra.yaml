@@ -164,8 +164,9 @@ Resources:
       Role: !GetAtt BlogLambdaRole.Arn
       Timeout: 15
       Environment:
-        LOG_LEVEL: "info"
-        ENVIRONMENT: "production"
+        Variables:
+          LOG_LEVEL: "info"
+          ENVIRONMENT: "production"
 
   BlogLambdaUrl:
     Type: AWS::Lambda::Url
