@@ -17,7 +17,7 @@ import (
 // for the AWS Lambda function. It is initialized in the init function
 // once per cold start. This allows us to cache the router between
 // warm invocations.
-var chiLambda *chiadapter.ChiLambda
+var chiLambda *chiadapter.ChiLambdaV2
 
 func init() {
 	ctx := context.Background()
@@ -28,12 +28,12 @@ func init() {
 	app := application.New(ctx, cfg)
 	r := router.NewRouter(app)
 
-	chiLambda = chiadapter.New(r)
+	chiLambda = chiadapter.NewV2(r)
 }
 
-func handler(ctx context.Context, req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+func handler(ctx context.Context, req events.APIGatewayV2HTTPRequest) (events.APIGatewayV2HTTPResponse, error) {
 	log.Debug().Msg("Handler invoked")
-	return chiLambda.ProxyWithContext(ctx, req)
+	return chiLambda.ProxyWithContextV2(ctx, req)
 }
 
 func main() {
