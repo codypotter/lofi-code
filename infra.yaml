@@ -42,7 +42,7 @@ Resources:
         IgnorePublicAcls: false
         RestrictPublicBuckets: false
 
-  StaticSiteBucketPolicy:
+  StaticSiteBucketPolicy:   # THIS ONE NEEDS A CLOUDFRONT DISTRIBUTION
     Type: AWS::S3::BucketPolicy
     Properties:
       Bucket: !Ref StaticSiteBucket
@@ -163,6 +163,11 @@ Resources:
         ImageUri: !Ref LambdaImageUri
       Role: !GetAtt BlogLambdaRole.Arn
       Timeout: 15
+      Environment:
+        LOG_LEVEL: "info"
+        ENVIRONMENT: "production"
+        BASE_URL: !Sub "https://${BlogCloudFrontDistribution.DomainName}"
+        AWS_REGION: !Ref AWS::Region
 
   BlogLambdaUrl:
     Type: AWS::Lambda::Url

@@ -13,9 +13,7 @@ import (
 	"github.com/google/uuid"
 )
 
-func (db *Db) NewVerificationToken(email string, ttlSeconds int64) (string, error) {
-	ctx := context.Background()
-
+func (db *Db) NewVerificationToken(ctx context.Context, email string, ttlSeconds int64) (string, error) {
 	token := generateToken()
 
 	_, err := db.client.PutItem(ctx, &dynamodb.PutItemInput{
@@ -36,8 +34,7 @@ func generateToken() string {
 	return uuid.New().String()
 }
 
-func (db *Db) IsEmailVerified(email string) (bool, error) {
-	ctx := context.Background()
+func (db *Db) IsEmailVerified(ctx context.Context, email string) (bool, error) {
 	result, err := db.client.GetItem(ctx, &dynamodb.GetItemInput{
 		TableName: aws.String("blog"),
 		Key: map[string]types.AttributeValue{
@@ -51,8 +48,7 @@ func (db *Db) IsEmailVerified(email string) (bool, error) {
 	return len(result.Item) > 0, nil
 }
 
-func (db *Db) VerifyEmail(token string, subscribed bool) (string, error) {
-	ctx := context.Background()
+func (db *Db) VerifyEmail(ctx context.Context, token string, subscribed bool) (string, error) {
 	pk := "EMAIL_TOKEN#" + token
 
 	resp, err := db.client.Query(ctx, &dynamodb.QueryInput{

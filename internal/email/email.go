@@ -5,16 +5,16 @@ import (
 	"fmt"
 	"loficode/internal/config"
 	"loficode/internal/templates/components"
-	"log"
 	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ses"
 	"github.com/aws/aws-sdk-go-v2/service/ses/types"
+	"github.com/rs/zerolog/log"
 )
 
 type EmailSender interface {
-	SendVerificationEmail(to, token string, subscribe bool) error
+	SendVerificationEmail(ctx context.Context, to, token string, subscribe bool) error
 }
 
 type NoopEmailSender struct{}
@@ -23,9 +23,12 @@ func NewNoopEmailSender() EmailSender {
 	return NoopEmailSender{}
 }
 
-func (s NoopEmailSender) SendVerificationEmail(to, token string, subscribe bool) error {
-	log.Printf("Sending verification email to %s with token %s", to, token)
-	log.Printf("Verify email link: http://localhost:8080/api/verify?token=%s&subscribe=%t", token, subscribe)
+func (s NoopEmailSender) SendVerificationEmail(_ context.Context, to, token string, subscribe bool) error {
+	log.Debug().Str("to", to).
+		Str("token", token).
+		Bool("subscribe", subscribe).
+		Msg("NoopEmailSender: Sending verification email")
+	log.Info().Msgf("Verify email link: http://localhost:8080/api/verify?token=%s&subscribe=%t", token, subscribe)
 	return nil
 }
 
@@ -39,16 +42,16 @@ func NewAwsSesEmailSender(cfg *config.Config) EmailSender {
 	}
 }
 
-func (s AwsSesEmailSender) SendVerificationEmail(to, token string, subscribe bool) error {
+func (s AwsSesEmailSender) SendVerificationEmail(ctx context.Context, to, token string, subscribe bool) error {
 	url := fmt.Sprintf("https://loficode.com/api/verify?token=%s&subscribe=%t", token, subscribe)
 
 	var sb strings.Builder
-	err := components.VerifyEmail(to, token).Render(context.Background(), &sb)
+	err := components.VerifyEmail(to, token).Render(ctx, &sb)
 	if err != nil {
-		log.Printf("Error rendering email template: %v", err)
+		log.Error().Err(err).Str("to", to).Msg("Error rendering email template")
 		return err
 	}
-	s.client.SendEmail(context.Background(), &ses.SendEmailInput{
+	s.client.SendEmail(ctx, &ses.SendEmailInput{
 		Destination: &types.Destination{
 			ToAddresses: []string{to},
 		},

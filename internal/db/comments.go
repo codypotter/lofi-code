@@ -12,8 +12,7 @@ import (
 	"github.com/google/uuid"
 )
 
-func (db *Db) GetCommentsBySlug(slug string) ([]model.Comment, error) {
-	ctx := context.Background()
+func (db *Db) GetCommentsBySlug(ctx context.Context, slug string) ([]model.Comment, error) {
 	var comments []model.Comment
 
 	pk := "COMMENTS#" + slug
@@ -46,9 +45,7 @@ func (db *Db) GetCommentsBySlug(slug string) ([]model.Comment, error) {
 	return comments, nil
 }
 
-func (db *Db) AddComment(slug string, comment model.Comment) error {
-	ctx := context.Background()
-
+func (db *Db) AddComment(ctx context.Context, slug string, comment model.Comment) error {
 	pk := "COMMENTS#" + slug
 	sk := fmt.Sprintf("COMMENT#%s#%s", comment.Date.Format(time.RFC3339), uuid.NewString())
 

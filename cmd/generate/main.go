@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"loficode/internal/config"
 	"loficode/internal/db"
+	"loficode/internal/logger"
 	"loficode/internal/model"
 	errorpage "loficode/internal/templates/pages/error"
 	"loficode/internal/templates/pages/home"
@@ -17,7 +18,6 @@ import (
 	"loficode/internal/templates/pages/tos"
 	"loficode/internal/templates/pages/unsubscribe"
 	"loficode/internal/templates/pages/verified"
-	"log"
 	"sort"
 
 	"io/fs"
@@ -26,6 +26,7 @@ import (
 	"strings"
 
 	"github.com/a-h/templ"
+	"github.com/rs/zerolog/log"
 	"github.com/yuin/goldmark"
 	meta "github.com/yuin/goldmark-meta"
 	"github.com/yuin/goldmark/parser"
@@ -35,28 +36,37 @@ import (
 func main() {
 	ctx := context.Background()
 	cfg := config.New(ctx)
-	db := db.New(ctx, cfg)
-	db.CreateTable()
+	logger.Configure(cfg.LogLevel, logger.LogFormatConsole)
+
+	var database *db.Db
+	if cfg.Environment == "development" {
+		log.Debug().Msg("Running in development mode")
+		database = db.NewDevelopment(ctx, cfg)
+	} else {
+		log.Debug().Msg("Running in production mode")
+		database = db.New(ctx, cfg)
+	}
+	database.CreateTable()
 
 	ps, err := parseMarkdownFiles()
 	if err != nil {
-		log.Printf("Error parsing markdown files: %v\n", err)
+		log.Error().Err(err).Msg("Error parsing markdown files")
 		return
 	}
-	log.Printf("Parsed %d posts\n", len(ps))
+	log.Debug().Msg("Parsed markdown files")
 
 	tags := extractTags(ps)
-	log.Printf("Found tags: %v\n", tags)
+	log.Debug().Msg("Extracted tags")
 
 	recentPosts := extractRecentPosts(ps)
 
 	err = renderStaticPages(ps, tags, recentPosts)
 	if err != nil {
-		log.Printf("Error rendering static pages: %v\n", err)
+		log.Error().Err(err).Msg("Error rendering static pages")
 		return
 	}
 
-	db.UpsertPosts(ps)
+	database.UpsertPosts(ctx, ps)
 }
 
 func renderStaticPages(ps []model.Post, tags []string, recentPosts []model.Post) error {
@@ -121,7 +131,7 @@ func parseMarkdownFiles() ([]model.Post, error) {
 			return fmt.Errorf("failed to walk directory: %w", err)
 		}
 		if d.IsDir() || !strings.HasSuffix(path, ".md") {
-			log.Printf("Skipping %s\n", path)
+			log.Info().Str("path", path).Msgf("Skipping")
 			return nil
 		}
 		p, err := parseMarkdownFile(path)
@@ -149,7 +159,7 @@ func renderStaticPage(name string, component templ.Component) error {
 	if err := component.Render(context.Background(), f); err != nil {
 		return fmt.Errorf("failed to render %s: %w", path, err)
 	}
-	log.Printf("Rendered %s\n", path)
+	log.Debug().Str("path", path).Msg("Rendered static page")
 	return nil
 }
 
@@ -186,14 +196,12 @@ func parseMarkdownFile(path string) (*model.Post, error) {
 		return nil, err
 	}
 
-	log.Printf("Parsed post: %s\n", post.Slug)
+	log.Debug().Str("slug", post.Slug).Msg("Parsed post slug")
 
 	post.Content = buf.String()
 	return &post, nil
 }
 
-// extractTags extracts all the tags from the posts.
-// It returns a unique list of tags.
 func extractTags(ps []model.Post) []string {
 	var tags []string
 	tagMap := make(map[string]bool)
@@ -208,7 +216,6 @@ func extractTags(ps []model.Post) []string {
 	return tags
 }
 
-// extractRecentPosts extracts the 3 most recent posts.
 func extractRecentPosts(ps []model.Post) []model.Post {
 	sorted := make([]model.Post, len(ps))
 	copy(sorted, ps)
