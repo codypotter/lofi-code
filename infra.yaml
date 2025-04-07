@@ -247,6 +247,7 @@ Resources:
             ViewerProtocolPolicy: https-only
             AllowedMethods: [GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE]
             CachedMethods: [GET, HEAD]
+            CachePolicyId: "413c8918-11e2-4c0b-9dfc-2e55e7ea8c86"
             ForwardedValues:
               QueryString: true
               Headers: ["*"]
