@@ -13,7 +13,7 @@ type Config struct {
 	BaseUrl     string     `json:"-" env:"BASE_URL"`
 	LogLevel    string     `json:"-" env:"LOG_LEVEL" envDefault:"info"`
 	Environment string     `json:"-" env:"ENVIRONMENT" envDefault:"development"`
-	AwsConfig   aws.Config `json:"-" env:"AWS_CONFIG"`
+	AwsConfig   aws.Config `json:"-"`
 }
 
 func (c *Config) String() string {
