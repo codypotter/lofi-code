@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/v5"
 	"github.com/rs/zerolog/log"
 )
 
@@ -29,7 +29,7 @@ func (a application) Comments(w http.ResponseWriter, r *http.Request) {
 func (a application) CommentForm(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	fc := components.CommentFormConfig{
-		Slug:    r.FormValue("slug"),
+		Slug:    chi.URLParam(r, "slug"),
 		Name:    r.FormValue("name"),
 		Email:   r.FormValue("email"),
 		Comment: r.FormValue("comment"),
@@ -71,6 +71,7 @@ func (a application) CommentForm(w http.ResponseWriter, r *http.Request) {
 		}
 		log.Debug().Msg("Verification email sent")
 		fc.Notification = components.Notification("is-link", "Email not verified. Please check your inbox for a verification email. Once verified, try again.")
+		log.Warn().Any("fc", fc).Msg("Comment form config")
 		components.CommentForm(fc).Render(ctx, w)
 		return
 	}

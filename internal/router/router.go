@@ -2,6 +2,7 @@ package router
 
 import (
 	"loficode/internal/application"
+	"loficode/internal/logger"
 	"time"
 
 	"github.com/go-chi/chi/v5"
@@ -10,8 +11,7 @@ import (
 
 func NewRouter(app application.Application) *chi.Mux {
 	r := chi.NewRouter()
-	r.Use(middleware.Logger)
-	r.Use(middleware.Recoverer)
+	r.Use(logger.ZerologMiddleware())
 	r.Use(middleware.Timeout(60 * time.Second))
 
 	r.Route("/api/posts/{slug}/comments", func(r chi.Router) {
