@@ -16,6 +16,9 @@ templ: ## Process the .templ files
 generate: ## Generate the static files
 	go run ./cmd/generate
 
+generate-production:
+	ENVIRONMENT=production AWS_REGION=us-east-1 go run ./cmd/generate
+
 up: ## Start the Dynamo db
 	docker compose up -d
 
@@ -62,7 +65,7 @@ cf-deploy: ## Deploy CloudFormation stack
             CertificateArn=arn:aws:acm:us-east-1:812100404712:certificate/23dea8c2-5cbc-47bd-b70a-e38d5c0db628 \
 		--region $(lambda_region)
 
-deploy: check-clean build-lambda push-lambda cf-deploy ## Build, push, and deploy the Lambda
+deploy: check-clean generate-production build-lambda push-lambda cf-deploy ## Build, push, and deploy the Lambda
 
 nuke: ## Delete the CloudFormation stack
 	aws cloudformation delete-stack --stack-name loficode-blog --region us-east-1
