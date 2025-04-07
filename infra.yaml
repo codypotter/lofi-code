@@ -33,9 +33,6 @@ Resources:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: loficode-site
-      WebsiteConfiguration:
-        IndexDocument: index.html
-        ErrorDocument: 404.html
       PublicAccessBlockConfiguration:
         BlockPublicAcls: false
         BlockPublicPolicy: false
@@ -214,9 +211,8 @@ Resources:
         DefaultRootObject: index.html
         Origins:
           - Id: StaticSiteOrigin
-            DomainName: !Sub "loficode-site.s3-website-${AWS::Region}.amazonaws.com"
-            CustomOriginConfig:
-              OriginProtocolPolicy: http-only
+            DomainName: !GetAtt StaticSiteBucket.DomainName
+            S3OriginConfig: {}
           - Id: ApiGatewayOrigin
             DomainName: !Select [2, !Split ["/", !Sub "https://${BlogApi}.execute-api.${AWS::Region}.amazonaws.com"]]
             CustomOriginConfig:
@@ -244,6 +240,7 @@ Resources:
         ViewerCertificate:
           CloudFrontDefaultCertificate: true
         HttpVersion: http2
+
 Outputs:
   SiteBucket:
     Value: !Ref StaticSiteBucket
