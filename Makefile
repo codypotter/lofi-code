@@ -57,7 +57,9 @@ cf-deploy: ## Deploy CloudFormation stack
 		--stack-name loficode-blog \
 		--template-file infra.yaml \
 		--capabilities CAPABILITY_NAMED_IAM \
-		--parameter-overrides LambdaImageUri=$(lambda_repo):$(git_sha) \
+		--parameter-overrides \
+            LambdaImageUri=$(lambda_repo):$(git_sha) \
+            CertificateArn=arn:aws:acm:us-east-1:812100404712:certificate/23dea8c2-5cbc-47bd-b70a-e38d5c0db628 \
 		--region $(lambda_region)
 
 deploy: check-clean build-lambda push-lambda cf-deploy ## Build, push, and deploy the Lambda
