@@ -42,7 +42,7 @@ Resources:
         IgnorePublicAcls: false
         RestrictPublicBuckets: false
 
-  StaticSiteBucketPolicy:   # THIS ONE NEEDS A CLOUDFRONT DISTRIBUTION
+  StaticSiteBucketPolicy:
     Type: AWS::S3::BucketPolicy
     Properties:
       Bucket: !Ref StaticSiteBucket
@@ -153,7 +153,7 @@ Resources:
                   - logs:PutLogEvents
                 Resource: "arn:aws:logs:*:*:*"
 
-  ### Lambda Function (Function URL only) ###
+  ### Lambda Function ###
   BlogLambda:
     Type: AWS::Lambda::Function
     Properties:
@@ -168,19 +168,42 @@ Resources:
           LOG_LEVEL: "info"
           ENVIRONMENT: "production"
 
-  BlogLambdaUrlPermission:
+  ### Lambda API Gateway (HTTP) ###
+  BlogApi:
+    Type: AWS::ApiGatewayV2::Api
+    Properties:
+      Name: blog-api-gw
+      ProtocolType: HTTP
+
+  BlogApiIntegration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId: !Ref BlogApi
+      IntegrationType: AWS_PROXY
+      IntegrationUri: !Sub arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${BlogLambda}
+      PayloadFormatVersion: "2.0"
+
+  BlogApiRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref BlogApi
+      RouteKey: "ANY /{proxy+}"
+      Target: !Sub integrations/${BlogApiIntegration}
+
+  BlogApiStage:
+    Type: AWS::ApiGatewayV2::Stage
+    Properties:
+      ApiId: !Ref BlogApi
+      StageName: "$default"
+      AutoDeploy: true
+
+  BlogLambdaPermissionForApiGateway:
     Type: AWS::Lambda::Permission
     Properties:
-      Action: lambda:InvokeFunctionUrl
       FunctionName: !Ref BlogLambda
-      Principal: "*"
-      FunctionUrlAuthType: NONE
-
-  BlogLambdaUrl:
-    Type: AWS::Lambda::Url
-    Properties:
-      AuthType: NONE
-      TargetFunctionArn: !Ref BlogLambda
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${BlogApi}/*/*/*
 
   ### CloudFront Distribution ###
   BlogCloudFrontDistribution:
@@ -193,8 +216,8 @@ Resources:
           - Id: StaticSiteOrigin
             DomainName: !GetAtt StaticSiteBucket.RegionalDomainName
             S3OriginConfig: {}
-          - Id: LambdaOrigin
-            DomainName: !Select [2, !Split ["/", !GetAtt BlogLambdaUrl.FunctionUrl]]
+          - Id: ApiGatewayOrigin
+            DomainName: !Select [2, !Split ["/", !Sub "https://${BlogApi}.execute-api.${AWS::Region}.amazonaws.com"]]
             CustomOriginConfig:
               OriginProtocolPolicy: https-only
         DefaultCacheBehavior:
@@ -208,7 +231,7 @@ Resources:
               Forward: none
         CacheBehaviors:
           - PathPattern: /api/*
-            TargetOriginId: LambdaOrigin
+            TargetOriginId: ApiGatewayOrigin
             ViewerProtocolPolicy: https-only
             AllowedMethods: [GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE]
             CachedMethods: [GET, HEAD]
@@ -234,14 +257,14 @@ Outputs:
     Value: !Sub "https://${BlogCloudFrontDistribution.DomainName}"
     Description: CloudFront URL for blog site
 
-  LambdaFunctionURL:
-    Value: !GetAtt BlogLambdaUrl.FunctionUrl
-    Description: Lambda Function URL (raw)
-
   MediaUploaderUserName:
     Value: !Ref MediaUploaderUser
     Description: IAM username for uploading media files to the media bucket
-  
+
   CloudFrontDistributionId:
     Value: !Ref BlogCloudFrontDistribution
     Description: CloudFront distribution ID
+
+  BlogApiUrl:
+    Value: !Sub "https://${BlogApi}.execute-api.${AWS::Region}.amazonaws.com"
+    Description: Root URL of the API Gateway
