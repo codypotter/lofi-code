@@ -6,3 +6,5 @@ public/**/*.html
 
 # Ignore generated templ files
 *_templ.go
+
+generate
