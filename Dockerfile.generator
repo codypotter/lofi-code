@@ -8,7 +8,7 @@ RUN go mod download
 
 COPY . .
 
-RUN apk add --no-cache findutils && \
-    find . -maxdepth=2 | sort
+RUN apt-get update && apt-get install -y findutils && \
+    find . -maxdepth 2 | sort
 
 RUN CGO_ENABLED=0 go build -o generate ./cmd/generate
