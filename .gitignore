@@ -1,0 +1,8 @@
+# Ignore all HTML files in the public directory recursively
+public/**/*.html
+
+# Except for the public/admin/index.html file
+!public/admin/index.html
+
+# Ignore generated templ files
+*_templ.go

@@ -1,4 +1,4 @@
-.PHONY: dev build generate generate-prod serve up down reload restart logs help login-ecr tag-lambda push cf-deploy deploy nuke check-clean upload-static invalidate-cache
+.PHONY: dev build-lambda generate generate-prod serve up down reload restart logs help login-ecr tag-lambda push cf-deploy deploy nuke check-clean upload-static invalidate-cache
 
 ## Local Development
 
@@ -30,8 +30,19 @@ logs: ## Tail logs from the local DynamoDB
 
 ## Lambda/Docker/ECR/CloudFormation Deployment
 
-build: ## Build the Lambda Docker image
-	@docker build -t loficode-api -f Dockerfile .
+build-generator: ## Build the generator Docker image
+	@echo "Building generator image..."
+	@docker build -f Dockerfile.static -t generator:latest .
+	@echo "Creating temporary container..."
+	@container_id=$$(docker create generator:latest); \
+	echo "Copying binary from container $$container_id..."; \
+	docker cp $$container_id:/app/generate ./generate; \
+	echo "Removing temporary container $$container_id..."; \
+	docker rm $$container_id;
+	@echo "Binary extracted as ./generate"
+
+build-lambda: ## Build the Lambda Docker image
+	@docker build -t loficode-api -f Dockerfile.lambda .
 
 login-ecr: ## Log in to Amazon ECR
 	@aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 812100404712.dkr.ecr.us-east-1.amazonaws.com/blog-api
@@ -54,7 +65,7 @@ cf-deploy: ## Deploy the CloudFormation stack
             LambdaImageUri=812100404712.dkr.ecr.us-east-1.amazonaws.com/blog-api:$(shell git rev-parse --short HEAD) \
 		--region us-east-1
 
-deploy: check-clean generate-prod build push cf-deploy upload-static invalidate-cache ## Full deployment: generate prod assets, build & push image, deploy stack, update static assets, invalidate cache
+deploy: check-clean generate-prod build-lambda push cf-deploy upload-static invalidate-cache ## Full deployment: generate prod assets, build & push image, deploy stack, update static assets, invalidate cache
 
 nuke: ## Delete the CloudFormation stack
 	@aws cloudformation delete-stack --stack-name loficode-blog --region us-east-1
