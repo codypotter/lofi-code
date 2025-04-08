@@ -9,9 +9,9 @@ generate: ## Generate the static files using "go run"
 	@templ generate
 	@go run ./cmd/generate
 
-generate-prod: ## Generate production static files; update/replace this for CI usage
+generate-prod: build-generator ## Generate production static files; update/replace this for CI usage
 	@templ generate
-	@ENVIRONMENT=production AWS_REGION=us-east-1 go run ./cmd/generate
+	@ENVIRONMENT=production AWS_REGION=us-east-1 ./generate
 
 serve: ## Start the server locally
 	@go run ./cmd/server
@@ -32,7 +32,7 @@ logs: ## Tail logs from the local DynamoDB
 
 build-generator: ## Build the generator Docker image
 	@echo "Building generator image..."
-	@docker build -f Dockerfile.static -t generator:latest .
+	@docker build -f Dockerfile.generator -t generator:latest .
 	@echo "Creating temporary container..."
 	@container_id=$$(docker create generator:latest); \
 	echo "Copying binary from container $$container_id..."; \
