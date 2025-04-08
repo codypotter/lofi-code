@@ -10,7 +10,6 @@ generate: ## Generate the static files using "go run"
 	@go run ./cmd/generate
 
 generate-prod: build-generator ## Generate production static files
-	@templ generate
 	@ENVIRONMENT=production AWS_REGION=us-east-1 ./generate
 
 serve: ## Start the server locally
