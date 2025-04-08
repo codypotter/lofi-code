@@ -1,0 +1,39 @@
+package components
+
+import "net/url"
+
+type TagsConfig struct {
+	Size             string
+	Tags             []string
+	EnableNavigation bool
+}
+
+func getUrl(tag string) string {
+	u := url.URL{
+		Path: "/posts.html",
+	}
+	query := url.Values{}
+	query.Set("tag", tag)
+	u.RawQuery = query.Encode()
+	return u.String()
+}
+
+templ Tags(config TagsConfig) {
+	{{
+	if config.Size == "" {
+		config.Size = "is-medium"
+	}
+	}}
+	<span></span>
+	<div class="container">
+		<div class="tags">
+			for _, tag := range config.Tags {
+				if config.EnableNavigation {
+					<a class={ "tag", "level-item", "is-primary", config.Size } href={ templ.URL(getUrl(tag)) }>#{ tag }</a>
+				} else {
+					<span class={ "tag", "level-item", "is-primary", config.Size }>#{ tag }</span>
+				}
+			}
+		</div>
+	</div>
+}

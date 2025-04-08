@@ -13,20 +13,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Git identity
         run: |
           git config --global user.email "me@codypotter.com"
           git config --global user.name "Cody Potter"
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '20'
-
-      - name: Bump version and create tag
-        run: npm run tag
+      - name: Determine current version and bump patch version
+        run: |
+          git fetch --tags
+          current_version=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
+          echo "Current version: $current_version"
+          
+          version_number=${current_version#v}
+          IFS='.' read -r major minor patch <<< "$version_number"
+          patch=$((patch + 1))
+          new_version="v${major}.${minor}.${patch}"
+          echo "New version: $new_version"
+          
+          git tag -a "$new_version" -m "Release $new_version"
 
       - name: Push commit and tag
         run: git push origin main --follow-tags

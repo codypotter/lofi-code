@@ -1,0 +1,96 @@
+package home
+
+import "loficode/internal/templates/components/page"
+import "loficode/internal/model"
+import "loficode/internal/templates/components"
+
+const featuredVideoId = "Rk2SBoBwtRU"
+const featuredVideoTitle = "HTML Containers"
+
+templ Home(tags []string, posts []model.Post) {
+	@page.Page(
+		page.HeadConfig{
+			Title:       "Home | loficode",
+			Description: "Learn to code in byte-size pieces",
+			OgImage:     "/assets/images/logo-white.svg",
+		},
+		[]page.Breadcrumb{},
+		content(tags, posts),
+	)
+}
+
+templ content(tags []string, posts []model.Post) {
+	<style>
+        #intro {
+            background: linear-gradient(135deg, #FF0F7B 0%, #F89B29 100%);
+        }
+
+        #intro img {
+            height: 10rem;
+        }
+
+        #intro p {
+            text-align: center;
+        }
+
+        #featured-video {
+            background: linear-gradient(135deg, #6FEB84 0%, #1AE8FF 100%);
+        }
+
+		#recent-posts {
+            background: linear-gradient(135deg, #80eefa 0%, #914ecf 100%);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            #intro {
+                background: linear-gradient(135deg, #A60950, #BA6423 100%);
+            }
+            #featured-video {
+                background: linear-gradient(135deg, #51aa60 0%, #1098a7 100%);
+            }
+            #recent-posts {
+                background: linear-gradient(135deg, #53247f 0%, #0c9cac 100%);
+            }
+        }
+    </style>
+	<section id="intro" class="hero is-primary is-medium">
+		<div class="hero-body is-flex is-flex-direction-column">
+			<img src="/assets/images/logo-white.svg"/>
+			<p class="subtitle has-text-white">
+				learn to code in byte-size pieces
+			</p>
+		</div>
+	</section>
+	<section class="section">
+		<div class="container">
+			<h3 class="title is-3 mb-5">Browse by Tag</h3>
+			<div class="p-3">
+				@components.Tags(components.TagsConfig{
+					Size:             "is-large",
+					Tags:             tags,
+					EnableNavigation: true,
+				})
+			</div>
+		</div>
+	</section>
+	<section id="recent-posts" class="section">
+		<div class="container">
+			<h3 class="title is-3 mb-5">Recent Posts</h3>
+			<div class="columns is-multiline is-flex is-desktop" style="align-items: stretch;">
+				@components.PostPreviews(posts)
+			</div>
+		</div>
+	</section>
+	<section class="section">
+		<div class="container is-max-desktop">
+			@components.MailingListForm(components.MailingListConfig{})
+		</div>
+	</section>
+	<section id="featured-video" class="section is-medium">
+		<div class="container">
+			<h3 class="title is-3">Featured Video</h3>
+			<h4 class="subtitle is-4 mb-5">{ featuredVideoTitle }</h4>
+			@YouTubePlayer(featuredVideoId)
+		</div>
+	</section>
+}

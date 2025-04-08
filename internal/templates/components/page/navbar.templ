@@ -1,0 +1,25 @@
+package page
+
+templ Navbar() {
+	<style>
+        .navbar {
+            background: linear-gradient(90deg, #FF0F7B 0%, #f98039 100%);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .navbar {
+                background: linear-gradient(90deg, #A60950, #BA6423 100%);
+            }
+        }
+
+    </style>
+	<nav class="navbar is-transparent" role="navigation" aria-label="main navigation">
+		<div class="container">
+			<div class="navbar-brand">
+				<a class="navbar-item has-text-white" href="/">
+					<em>lofi<strong>code</strong></em>
+				</a>
+			</div>
+		</div>
+	</nav>
+}

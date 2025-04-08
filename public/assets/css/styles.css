@@ -1,0 +1,16 @@
+@font-face {
+    font-family: 'IBM Plex Sans';
+    font-style: normal;
+    font-weight: 400;
+    src: url('/assets/fonts/IBMPlexSans.ttf') format('truetype'),
+}
+
+body {
+    font-family: 'IBM Plex Sans', sans-serif !important;
+}
+
+:root {
+    --bulma-primary-h: 33deg;
+    --bulma-primary-s: 94%;
+    --bulma-primary-l: 57%;
+}

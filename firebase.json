@@ -1,9 +1,0 @@
-{
-  "hosting": [
-    {
-      "target": "lofi-code",
-      "source": ".",
-      "frameworksBackend": {}
-    }
-  ]
-}

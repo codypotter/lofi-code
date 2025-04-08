@@ -1,0 +1,57 @@
+package components
+
+type MailingListConfig struct {
+	SuccessMessage string `json:"successMessage"`
+	ErrorMessage   string `json:"errorMessage"`
+}
+
+templ MailingListForm(c MailingListConfig) {
+	if c.SuccessMessage != "" {
+		<div class="notification is-success">
+			{ c.SuccessMessage }
+		</div>
+	} else {
+		<form
+			hx-post="/api/subscribe"
+			hx-target="this"
+			hx-swap="outerHTML"
+			class="p-5"
+		>
+			<h2 class="title is-4 has-text-centered">Join the Mailing List</h2>
+			<p class="has-text-centered mb-4">
+				Get notified when I post updates. Enter your email below to subscribe.
+			</p>
+			<div class="field">
+				<label class="label">Email</label>
+				<div class="control has-icons-left">
+					<input
+						class={ "input is-medium", templ.KV("is-danger", c.ErrorMessage != "") }
+						type="email"
+						name="email"
+						placeholder="Your Email"
+						required
+					/>
+					<span class="icon is-small is-left">
+						<span>✉️</span>
+					</span>
+				</div>
+				if c.ErrorMessage != "" {
+					<p class="help is-danger">{ c.ErrorMessage }</p>
+				}
+			</div>
+			<div class="field">
+				<label class="checkbox">
+					<input type="checkbox" name="terms" required/>
+					I agree to the <a href="/tos.html" target="_blank">Terms of Service</a> and <a href="/privacy-policy.html" target="_blank">Privacy Policy</a>.
+				</label>
+			</div>
+			<div class="field">
+				<div class="control">
+					<button class="button is-primary is-fullwidth is-medium" type="submit">
+						Subscribe
+					</button>
+				</div>
+			</div>
+		</form>
+	}
+}
