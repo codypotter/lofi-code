@@ -12,9 +12,6 @@ RUN go install github.com/a-h/templ/cmd/templ@v0.3.856
 
 RUN templ generate
 
-RUN apt-get update && apt-get install -y findutils && \
-    find . -maxdepth 4 | sort
-
 RUN CGO_ENABLED=0 go build -o generate ./cmd/generate
 
 FROM alpine:latest

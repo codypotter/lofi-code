@@ -1,30 +1,64 @@
 # lofi-code
 
-`lofi-code` is a personal blogging project built with [Angular CLI](https://github.com/angular/angular-cli).
+**lofi-code** is my personal blogging project built with a custom static site generator in Go. The blog uses progressive enhancement with templ and htmx to deliver dynamic HTML snippets via AWS Lambda and API Gateway while serving pre-built static assets from S3 through CloudFront.
+
+---
 
 ## Getting Started
 
-Clone this repository. Run `npm install` with a modern node version, 20 or greater. Create an `environments.dev.ts` from `environments.ts` with valid secrets. Then `npm start`.
+1. **Clone the Repository**  
+   ```bash
+   git clone https://github.com/yourusername/lofi-code.git
+   cd lofi-code
+   ```
 
-## Server-Side Rendering (SSR)
+2. **Local Development**  
+   - To work locally, install [Go](https://golang.org/dl/) and [Docker](https://www.docker.com/).
+   - Run the development loop using:
+     ```bash
+     make dev
+     ```
+     This command watches for changes in templates (via `templ`) and re-generates the static site before launching the local server. The static site is served from the `public/` directory.
 
-This project uses Angular Universal for server-side rendering. This allows the application to render the initial page on the server, which can improve performance and make the application more crawlable for SEO purposes. To run the SSR server, use the command `npm run dev:ssr`.
+3. **Static Site Generation**  
+    The `generate` target runs template generation (via `templ generate`) and then uses `go run` to build and run the generator.  
+    ```bash
+    make generate
+    ```
 
-## Running unit tests
+---
 
-Run `npm run test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Deployment
 
-## AWS Deployment
+Your project is deployed to AWS using a combination of AWS Lambda, API Gateway, S3 (for static assets), and CloudFront for caching. The full deployment process is orchestrated via Makefile targets and a GitHub Actions workflow.
 
-I'm avoiding committing the `environment.prod.ts` config, even though it's used on the client and it does not contain true secrets. Keeping it out of git reinforces good security hygiene and reduces the risk of it being scraped, reused, or misunderstood as safe to treat like a backend secret.
+To trigger a full deployment manually:
+```bash
+make deploy
+```
 
-Trigger a deployment by creating a GitHub release from a tag.
+---
 
-### Local Deployment
+## AWS Deployment Details
 
-This project is configured for deployment on AWS. To deploy the application, ensure you have a valid `environments.prod.ts` file. Then authenticate your command line with aws by adding your aws credentials to `~/aws/.credentials` and running `npm run deploy`.
+- **AWS Lambda & API Gateway:**  
+  Dynamically delivered content (e.g. htmx partials) is served via Lambda functions.
+- **S3 & CloudFront:**  
+  All static assets including HTML files, CSS, JS, fonts, and images are stored in S3 and cached globally using CloudFront for optimal performance.
+- **IAM & CI/CD:**  
+  GitHub Actions handles releases and deployments via CloudFormation, ECR, and S3, leveraging a tightly controlled IAM policy.
+---
 
+## Infrastructure Diagram
 
-### Infra Diagram
+Below is the architecture diagram for the lofi-code stack:
 
-![Diagram](./infra.png)
+![Infrastructure Diagram](./infra.png)
+
+---
+
+## Contributing
+
+For any questions, contact me at [me@codypotter.com](mailto:me@codypotter.com).
+
+---
