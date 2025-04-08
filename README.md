@@ -1,7 +1,6 @@
 # lofi-code
 
-loficode is my blog. It's built with a custom static site generator in Go. It uses [templ](https://templ.guide/) and [htmx](https://htmx.org/) via AWS Lambda and API Gateway for progressive enhancment. It serves pre-built static assets from S3 through CloudFront.
-
+loficode is my blog. It's built with a custom static site generator in Go. It uses [templ](https://templ.guide/) and [htmx](https://htmx.org/) via AWS Lambda and API Gateway for progressive enhancement. It serves pre-built static assets from S3 through CloudFront.
 ---
 
 ## Getting Started
