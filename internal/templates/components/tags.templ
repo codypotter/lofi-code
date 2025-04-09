@@ -6,6 +6,7 @@ type TagsConfig struct {
 	Size             string
 	Tags             []string
 	EnableNavigation bool
+	EnableFetch      bool
 }
 
 func getUrl(tag string) string {
@@ -23,15 +24,41 @@ templ Tags(config TagsConfig) {
 	if config.Size == "" {
 		config.Size = "is-medium"
 	}
+	classes := []string{"tag", "level-item", "is-primary", config.Size}
 	}}
 	<span></span>
 	<div class="container">
 		<div class="tags">
 			for _, tag := range config.Tags {
+				{{
+					href := templ.URL(getUrl(tag))
+				}}
 				if config.EnableNavigation {
-					<a class={ "tag", "level-item", "is-primary", config.Size } href={ templ.URL(getUrl(tag)) }>#{ tag }</a>
+					if config.EnableFetch {
+						// hx-get is used to fetch the content of the page
+						// https://htmx.org/attributes/hx-get/
+						// hx-push-url is used to update the URL in the address bar
+						// https://htmx.org/attributes/hx-push-url/
+						<a
+							class={ classes... }
+							href={ href }
+							hx-get={ href }
+							hx-target="#search-results"
+							hx-push-url="true"
+							hx-swap="innerHTML"
+						>
+							#{ tag }
+						</a>
+					} else {
+						<a
+							class={ classes... }
+							href={ href }
+						>
+							#{ tag }
+						</a>
+					}
 				} else {
-					<span class={ "tag", "level-item", "is-primary", config.Size }>#{ tag }</span>
+					<span class={ classes... }>#{ tag }</span>
 				}
 			}
 		</div>

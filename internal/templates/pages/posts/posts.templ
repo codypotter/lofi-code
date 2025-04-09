@@ -23,9 +23,19 @@ templ content(allTags []string) {
 			Size:             "is-medium",
 			Tags:             allTags,
 			EnableNavigation: true,
+			EnableFetch:      true,
 		})
 		<hr/>
-		<section class="container mt-5" hx-get="/api/search-results" hx-trigger="load" hx-swap="inner">
+		// hx-vals is used to pass the tag to the server
+		// https://htmx.org/attributes/hx-vals/
+		<section
+			id="search-results"
+			class="container mt-5"
+			hx-get="/api/search-results"
+			hx-trigger="load"
+			hx-swap="innerHTML"
+			hx-vals='js:{ tag: new URLSearchParams(window.location.search).get("tag") }'
+		>
 			Loading...
 		</section>
 	</div>
