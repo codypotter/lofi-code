@@ -18,6 +18,23 @@ templ Posts(allTags []string) {
 }
 
 templ content(allTags []string) {
+	<script>
+		document.addEventListener("htmx:afterSettle", () => {
+			const tag = new URLSearchParams(window.location.search).get("tag");
+			if (!tag) {
+				console.debug("No tag found in URL, skipping tag selection");
+				return;
+			}
+			const allTags = document.querySelectorAll("[data-tag]");
+			allTags.forEach((el) => {
+				if (el.dataset.tag === tag) {
+					el.classList.add("is-link");
+				} else {
+					el.classList.remove("is-link");
+				}
+			});
+		});
+	</script>
 	<div class="p-3">
 		@components.Tags(components.TagsConfig{
 			Size:             "is-medium",
@@ -34,7 +51,7 @@ templ content(allTags []string) {
 			hx-get="/api/search-results"
 			hx-trigger="load"
 			hx-swap="innerHTML"
-			hx-vals='js:{ tag: new URLSearchParams(window.location.search).get("tag") }'
+			hx-vals='js:{ tag: new URLSearchParams(window.location.search).get("tag") ?? "" }'
 		>
 			Loading...
 		</section>

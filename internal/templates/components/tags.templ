@@ -55,6 +55,7 @@ templ Tags(config TagsConfig) {
 						<a
 							class={ classes }
 							href={ pageUrl }
+							data-tag={ tag }
 							hx-get={ searchResultUrl }
 							hx-target="#search-results"
 							hx-push-url={ string(pageUrl) }

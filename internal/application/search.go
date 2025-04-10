@@ -15,6 +15,7 @@ func (a application) SearchResults(w http.ResponseWriter, r *http.Request) {
 
 	tag := query.Get("tag")
 	if tag == "" {
+		log.Debug().Msg("No tag provided, using 'all'")
 		tag = "all"
 	}
 	log = log.With().Str("tag", tag).Logger()
