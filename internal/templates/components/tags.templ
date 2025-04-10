@@ -6,12 +6,25 @@ type TagsConfig struct {
 	Size             string
 	Tags             []string
 	EnableNavigation bool
+	EnableFetch      bool
 }
 
-func getUrl(tag string) string {
+func getPageUrl(tag string) string {
+	return getUrl("/posts.html", tag)
+}
+
+func getSearchResultsUrl(tag string) string {
+	return getUrl("/api/search-results", tag)
+}
+
+func getUrl(path, tag string) string {
 	u := url.URL{
-		Path: "/posts.html",
+		Path: path,
 	}
+	return withTagSearch(u, tag)
+}
+
+func withTagSearch(u url.URL, tag string) string {
 	query := url.Values{}
 	query.Set("tag", tag)
 	u.RawQuery = query.Encode()
@@ -23,15 +36,43 @@ templ Tags(config TagsConfig) {
 	if config.Size == "" {
 		config.Size = "is-medium"
 	}
+	classes := []string{"tag", "level-item", "is-primary", config.Size}
 	}}
 	<span></span>
 	<div class="container">
 		<div class="tags">
 			for _, tag := range config.Tags {
+				{{
+					pageUrl := templ.URL(getPageUrl(tag))
+					searchResultUrl := getSearchResultsUrl(tag)
+				}}
 				if config.EnableNavigation {
-					<a class={ "tag", "level-item", "is-primary", config.Size } href={ templ.URL(getUrl(tag)) }>#{ tag }</a>
+					if config.EnableFetch {
+						// hx-get is used to fetch the content of the page
+						// https://htmx.org/attributes/hx-get/
+						// hx-push-url is used to update the URL in the address bar
+						// https://htmx.org/attributes/hx-push-url/
+						<a
+							class={ classes }
+							href={ pageUrl }
+							data-tag={ tag }
+							hx-get={ searchResultUrl }
+							hx-target="#search-results"
+							hx-push-url={ string(pageUrl) }
+							hx-swap="innerHTML"
+						>
+							#{ tag }
+						</a>
+					} else {
+						<a
+							class={ classes }
+							href={ pageUrl }
+						>
+							#{ tag }
+						</a>
+					}
 				} else {
-					<span class={ "tag", "level-item", "is-primary", config.Size }>#{ tag }</span>
+					<span class={ classes }>#{ tag }</span>
 				}
 			}
 		</div>

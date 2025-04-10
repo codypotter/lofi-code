@@ -3,7 +3,6 @@ package application
 import (
 	"loficode/internal/templates/components"
 	"net/http"
-	"net/url"
 
 	"github.com/rs/zerolog/log"
 )
@@ -13,18 +12,10 @@ func (a application) SearchResults(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query()
 	cursor := query.Get("cursor")
 	log := log.With().Str("handler", "SearchResults").Str("cursor", cursor).Str("method", r.Method).Logger()
-	currentUrl := r.Header.Get("HX-Current-URL")
-	if currentUrl != "" {
-		log.Debug().Str("currentUrl", currentUrl).Msg("Current URL")
-		parsedURL, err := url.Parse(currentUrl)
-		if err == nil {
-			log.Debug().Stringer("parsedURL", parsedURL).Msg("Parsed URL")
-			query = parsedURL.Query()
-		}
-	}
 
 	tag := query.Get("tag")
 	if tag == "" {
+		log.Debug().Msg("No tag provided, using 'all'")
 		tag = "all"
 	}
 	log = log.With().Str("tag", tag).Logger()
