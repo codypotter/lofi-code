@@ -1,4 +1,4 @@
-AWSTemplateFormatVersion: '2010-09-09'
+AWSTemplateFormatVersion: "2010-09-09"
 Description: loficode blog stack
 
 Parameters:
@@ -7,7 +7,6 @@ Parameters:
     Description: URI of the Lambda container image (e.g. <account>.dkr.ecr.<region>.amazonaws.com/blog-api:latest)
 
 Resources:
-
   ### DynamoDB Table ###
   BlogTable:
     Type: AWS::DynamoDB::Table
@@ -196,19 +195,6 @@ Resources:
       Principal: apigateway.amazonaws.com
       SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${BlogApi}/*/*/*
 
-  ApiOriginRequestPolicy:
-    Type: AWS::CloudFront::OriginRequestPolicy
-    Properties:
-      OriginRequestPolicyConfig:
-        Name: "ExcludeHostHeaderPolicy"
-        Comment: "Exclude Host header so CloudFront uses the origin's domain name"
-        HeadersConfig:
-          HeaderBehavior: none
-        QueryStringsConfig:
-          QueryStringBehavior: none
-        CookiesConfig:
-          CookieBehavior: none
-
   ### CloudFront Distribution ###
   BlogCloudFrontDistribution:
     Type: AWS::CloudFront::Distribution
@@ -223,7 +209,14 @@ Resources:
             DomainName: !GetAtt StaticSiteBucket.DomainName
             S3OriginConfig: {}
           - Id: ApiGatewayOrigin
-            DomainName: !Select [2, !Split ["/", !Sub "https://${BlogApi}.execute-api.${AWS::Region}.amazonaws.com"]]
+            DomainName:
+              !Select [
+                2,
+                !Split [
+                  "/",
+                  !Sub "https://${BlogApi}.execute-api.${AWS::Region}.amazonaws.com",
+                ],
+              ]
             CustomOriginConfig:
               OriginProtocolPolicy: https-only
           - Id: MediaBucketOrigin
@@ -250,7 +243,7 @@ Resources:
               Headers: ["*"]
               Cookies:
                 Forward: all
-            OriginRequestPolicyId: !Ref ApiOriginRequestPolicy
+            OriginRequestPolicyId: b689b0a8-53d0-40ab-baf2-68738e2966ac
           - PathPattern: /media/*
             TargetOriginId: MediaBucketOrigin
             ViewerProtocolPolicy: redirect-to-https
@@ -276,7 +269,7 @@ Outputs:
   CloudFrontURL:
     Value: !Sub "https://${BlogCloudFrontDistribution.DomainName}"
     Description: CloudFront URL for the new stack (htmx.loficode.com after DNS is configured)
-    
+
   BlogApiUrl:
     Value: !Sub "https://${BlogApi}.execute-api.${AWS::Region}.amazonaws.com"
     Description: Root URL of the API Gateway
