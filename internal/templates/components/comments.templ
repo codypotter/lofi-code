@@ -31,6 +31,17 @@ templ Comments(comments []model.Comment) {
 			</div>
 		</article>
 	}
+	if len(comments) == 0 {
+		<article class="media mb-3">
+			<div class="media-content">
+				<div class="content">
+					<p>
+						No comments yet.
+					</p>
+				</div>
+			</div>
+		</article>
+	}
 }
 
 func avatarUrl(email string) string {
