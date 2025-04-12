@@ -5,8 +5,8 @@ summary: A deep dive into why Puma's default configuration can hurt your Rails
   application's performance, and how proper server configuration can prevent
   timeouts and optimize resource utilization.
 date: 2025-04-01T11:11:00.000Z
-headerImage: http://htmx.loficode.com/media/rails-puma-optimization-3-1.png
-openGraphImage: http://htmx.loficode.com/media/rails-puma-optimization-16-9.png
+headerImage: https://htmx.loficode.com/media/rails-puma-optimization-3-1.png
+openGraphImage: https://htmx.loficode.com/media/rails-puma-optimization-16-9.png
 tags:
   - ruby-on-rails
   - programming
