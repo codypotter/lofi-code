@@ -46,7 +46,7 @@ func (s AwsSesEmailSender) SendVerificationEmail(ctx context.Context, to, token 
 	url := fmt.Sprintf("https://htmx.loficode.com/api/verify?token=%s&subscribe=%t", token, subscribe)
 
 	var sb strings.Builder
-	err := components.VerifyEmail(to, token).Render(ctx, &sb)
+	err := components.VerifyEmail(url).Render(ctx, &sb)
 	if err != nil {
 		log.Error().Err(err).Str("to", to).Msg("Error rendering email template")
 		return err
