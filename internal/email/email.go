@@ -43,7 +43,7 @@ func NewAwsSesEmailSender(cfg *config.Config) EmailSender {
 }
 
 func (s AwsSesEmailSender) SendVerificationEmail(ctx context.Context, to, token string, subscribe bool) error {
-	url := fmt.Sprintf("https://loficode.com/api/verify?token=%s&subscribe=%t", token, subscribe)
+	url := fmt.Sprintf("https://htmx.loficode.com/api/verify?token=%s&subscribe=%t", token, subscribe)
 
 	var sb strings.Builder
 	err := components.VerifyEmail(to, token).Render(ctx, &sb)
