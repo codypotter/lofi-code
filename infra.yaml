@@ -6,6 +6,11 @@ Parameters:
     Type: String
     Description: URI of the Lambda container image (e.g. <account>.dkr.ecr.<region>.amazonaws.com/blog-api:latest)
 
+  HCaptchaSecret:
+    Type: String
+    Description: HCaptcha secret key
+    NoEcho: true
+
 Resources:
   ### DynamoDB Table ###
   BlogTable:
@@ -157,7 +162,7 @@ Resources:
         Variables:
           LOG_LEVEL: "info"
           ENVIRONMENT: "production"
-          HCAPTCHA_SECRET: "{{resolve:ssm-secure:/loficode/hcaptcha/secret}}"
+          HCAPTCHA_SECRET: !Ref HCaptchaSecret
 
   ### Lambda API Gateway (HTTP) ###
   BlogApi:
