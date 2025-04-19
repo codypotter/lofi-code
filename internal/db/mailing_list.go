@@ -92,3 +92,18 @@ func (db *Db) VerifyEmail(ctx context.Context, token string, subscribed bool) (s
 
 	return email, nil
 }
+
+func (db *Db) Unsubscribe(ctx context.Context, email string) error {
+	_, err := db.client.UpdateItem(ctx, &dynamodb.UpdateItemInput{
+		TableName: aws.String("blog"),
+		Key: map[string]types.AttributeValue{
+			"pk": &types.AttributeValueMemberS{Value: "EMAIL"},
+			"sk": &types.AttributeValueMemberS{Value: email},
+		},
+		UpdateExpression: aws.String("SET subscribed = :subscribed"),
+		ExpressionAttributeValues: map[string]types.AttributeValue{
+			":subscribed": &types.AttributeValueMemberBOOL{Value: false},
+		},
+	})
+	return err
+}

@@ -4,6 +4,7 @@ type HeadConfig struct {
 	Title       string
 	Description string
 	OgImage     string
+	Hcaptcha    bool
 }
 
 templ Head(hc HeadConfig) {
@@ -24,5 +25,8 @@ templ Head(hc HeadConfig) {
 		<link rel="stylesheet" href="/assets/css/styles.css"/>
 		<script src="/assets/scripts/localize.js"></script>
 		<script src="https://unpkg.com/htmx.org@2.0.4"></script>
+		if hc.Hcaptcha {
+			<script src="https://js.hcaptcha.com/1/api.js" async defer></script>
+		}
 	</head>
 }

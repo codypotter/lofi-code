@@ -13,6 +13,7 @@ templ Home(tags []string, posts []model.Post) {
 			Title:       "Home | loficode",
 			Description: "Learn to code in byte-size pieces",
 			OgImage:     "/assets/images/logo-white.svg",
+			Hcaptcha:    true,
 		},
 		[]page.Breadcrumb{},
 		content(tags, posts),

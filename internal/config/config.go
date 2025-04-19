@@ -10,10 +10,11 @@ import (
 )
 
 type Config struct {
-	BaseUrl     string     `json:"-" env:"BASE_URL"`
-	LogLevel    string     `json:"-" env:"LOG_LEVEL" envDefault:"info"`
-	Environment string     `json:"-" env:"ENVIRONMENT" envDefault:"development"`
-	AwsConfig   aws.Config `json:"-"`
+	BaseUrl        string     `json:"-" env:"BASE_URL"`
+	LogLevel       string     `json:"-" env:"LOG_LEVEL" envDefault:"info"`
+	Environment    string     `json:"-" env:"ENVIRONMENT" envDefault:"development"`
+	AwsConfig      aws.Config `json:"-"`
+	HCaptchaSecret string     `json:"-" env:"HCAPTCHA_SECRET"`
 }
 
 func (c *Config) String() string {

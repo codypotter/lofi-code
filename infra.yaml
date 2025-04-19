@@ -157,6 +157,7 @@ Resources:
         Variables:
           LOG_LEVEL: "info"
           ENVIRONMENT: "production"
+          HCAPTCHA_SECRET: "{{resolve:ssm-secure:loficode/hcaptcha/secret}}"
 
   ### Lambda API Gateway (HTTP) ###
   BlogApi:
