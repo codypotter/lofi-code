@@ -4,8 +4,8 @@ slug: go-layered-architecture
 summary: Lets talk about a great pattern for organizing your big go project by
   working in layers of abstraction.
 date: 2023-12-29T11:11:00.000Z
-headerImage: https://htmx.loficode.com/media/go-layered-architecture-3-1.png
-openGraphImage: https://htmx.loficode.com/media/go-layered-architecture-16-9.png
+headerImage: https://loficode.com/media/go-layered-architecture-3-1.png
+openGraphImage: https://loficode.com/media/go-layered-architecture-16-9.png
 tags:
   - go
   - programming
@@ -50,7 +50,7 @@ Let's design a layered architecture for a small social network API. Let's preten
 
 Here's the working example [itty-bitty-social](https://github.com/codypotter/itty-bitty-social).
 
-![Diagram](https://htmx.loficode.com/media/go-layered-architecture-layers.png)
+![Diagram](https://loficode.com/media/go-layered-architecture-layers.png)
 
 There's a fair amount going on in this diagram, so lets just break it down from the outside in.
 

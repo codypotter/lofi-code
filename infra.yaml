@@ -244,6 +244,8 @@ Resources:
         DefaultRootObject: index.html
         WebACLId: !GetAtt CloudFrontWebAcl.Arn
         Aliases:
+          - "loficode.com"
+          - "www.loficode.com"
           - "htmx.loficode.com"
         Origins:
           - Id: StaticSiteOrigin
@@ -295,7 +297,9 @@ Resources:
               Cookies:
                 Forward: none
         ViewerCertificate:
-          CloudFrontDefaultCertificate: true
+          MinimumProtocolVersion: TLSv1.2_2021
+          AcmCertificateArn: arn:aws:acm:us-east-1:812100404712:certificate/82d84ede-6efc-4ec2-bdf0-8e88b83ef642
+          SslSupportMethod: sni-only
         HttpVersion: http2
 
 Outputs:
@@ -309,7 +313,7 @@ Outputs:
 
   CloudFrontURL:
     Value: !Sub "https://${BlogCloudFrontDistribution.DomainName}"
-    Description: CloudFront URL for the new stack (htmx.loficode.com after DNS is configured)
+    Description: CloudFront URL for the new stack
 
   BlogApiUrl:
     Value: !Sub "https://${BlogApi}.execute-api.${AWS::Region}.amazonaws.com"

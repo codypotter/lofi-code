@@ -4,8 +4,8 @@ slug: self-receivers-in-go
 summary: Lets talk about receiver naming in go and challenge the idea of using
   single letter names.
 date: 2023-12-31T11:11:00.000Z
-headerImage: https://htmx.loficode.com/media/self-receivers-3-1.png
-openGraphImage: https://htmx.loficode.com/media/self-receivers-16-9.png
+headerImage: https://loficode.com/media/self-receivers-3-1.png
+openGraphImage: https://loficode.com/media/self-receivers-16-9.png
 tags:
   - go
   - programming
