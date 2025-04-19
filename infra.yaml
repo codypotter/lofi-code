@@ -193,6 +193,40 @@ Resources:
       StageName: "$default"
       AutoDeploy: true
 
+  CloudFrontWebAcl:
+    Type: AWS::WAFv2::WebACL
+    Properties:
+      Name: CloudFrontRateLimitAcl
+      Scope: CLOUDFRONT
+      DefaultAction:
+        Allow: {}
+      VisibilityConfig:
+        CloudWatchMetricsEnabled: true
+        MetricName: CloudFrontRateLimitAcl
+        SampledRequestsEnabled: true
+      Rules:
+        - Name: RateLimitRule
+          Priority: 1
+          Action:
+            Block: {}
+          Statement:
+            RateBasedStatement:
+              Limit: 100
+              AggregateKeyType: IP
+              ScopeDownStatement:
+                ByteMatchStatement:
+                  SearchString: "/api/"
+                  FieldToMatch:
+                    UriPath: {}
+                  TextTransformations:
+                    - Priority: 0
+                      Type: NONE
+                  PositionalConstraint: STARTS_WITH
+          VisibilityConfig:
+            CloudWatchMetricsEnabled: true
+            MetricName: RateLimitRule
+            SampledRequestsEnabled: true
+
   BlogLambdaPermissionForApiGateway:
     Type: AWS::Lambda::Permission
     Properties:
@@ -208,6 +242,7 @@ Resources:
       DistributionConfig:
         Enabled: true
         DefaultRootObject: index.html
+        WebACLId: !GetAtt CloudFrontWebAcl.Arn
         Aliases:
           - "htmx.loficode.com"
         Origins:
