@@ -211,12 +211,12 @@ Resources:
             Count: {}
           Statement:
             RateBasedStatement:
-              Limit: 1000
+              Limit: 100
               AggregateKeyType: IP
-            VisibilityConfig:
-              CloudWatchMetricsEnabled: true
-              MetricName: RateLimitRule
-              SampledRequestsEnabled: true
+          VisibilityConfig:
+            CloudWatchMetricsEnabled: true
+            MetricName: RateLimitRule
+            SampledRequestsEnabled: true
 
   BlogApiWebAclAssociation:
     Type: AWS::WAFv2::WebACLAssociation
