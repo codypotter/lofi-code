@@ -2,6 +2,7 @@ package hcaptcha
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/url"
 
@@ -37,6 +38,11 @@ func (h *hCaptcha) VerifyHCaptcha(remoteip, token string) (bool, error) {
 	})
 	if err != nil {
 		return false, err
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		log.Error().Int("status_code", resp.StatusCode).Str("status", resp.Status).Msg("hCaptcha verification failed")
+		return false, fmt.Errorf("unexpected status code: %d", resp.StatusCode)
 	}
 	defer resp.Body.Close()
 
