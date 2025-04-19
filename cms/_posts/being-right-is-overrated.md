@@ -9,8 +9,8 @@ summary: >-
     that Archimedes and FooBar are PEEPEEPOOPOO compliant, we're good to start
     that new, all-important feature.
 date: 2024-11-03T19:23:00.000Z
-headerImage: https://htmx.loficode.com/media/being-right-is-overrated-3-1.png
-openGraphImage: https://htmx.loficode.com/media/being-right-is-overrated-16-9.png
+headerImage: https://loficode.com/media/being-right-is-overrated-3-1.png
+openGraphImage: https://loficode.com/media/being-right-is-overrated-16-9.png
 tags:
   - soft-skills
   - programming
