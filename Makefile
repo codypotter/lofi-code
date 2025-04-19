@@ -56,12 +56,19 @@ push: login-ecr tag-lambda ## Push the Lambda image to ECR
 
 cf-deploy: ## Deploy the CloudFormation stack
 	@echo "Deploying Lambda image: 812100404712.dkr.ecr.us-east-1.amazonaws.com/blog-api:$(shell git rev-parse --short HEAD)"
+	@echo "Fetching hCaptcha secret from SSM..."
+	@HSECRET=$$(aws ssm get-parameter \
+		--name /loficode/hcaptcha/secret \
+		--with-decryption \
+		--query Parameter.Value \
+		--output text); \
 	@aws cloudformation deploy \
 		--stack-name loficode-blog \
 		--template-file infra.yaml \
 		--capabilities CAPABILITY_NAMED_IAM \
 		--parameter-overrides \
-            LambdaImageUri=812100404712.dkr.ecr.us-east-1.amazonaws.com/blog-api:$(shell git rev-parse --short HEAD) \
+			LambdaImageUri=812100404712.dkr.ecr.us-east-1.amazonaws.com/blog-api:$(shell git rev-parse --short HEAD) \
+			HCaptchaSecret=$$HSECRET \
 		--region us-east-1
 
 deploy: check-clean generate-prod build-lambda push cf-deploy upload-static invalidate-cache ## Full deployment: generate prod assets, build & push image, deploy stack, update static assets, invalidate cache
