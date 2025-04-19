@@ -208,11 +208,20 @@ Resources:
         - Name: RateLimitRule
           Priority: 1
           Action:
-            Count: {}
+            Block: {}
           Statement:
             RateBasedStatement:
               Limit: 100
               AggregateKeyType: IP
+              ScopeDownStatement:
+                ByteMatchStatement:
+                  SearchString: "/api/"
+                  FieldToMatch:
+                    UriPath: {}
+                  TextTransformations:
+                    - Priority: 0
+                      Type: NONE
+                  PositionalConstraint: STARTS_WITH
           VisibilityConfig:
             CloudWatchMetricsEnabled: true
             MetricName: RateLimitRule
