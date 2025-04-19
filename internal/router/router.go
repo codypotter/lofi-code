@@ -21,6 +21,7 @@ func NewRouter(app application.Application) *chi.Mux {
 
 	r.Get("/api/search-results", app.SearchResults)
 	r.Post("/api/subscribe", app.Subscribe)
+	r.Post("/api/unsubscribe", app.Unsubscribe)
 	r.Get("/api/verify", app.VerifyEmail)
 
 	return r

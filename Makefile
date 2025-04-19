@@ -78,6 +78,14 @@ upload-static: ## Sync local public/ to the S3 static site bucket
 invalidate-cache: ## Invalidate the CloudFront cache
 	@aws cloudfront create-invalidation --distribution-id E2PTHK2S97TEHJ --paths "/*"
 
+put-hcaptcha-secret: ## Upload the hCaptcha secret to AWS SSM Parameter Store
+	@echo "Usage: make put-hcaptcha-secret SECRET=my_secret_from_hcaptcha_admin"
+	@aws ssm put-parameter \
+		--name /loficode/hcaptcha/secret \
+		--value $(SECRET) \
+		--type SecureString \
+		--overwrite
+
 help: ## List available targets
 	@echo "Available commands:"; \
 	grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-12s\033[0m %s\n", $$1, $$2}'

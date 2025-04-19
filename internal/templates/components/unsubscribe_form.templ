@@ -1,31 +1,31 @@
 package components
 
-type MailingListConfig struct {
+type UnsubscribeFormConfig struct {
 	SuccessMessage string `json:"successMessage"`
 	ErrorMessage   string `json:"errorMessage"`
 }
 
-templ MailingListForm(c MailingListConfig) {
+templ UnsubscribeForm(c UnsubscribeFormConfig) {
 	if c.SuccessMessage != "" {
 		<div class="notification is-success">
 			{ c.SuccessMessage }
 		</div>
 	} else {
 		<form
-			hx-post="/api/subscribe"
+			hx-post="/api/unsubscribe"
 			hx-target="this"
 			hx-swap="outerHTML"
 			class="p-5"
 		>
-			<h2 class="title is-4 has-text-centered">Join the Mailing List</h2>
+			<h2 class="title is-4 has-text-centered">Sorry to see you go</h2>
 			<p class="has-text-centered mb-4">
-				Get notified when I post updates. Enter your email below to subscribe.
+				Please enter your email address to unsubscribe from our mailing list.
 			</p>
 			<div class="field">
 				<label class="label">Email</label>
 				<div class="control has-icons-left">
 					<input
-						class={ "input is-medium", templ.KV("is-danger", c.ErrorMessage != "") }
+						class="input is-medium"
 						type="email"
 						name="email"
 						placeholder="Your Email"
@@ -35,23 +35,17 @@ templ MailingListForm(c MailingListConfig) {
 						<span>✉️</span>
 					</span>
 				</div>
-				if c.ErrorMessage != "" {
-					<p class="help is-danger">{ c.ErrorMessage }</p>
-				}
 			</div>
-			<div class="field">
-				<label class="checkbox">
-					<input type="checkbox" name="terms" required/>
-					I agree to the <a href="/tos.html" target="_blank">Terms of Service</a> and <a href="/privacy-policy.html" target="_blank">Privacy Policy</a>.
-				</label>
-			</div>
+			if c.ErrorMessage != "" {
+				<p class="help is-danger">{ c.ErrorMessage }</p>
+			}
 			<div class="field">
 				<div class="h-captcha" data-sitekey="68be67de-bc74-46d0-ab08-ef320f481552"></div>
 			</div>
 			<div class="field">
 				<div class="control">
 					<button class="button is-primary is-fullwidth is-medium" type="submit">
-						Subscribe
+						Unsubscribe
 					</button>
 				</div>
 			</div>

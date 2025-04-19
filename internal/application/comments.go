@@ -36,6 +36,24 @@ func (a application) CommentForm(w http.ResponseWriter, r *http.Request) {
 	}
 	log := log.With().Str("handler", "CommentForm").Str("method", r.Method).Any("formConfig", fc).Logger()
 
+	ip := r.Header.Get("X-Forwarded-For")
+	if ip == "" {
+		ip = r.RemoteAddr
+	}
+	success, err := a.hCaptcha.VerifyHCaptcha(ip, r.FormValue("h-captcha-response"))
+	if err != nil {
+		log.Error().Err(err).Msg("Error verifying hCaptcha")
+		components.Notification("is-danger", "Error verifying hCaptcha").Render(ctx, w)
+		components.CommentForm(fc).Render(ctx, w)
+		return
+	}
+	if !success {
+		log.Info().Msg("hCaptcha verification failed")
+		components.Notification("is-danger", "Captcha verification failed. Please try again.").Render(ctx, w)
+		components.CommentForm(fc).Render(ctx, w)
+		return
+	}
+
 	mailingList := r.FormValue("mailingList") == "on"
 
 	if fc.Name == "" || fc.Email == "" || fc.Comment == "" {

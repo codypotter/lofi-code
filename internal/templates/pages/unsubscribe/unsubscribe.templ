@@ -1,6 +1,9 @@
 package unsubscribe
 
-import "loficode/internal/templates/components/page"
+import (
+	"loficode/internal/templates/components"
+	"loficode/internal/templates/components/page"
+)
 
 templ Unsubscribe() {
 	@page.Page(
@@ -8,6 +11,7 @@ templ Unsubscribe() {
 			Title:       "Unsubscribe | loficode",
 			Description: "Unsubscribe",
 			OgImage:     "/assets/images/logo-white.svg",
+			Hcaptcha:    true,
 		},
 		[]page.Breadcrumb{},
 		content(),
@@ -17,39 +21,7 @@ templ Unsubscribe() {
 templ content() {
 	<section class="section">
 		<div class="container">
-			<form
-				hx-post="/api/unsubscribe"
-				hx-target="this"
-				hx-swap="outerHTML"
-				class="p-5"
-			>
-				<h2 class="title is-4 has-text-centered">Sorry to see you go</h2>
-				<p class="has-text-centered mb-4">
-					Please enter your email address to unsubscribe from our mailing list.
-				</p>
-				<div class="field">
-					<label class="label">Email</label>
-					<div class="control has-icons-left">
-						<input
-							class="input is-medium"
-							type="email"
-							name="email"
-							placeholder="Your Email"
-							required
-						/>
-						<span class="icon is-small is-left">
-							<span>✉️</span>
-						</span>
-					</div>
-				</div>
-				<div class="field">
-					<div class="control">
-						<button class="button is-primary is-fullwidth is-medium" type="submit">
-							Unsubscribe
-						</button>
-					</div>
-				</div>
-			</form>
+			@components.UnsubscribeForm(components.UnsubscribeFormConfig{})
 		</div>
 	</section>
 }

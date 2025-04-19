@@ -12,6 +12,7 @@ templ Post(post model.Post, baseUrl string, relatedPosts []model.Post) {
 			Title:       post.Title + " | loficode",
 			Description: post.Summary,
 			OgImage:     post.OpenGraphImage,
+			Hcaptcha:    true,
 		},
 		[]page.Breadcrumb{
 			{Text: "home", Url: "/"},
