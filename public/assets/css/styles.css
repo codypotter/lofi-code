@@ -14,3 +14,8 @@ body {
     --bulma-primary-s: 94%;
     --bulma-primary-l: 57%;
 }
+
+img.post-thumbnail {
+    aspect-ratio: 16/9;
+    width: 100%;
+}
