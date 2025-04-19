@@ -11,7 +11,8 @@ templ SearchResult(post model.Post) {
 			<img
 				src={ post.OpenGraphImage }
 				alt={ post.Title }
-				class="image"
+				class="image post-thumbnail"
+				loading="lazy"
 			/>
 		</div>
 		<div class="column">
