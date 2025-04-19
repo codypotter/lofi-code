@@ -221,7 +221,7 @@ Resources:
   BlogApiWebAclAssociation:
     Type: AWS::WAFv2::WebACLAssociation
     Properties:
-      ResourceArn: !Sub arn:aws:apigateway:${AWS::Region}::/restapis/${BlogApi}/stages/$default
+      ResourceArn: !Sub arn:aws:apigateway:${AWS::Region}::/apis/${BlogApi}/stages/$default
       WebACLArn: !Ref ApiGatewayWebAcl
 
   BlogLambdaPermissionForApiGateway:
