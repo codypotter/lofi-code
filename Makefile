@@ -62,7 +62,7 @@ cf-deploy: ## Deploy the CloudFormation stack
 		--with-decryption \
 		--query Parameter.Value \
 		--output text); \
-	@aws cloudformation deploy \
+	aws cloudformation deploy \
 		--stack-name loficode-blog \
 		--template-file infra.yaml \
 		--capabilities CAPABILITY_NAMED_IAM \
