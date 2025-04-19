@@ -193,6 +193,37 @@ Resources:
       StageName: "$default"
       AutoDeploy: true
 
+  ApiGatewayWebAcl:
+    Type: AWS::WAFv2::WebACL
+    Properties:
+      Name: ApiGatewayRateLimitAcl
+      Scope: REGIONAL
+      DefaultAction:
+        Allow: {}
+      VisibilityConfig:
+        CloudWatchMetricsEnabled: true
+        MetricName: ApiGatewayRateLimitAcl
+        SampledRequestsEnabled: true
+      Rules:
+        - Name: RateLimitRule
+          Priority: 1
+          Action:
+            Count: {}
+          Statement:
+            RateBasedStatement:
+              Limit: 1000
+              AggregateKeyType: IP
+            VisibilityConfig:
+              CloudWatchMetricsEnabled: true
+              MetricName: RateLimitRule
+              SampledRequestsEnabled: true
+
+  BlogApiWebAclAssociation:
+    Type: AWS::WAFv2::WebACLAssociation
+    Properties:
+      ResourceArn: !Sub arn:aws:apigateway:${AWS::Region}::/restapis/${BlogApi}/stages/$default
+      WebACLArn: !Ref ApiGatewayWebAcl
+
   BlogLambdaPermissionForApiGateway:
     Type: AWS::Lambda::Permission
     Properties:
