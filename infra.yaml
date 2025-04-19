@@ -233,7 +233,7 @@ Resources:
       DistributionConfig:
         Enabled: true
         DefaultRootObject: index.html
-        WebACLId: !Ref CloudFrontWebAcl
+        WebACLId: !GetAtt CloudFrontWebAcl.Arn
         Aliases:
           - "htmx.loficode.com"
         Origins:
