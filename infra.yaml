@@ -51,9 +51,31 @@ Resources:
         Version: "2012-10-17"
         Statement:
           - Effect: Allow
-            Principal: "*"
+            Principal:
+              Service: "cloudfront.amazonaws.com"
             Action: "s3:GetObject"
             Resource: !Sub "${StaticSiteBucket.Arn}/*"
+            Condition:
+              StringEquals:
+                AWS:SourceArn: !Sub "arn:aws:cloudfront::${AWS::AccountId}:distribution/${BlogCloudFrontDistribution}"
+
+  StaticSiteOAC:
+    Type: AWS::CloudFront::OriginAccessControl
+    Properties:
+      OriginAccessControlConfig:
+        Name: StaticSiteOAC
+        SigningBehavior: always
+        SigningProtocol: sigv4
+        OriginAccessControlOriginType: s3
+
+  MediaBucketOAC:
+    Type: AWS::CloudFront::OriginAccessControl
+    Properties:
+      OriginAccessControlConfig:
+        Name: MediaBucketOAC
+        SigningBehavior: always
+        SigningProtocol: sigv4
+        OriginAccessControlOriginType: s3
 
   ### S3 Bucket for Media ###
   MediaBucket:
@@ -106,9 +128,13 @@ Resources:
         Version: "2012-10-17"
         Statement:
           - Effect: Allow
-            Principal: "*"
+            Principal:
+              Service: "cloudfront.amazonaws.com"
             Action: "s3:GetObject"
             Resource: !Sub "${MediaBucket.Arn}/*"
+            Condition:
+              StringEquals:
+                AWS:SourceArn: !Sub "arn:aws:cloudfront::${AWS::AccountId}:distribution/${BlogCloudFrontDistribution}"
           - Effect: Allow
             Principal:
               AWS: !GetAtt MediaUploaderUser.Arn
@@ -288,8 +314,9 @@ Resources:
           - "htmx.loficode.com"
         Origins:
           - Id: StaticSiteOrigin
-            DomainName: !GetAtt StaticSiteBucket.DomainName
+            DomainName: !GetAtt StaticSiteBucket.RegionalDomainName
             S3OriginConfig: {}
+            OriginAccessControlId: !Ref StaticSiteOAC.Id
           - Id: ApiGatewayOrigin
             DomainName:
               !Select [
@@ -302,8 +329,9 @@ Resources:
             CustomOriginConfig:
               OriginProtocolPolicy: https-only
           - Id: MediaBucketOrigin
-            DomainName: !GetAtt MediaBucket.DomainName
+            DomainName: !GetAtt MediaBucket.RegionalDomainName
             S3OriginConfig: {}
+            OriginAccessControlId: !Ref MediaBucketOAC.Id
         DefaultCacheBehavior:
           TargetOriginId: StaticSiteOrigin
           ViewerProtocolPolicy: redirect-to-https
