@@ -38,10 +38,10 @@ Resources:
     Properties:
       BucketName: loficode-site
       PublicAccessBlockConfiguration:
-        BlockPublicAcls: false
-        BlockPublicPolicy: false
-        IgnorePublicAcls: false
-        RestrictPublicBuckets: false
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
 
   StaticSiteBucketPolicy:
     Type: AWS::S3::BucketPolicy
@@ -51,9 +51,31 @@ Resources:
         Version: "2012-10-17"
         Statement:
           - Effect: Allow
-            Principal: "*"
+            Principal:
+              Service: "cloudfront.amazonaws.com"
             Action: "s3:GetObject"
             Resource: !Sub "${StaticSiteBucket.Arn}/*"
+            Condition:
+              StringEquals:
+                AWS:SourceArn: !Sub "arn:aws:cloudfront::${AWS::AccountId}:distribution/${BlogCloudFrontDistribution}"
+
+  StaticSiteOAC:
+    Type: AWS::CloudFront::OriginAccessControl
+    Properties:
+      OriginAccessControlConfig:
+        Name: StaticSiteOAC
+        SigningBehavior: always
+        SigningProtocol: sigv4
+        OriginAccessControlOriginType: s3
+
+  MediaBucketOAC:
+    Type: AWS::CloudFront::OriginAccessControl
+    Properties:
+      OriginAccessControlConfig:
+        Name: MediaBucketOAC
+        SigningBehavior: always
+        SigningProtocol: sigv4
+        OriginAccessControlOriginType: s3
 
   ### S3 Bucket for Media ###
   MediaBucket:
@@ -61,10 +83,10 @@ Resources:
     Properties:
       BucketName: loficode-media
       PublicAccessBlockConfiguration:
-        BlockPublicAcls: false
-        BlockPublicPolicy: false
-        IgnorePublicAcls: false
-        RestrictPublicBuckets: false
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
       OwnershipControls:
         Rules:
           - ObjectOwnership: BucketOwnerPreferred
@@ -106,9 +128,13 @@ Resources:
         Version: "2012-10-17"
         Statement:
           - Effect: Allow
-            Principal: "*"
+            Principal:
+              Service: "cloudfront.amazonaws.com"
             Action: "s3:GetObject"
             Resource: !Sub "${MediaBucket.Arn}/*"
+            Condition:
+              StringEquals:
+                AWS:SourceArn: !Sub "arn:aws:cloudfront::${AWS::AccountId}:distribution/${BlogCloudFrontDistribution}"
           - Effect: Allow
             Principal:
               AWS: !GetAtt MediaUploaderUser.Arn
@@ -227,6 +253,45 @@ Resources:
             MetricName: RateLimitRule
             SampledRequestsEnabled: true
 
+        - Name: AWSManagedRulesCommonRuleSet
+          Priority: 2
+          OverrideAction:
+            None: {}
+          Statement:
+            ManagedRuleGroupStatement:
+              VendorName: AWS
+              Name: AWSManagedRulesCommonRuleSet
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: AWSManagedRulesCommonRuleSet
+
+        - Name: AWSManagedRulesKnownBadInputsRuleSet
+          Priority: 3
+          OverrideAction:
+            None: {}
+          Statement:
+            ManagedRuleGroupStatement:
+              VendorName: AWS
+              Name: AWSManagedRulesKnownBadInputsRuleSet
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: AWSManagedRulesKnownBadInputsRuleSet
+
+        - Name: AWSManagedRulesAmazonIpReputationList
+          Priority: 4
+          OverrideAction:
+            None: {}
+          Statement:
+            ManagedRuleGroupStatement:
+              VendorName: AWS
+              Name: AWSManagedRulesAmazonIpReputationList
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: AWSManagedRulesAmazonIpReputationList
+
   BlogLambdaPermissionForApiGateway:
     Type: AWS::Lambda::Permission
     Properties:
@@ -249,8 +314,9 @@ Resources:
           - "htmx.loficode.com"
         Origins:
           - Id: StaticSiteOrigin
-            DomainName: !GetAtt StaticSiteBucket.DomainName
+            DomainName: !GetAtt StaticSiteBucket.RegionalDomainName
             S3OriginConfig: {}
+            OriginAccessControlId: !Ref StaticSiteOAC
           - Id: ApiGatewayOrigin
             DomainName:
               !Select [
@@ -263,8 +329,9 @@ Resources:
             CustomOriginConfig:
               OriginProtocolPolicy: https-only
           - Id: MediaBucketOrigin
-            DomainName: !GetAtt MediaBucket.DomainName
+            DomainName: !GetAtt MediaBucket.RegionalDomainName
             S3OriginConfig: {}
+            OriginAccessControlId: !Ref MediaBucketOAC
         DefaultCacheBehavior:
           TargetOriginId: StaticSiteOrigin
           ViewerProtocolPolicy: redirect-to-https
