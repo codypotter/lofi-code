@@ -316,7 +316,7 @@ Resources:
           - Id: StaticSiteOrigin
             DomainName: !GetAtt StaticSiteBucket.RegionalDomainName
             S3OriginConfig: {}
-            OriginAccessControlId: !Ref StaticSiteOAC.Id
+            OriginAccessControlId: !Ref StaticSiteOAC
           - Id: ApiGatewayOrigin
             DomainName:
               !Select [
@@ -331,7 +331,7 @@ Resources:
           - Id: MediaBucketOrigin
             DomainName: !GetAtt MediaBucket.RegionalDomainName
             S3OriginConfig: {}
-            OriginAccessControlId: !Ref MediaBucketOAC.Id
+            OriginAccessControlId: !Ref MediaBucketOAC
         DefaultCacheBehavior:
           TargetOriginId: StaticSiteOrigin
           ViewerProtocolPolicy: redirect-to-https
