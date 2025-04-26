@@ -29,7 +29,7 @@ templ content(post model.Post, baseUrl string, relatedPosts []model.Post) {
 			max-width: 450px;
 		}
 	</style>
-	<article class="container is-max-desktop">
+	<article class="container is-max-desktop p-5">
 		<div class="card-image">
 			<figure class="image is-3by1">
 				<img
@@ -41,12 +41,12 @@ templ content(post model.Post, baseUrl string, relatedPosts []model.Post) {
 		<div class="card-content">
 			<div class="media">
 				<div class="media-content">
+					<h1 class="title is-size-1 mt-5">{ post.Title }</h1>
 					<h4 class="is-size-4">Cody Potter - Posted on <span id="post-date"></span></h4>
 					<script>
 						localizeDate("post-date", {{ post.Date.Unix() * 1000 }});
 					</script>
-					<h1 class="title is-size-1">{ post.Title }</h1>
-					<div class="mb-5">
+					<div class="my-5">
 						@components.Tags(components.TagsConfig{
 							Size:             "is-medium",
 							Tags:             post.Tags,
@@ -62,7 +62,7 @@ templ content(post model.Post, baseUrl string, relatedPosts []model.Post) {
 			@SocialButtons(post, baseUrl)
 		</div>
 	</article>
-	<div class="container block is-max-desktop mt-5">
+	<div class="container block is-max-desktop mt-5 p-5">
 		<h4 class="title is-4 mb-5">Comments</h4>
 		@components.CommentForm(components.CommentFormConfig{Slug: post.Slug})
 		<div class="mt-5">

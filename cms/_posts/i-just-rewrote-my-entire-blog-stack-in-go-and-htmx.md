@@ -82,7 +82,7 @@ For structured data/persistence (posts, emails) with minimal overhead.
 
 #### SES
 
-For email verification, no Firebase Auth, no passwords, no accounts.New infra
+For email verification, no Firebase Auth, no passwords, no accounts.
 
 ![infrastructure diagram](https://github.com/codypotter/lofi-code/blob/main/infra.png?raw=true "Infrastructure diagram")
 
@@ -120,7 +120,7 @@ My new AWS stack does everything I need for about $1/month — with better speed
 | Hosting      | Free tier (limited)                | S3 + CloudFront (~$1.00)         |
 | Auth         | Firebase Auth                      | SES (~$0.00)                     |
 | Database     | Firestore                          | DynamoDB (~$0.01)                |
-| CMS          | FireCMS (~$10/month)               | Decap CMS (free)                 |
+| CMS          | FireCMS ($10/month)               | Decap CMS (free)                 |
 | Backend      | Cloud Functions                    | Lambda (~$0.10)                  |
 | Total Monthly| ~$10                               | ~$1                              |
 
