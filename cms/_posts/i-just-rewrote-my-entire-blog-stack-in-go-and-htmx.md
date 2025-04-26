@@ -115,16 +115,16 @@ If I'd asked ChatGPT or Cursor to build this, it would've spat out Next.js, Svel
 My old stack started free but crept up to around $10/month.
 My new AWS stack does everything I need for about $1/month — with better speed, better security, and more control.
 
-| Category         | Old Stack (Firebase + FireCMS)             | New Stack (AWS)                    |
-| ---------------- | ------------------------------------------ | ---------------------------------- |
-| **Hosting**      | Free tier (limited)             | S3 + CloudFront (~$1.00)           |
-| **Auth**         | Firebase Auth                  | SES (~$0.00)    |
-| **Database**     | Firestore             | DynamoDB (~$0.01)                  |
-| **CMS**          | FireCMS (~$10/month) | Decap CMS (free)       |
-| **backend**      | Cloud Functions    | Lambda (~$0.10)      |
-| **Total Monthly** | ~$10      | ~$1       |
+| Category         | Old Stack (Firebase + FireCMS)     | New Stack (AWS)                  |
+|------------------|------------------------------------|----------------------------------|
+| Hosting      | Free tier (limited)                | S3 + CloudFront (~$1.00)         |
+| Auth         | Firebase Auth                      | SES (~$0.00)                     |
+| Database     | Firestore                          | DynamoDB (~$0.01)                |
+| CMS          | FireCMS (~$10/month)               | Decap CMS (free)                 |
+| Backend      | Cloud Functions                    | Lambda (~$0.10)                  |
+| Total Monthly| ~$10                               | ~$1                              |
 
-- - -
+---
 
 ## Final thoughts
 
