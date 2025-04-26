@@ -30,6 +30,7 @@ import (
 	"github.com/yuin/goldmark"
 	highlighting "github.com/yuin/goldmark-highlighting"
 	meta "github.com/yuin/goldmark-meta"
+	"github.com/yuin/goldmark/extension"
 	"github.com/yuin/goldmark/parser"
 	"github.com/yuin/goldmark/renderer/html"
 )
@@ -173,6 +174,7 @@ func parseMarkdownFile(path string) (*model.Post, error) {
 	context := parser.NewContext()
 	md := goldmark.New(
 		goldmark.WithExtensions(
+			extension.Table,
 			meta.Meta,
 			highlighting.NewHighlighting(
 				highlighting.WithStyle("xcode-dark"),
