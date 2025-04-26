@@ -12,6 +12,8 @@ tags:
   - go
   - programming
   - system-design
+  - htmx
+  - aws
 ---
 ## Motivation
 
