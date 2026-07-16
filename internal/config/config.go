@@ -17,7 +17,7 @@ type Config struct {
 	HCaptchaSecret string     `json:"-" env:"HCAPTCHA_SECRET"`
 	// BedrockModelId is the Bedrock model (or cross-region inference profile) used
 	// for editorial review. Override via env if your account's Bedrock model access differs.
-	BedrockModelId string `json:"-" env:"BEDROCK_MODEL_ID" envDefault:"us.anthropic.claude-sonnet-5"`
+	BedrockModelId string `json:"-" env:"BEDROCK_MODEL_ID" envDefault:"us.amazon.nova-2-lite-v1:0"`
 }
 
 func (c *Config) String() string {
