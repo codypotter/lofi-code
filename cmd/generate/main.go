@@ -1,14 +1,13 @@
 package main
 
 import (
-	"bytes"
 	"context"
-	"encoding/json"
 	"fmt"
 	"loficode/internal/config"
 	"loficode/internal/db"
 	"loficode/internal/logger"
 	"loficode/internal/model"
+	"loficode/internal/postparser"
 	errorpage "loficode/internal/templates/pages/error"
 	"loficode/internal/templates/pages/home"
 	"loficode/internal/templates/pages/notfound"
@@ -20,19 +19,11 @@ import (
 	"loficode/internal/templates/pages/verified"
 	"sort"
 
-	"io/fs"
 	"os"
 	"path/filepath"
-	"strings"
 
 	"github.com/a-h/templ"
 	"github.com/rs/zerolog/log"
-	"github.com/yuin/goldmark"
-	highlighting "github.com/yuin/goldmark-highlighting"
-	meta "github.com/yuin/goldmark-meta"
-	"github.com/yuin/goldmark/extension"
-	"github.com/yuin/goldmark/parser"
-	"github.com/yuin/goldmark/renderer/html"
 )
 
 func main() {
@@ -50,7 +41,12 @@ func main() {
 	}
 	database.CreateTable()
 
-	ps, err := parseMarkdownFiles()
+	if err := os.MkdirAll("public/posts", 0755); err != nil {
+		log.Error().Err(err).Msg("Error creating public/posts directory")
+		return
+	}
+
+	ps, err := postparser.ParseDir("cms/_posts")
 	if err != nil {
 		log.Error().Err(err).Msg("Error parsing markdown files")
 		return
@@ -120,36 +116,6 @@ func getRelatedPosts(p model.Post, ps []model.Post) []model.Post {
 	return relatedPosts
 }
 
-func parseMarkdownFiles() ([]model.Post, error) {
-	var ps []model.Post
-
-	err := os.MkdirAll("public/posts", 0755)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create public/posts directory: %w", err)
-	}
-
-	err = filepath.WalkDir("cms/_posts", func(path string, d fs.DirEntry, err error) error {
-		if err != nil {
-			return fmt.Errorf("failed to walk directory: %w", err)
-		}
-		if d.IsDir() || !strings.HasSuffix(path, ".md") {
-			log.Info().Str("path", path).Msgf("Skipping")
-			return nil
-		}
-		p, err := parseMarkdownFile(path)
-		if err != nil {
-			return fmt.Errorf("failed to parse markdown file: %w", err)
-		}
-		ps = append(ps, *p)
-		return nil
-	})
-	if err != nil {
-		return nil, fmt.Errorf("failed to walk directory: %w", err)
-	}
-
-	return ps, nil
-}
-
 func renderStaticPage(name string, component templ.Component) error {
 	path := filepath.Join("public", name)
 	f, err := os.Create(path)
@@ -163,51 +129,6 @@ func renderStaticPage(name string, component templ.Component) error {
 	}
 	log.Debug().Str("path", path).Msg("Rendered static page")
 	return nil
-}
-
-func parseMarkdownFile(path string) (*model.Post, error) {
-	input, err := os.ReadFile(path)
-	if err != nil {
-		return nil, err
-	}
-
-	context := parser.NewContext()
-	md := goldmark.New(
-		goldmark.WithExtensions(
-			extension.Table,
-			meta.Meta,
-			highlighting.NewHighlighting(
-				highlighting.WithStyle("xcode-dark"),
-			),
-		),
-		goldmark.WithRendererOptions(
-			html.WithHardWraps(),
-			html.WithXHTML(),
-		),
-	)
-
-	var buf bytes.Buffer
-	err = md.Convert(input, &buf, parser.WithContext(context))
-	if err != nil {
-		return nil, err
-	}
-
-	var post model.Post
-
-	metaData := meta.Get(context)
-	metaJson, err := json.Marshal(metaData)
-	if err != nil {
-		return nil, err
-	}
-	err = json.Unmarshal(metaJson, &post)
-	if err != nil {
-		return nil, err
-	}
-
-	log.Debug().Str("slug", post.Slug).Msg("Parsed post slug")
-
-	post.Content = buf.String()
-	return &post, nil
 }
 
 func extractTags(ps []model.Post) []string {

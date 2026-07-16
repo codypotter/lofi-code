@@ -15,6 +15,9 @@ type Config struct {
 	Environment    string     `json:"-" env:"ENVIRONMENT" envDefault:"development"`
 	AwsConfig      aws.Config `json:"-"`
 	HCaptchaSecret string     `json:"-" env:"HCAPTCHA_SECRET"`
+	// BedrockModelId is the Bedrock model (or cross-region inference profile) used
+	// for editorial review. Override via env if your account's Bedrock model access differs.
+	BedrockModelId string `json:"-" env:"BEDROCK_MODEL_ID" envDefault:"us.anthropic.claude-sonnet-5"`
 }
 
 func (c *Config) String() string {
