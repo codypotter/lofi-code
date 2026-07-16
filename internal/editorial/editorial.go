@@ -5,10 +5,10 @@ package editorial
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"loficode/internal/config"
 	"loficode/internal/model"
+	"regexp"
 	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -18,9 +18,9 @@ import (
 )
 
 type Feedback struct {
-	Summary string   `json:"summary"`
-	Tags    []string `json:"tags"`
-	Notes   []string `json:"notes"`
+	Summary string
+	Tags    []string
+	Notes   []string
 }
 
 type Editor interface {
@@ -29,12 +29,13 @@ type Editor interface {
 
 const systemPrompt = `You are an editorial assistant reviewing a draft blog post before it's published.
 
-Respond with ONLY a single JSON object, no other text, matching this shape:
-{"summary": "...", "tags": ["...", "..."], "notes": ["...", "..."]}
+Respond using exactly these three tags, in this order, with no other text before, between, or after them:
 
-- summary: a 1-2 sentence suggested value for the post's frontmatter "summary" field, written in the author's voice.
-- tags: 1 to 5 suggested tags for the post, in kebab-case (e.g. "system-design", not "System Design" or "system_design") to match this blog's existing tag convention.
-- notes: specific, actionable editorial feedback about clarity, structure, or flow issues you actually noticed in this post. Do not include generic praise or filler. If there is nothing worth flagging, return an empty array.`
+<summary>A 1-2 sentence suggested value for the post's frontmatter "summary" field, written in the author's voice.</summary>
+<tags>1 to 5 comma-separated tags for the post, in kebab-case (e.g. "system-design", not "System Design" or "system_design") to match this blog's existing tag convention.</tags>
+<notes>
+Specific, actionable editorial feedback about clarity, structure, or flow issues you actually noticed in this post, one per line prefixed with "- ". Do not include generic praise or filler. If there is nothing worth flagging, leave this empty.
+</notes>`
 
 func New(cfg *config.Config) Editor {
 	return &bedrockEditor{
@@ -92,11 +93,7 @@ func (e *bedrockEditor) Review(ctx context.Context, post model.Post) (*Feedback,
 		return nil, err
 	}
 
-	var feedback Feedback
-	if err := json.Unmarshal([]byte(stripCodeFence(text)), &feedback); err != nil {
-		return nil, fmt.Errorf("failed to parse model response as JSON: %w (raw: %s)", err, text)
-	}
-	return &feedback, nil
+	return parseFeedback(text)
 }
 
 func extractText(output types.ConverseOutput) (string, error) {
@@ -116,12 +113,58 @@ func extractText(output types.ConverseOutput) (string, error) {
 	return sb.String(), nil
 }
 
-// stripCodeFence removes a leading/trailing markdown code fence in case the
-// model wrapped its JSON response in one despite instructions not to.
-func stripCodeFence(text string) string {
-	text = strings.TrimSpace(text)
-	text = strings.TrimPrefix(text, "```json")
-	text = strings.TrimPrefix(text, "```")
-	text = strings.TrimSuffix(text, "```")
-	return strings.TrimSpace(text)
+var (
+	summaryTagRe = regexp.MustCompile(`(?s)<summary>(.*?)</summary>`)
+	tagsTagRe    = regexp.MustCompile(`(?s)<tags>(.*?)</tags>`)
+	notesTagRe   = regexp.MustCompile(`(?s)<notes>(.*?)</notes>`)
+)
+
+// parseFeedback extracts the <summary>/<tags>/<notes> tags from the model's
+// response. Plain, tag-delimited text is more resilient to parse here than
+// asking the model for JSON: free-form prose in notes (quotes, code
+// snippets, backticks) is prone to breaking JSON string escaping, and a
+// missing or malformed tag just leaves that one field empty instead of
+// failing the whole response.
+func parseFeedback(text string) (*Feedback, error) {
+	summaryMatch := summaryTagRe.FindStringSubmatch(text)
+	tagsMatch := tagsTagRe.FindStringSubmatch(text)
+	notesMatch := notesTagRe.FindStringSubmatch(text)
+
+	if summaryMatch == nil && tagsMatch == nil && notesMatch == nil {
+		return nil, fmt.Errorf("model response had none of the expected <summary>/<tags>/<notes> tags: %s", text)
+	}
+
+	feedback := &Feedback{}
+	if summaryMatch != nil {
+		feedback.Summary = strings.TrimSpace(summaryMatch[1])
+	}
+	if tagsMatch != nil {
+		feedback.Tags = splitTags(tagsMatch[1])
+	}
+	if notesMatch != nil {
+		feedback.Notes = splitNotes(notesMatch[1])
+	}
+	return feedback, nil
+}
+
+func splitTags(raw string) []string {
+	var tags []string
+	for _, t := range strings.Split(raw, ",") {
+		if t = strings.TrimSpace(t); t != "" {
+			tags = append(tags, t)
+		}
+	}
+	return tags
+}
+
+func splitNotes(raw string) []string {
+	var notes []string
+	for _, line := range strings.Split(raw, "\n") {
+		line = strings.TrimSpace(line)
+		line = strings.TrimPrefix(line, "-")
+		if line = strings.TrimSpace(line); line != "" {
+			notes = append(notes, line)
+		}
+	}
+	return notes
 }
