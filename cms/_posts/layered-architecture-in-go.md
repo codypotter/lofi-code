@@ -1,8 +1,7 @@
 ---
 title: Layered Architecture in Go
 slug: go-layered-architecture
-summary: Lets talk about a great pattern for organizing your big go project by
-  working in layers of abstraction.
+summary: Layered architecture in Go offers a clean, scalable way to organize code by separating concerns into distinct layers, improving testability and maintainability.
 date: 2023-12-29T11:11:00.000Z
 openGraphImage: https://loficode.com/media/go-layered-architecture-16-9.png
 tags:

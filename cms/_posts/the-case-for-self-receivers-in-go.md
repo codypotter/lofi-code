@@ -1,8 +1,7 @@
 ---
 title: The case for self receivers in Go
 slug: self-receivers-in-go
-summary: Lets talk about receiver naming in go and challenge the idea of using
-  single letter names.
+summary: Adopting a reserved keyword like 'self' for Go method receivers enhances code clarity and consistency, avoiding the pitfalls of ambiguous short names.
 date: 2023-12-31T11:11:00.000Z
 openGraphImage: https://loficode.com/media/self-receivers-16-9.png
 tags:

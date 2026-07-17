@@ -1,11 +1,7 @@
 ---
 title: Our Productivity Went Up. Why Aren't Our Hours Going Down?
 slug: seize-the-means-of-productivity
-summary: Workers are producing more per hour, but without adjustments to pay or
-  hours the gains are defaulting to employers. Now is the moment for workers to
-  renegotiate for a 4‑day week while maintaining output and pay. In this post I
-  lay out employer‑favored paths, then offer practical steps for individuals to
-  represent their best interests.
+summary: Workers are producing more per hour, but without adjustments to pay or hours the gains are defaulting to employers. Now is the moment for workers to renegotiate for a 4‑day week while maintaining output and pay.
 date: 2025-11-08T15:27:00.000-05:00
 openGraphImage: https://loficode.com/media/seize-the-means-of-productivity-16-9.png
 tags:

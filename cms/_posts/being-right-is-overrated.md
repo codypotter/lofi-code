@@ -2,12 +2,7 @@
 title: Being right is overrated
 slug: being-right-is-overrated
 summary: >-
-  It's a high-stakes discussion in a boardroom at BigTek. The
-    stakeholders are not happy with your team's progress, because they needed the
-    "Real-Time Activity Feed" ™️ like two weeks ago. Of course, your team has been
-    focused on that big, surprise refactor for the last few weeks, but now that
-    that Archimedes and FooBar are PEEPEEPOOPOO compliant, we're good to start
-    that new, all-important feature.
+  Embracing being wrong fosters team success and personal growth. Learning from mistakes and admitting errors leads to stronger, more credible outcomes.
 date: 2024-11-03T19:23:00.000Z
 openGraphImage: https://loficode.com/media/being-right-is-overrated-16-9.png
 tags:
