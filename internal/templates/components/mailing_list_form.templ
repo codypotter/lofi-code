@@ -7,7 +7,7 @@ type MailingListConfig struct {
 
 templ MailingListForm(c MailingListConfig) {
 	if c.SuccessMessage != "" {
-		<div class="notification is-success">
+		<div class="border border-neutral-700 bg-neutral-900 p-4 text-sm text-neutral-300 font-mono">
 			{ c.SuccessMessage }
 		</div>
 	} else {
@@ -15,45 +15,39 @@ templ MailingListForm(c MailingListConfig) {
 			hx-post="/api/subscribe"
 			hx-target="this"
 			hx-swap="outerHTML"
-			class="p-5"
+			class="border border-neutral-800 p-8"
 		>
-			<h2 class="title is-4 has-text-centered">Join the Mailing List</h2>
-			<p class="has-text-centered mb-4">
-				Get notified when I post updates. Enter your email below to subscribe.
-			</p>
-			<div class="field">
-				<label class="label">Email</label>
-				<div class="control has-icons-left">
+			<h2 class="text-neutral-100 font-semibold text-lg mb-1">Join the Mailing List</h2>
+			<p class="text-neutral-400 text-sm mb-6">Get notified when I post updates.</p>
+			<div class="space-y-3 max-w-sm">
+				<div>
+					<label class="block font-mono text-xs text-neutral-500 mb-1">email</label>
 					<input
-						class={ "input is-medium", templ.KV("is-danger", c.ErrorMessage != "") }
+						class={ "w-full bg-neutral-900 border text-neutral-100 px-3 py-2 text-sm focus:border-orange-400 focus:outline-none transition-colors",
+							templ.KV("border-red-500", c.ErrorMessage != ""),
+							templ.KV("border-neutral-700", c.ErrorMessage == "") }
 						type="email"
 						name="email"
-						placeholder="Your Email"
+						placeholder="you@example.com"
 						required
 					/>
-					<span class="icon is-small is-left">
-						<span>✉️</span>
-					</span>
+					if c.ErrorMessage != "" {
+						<p class="font-mono text-xs text-red-400 mt-1">{ c.ErrorMessage }</p>
+					}
 				</div>
-				if c.ErrorMessage != "" {
-					<p class="help is-danger">{ c.ErrorMessage }</p>
-				}
-			</div>
-			<div class="field">
-				<label class="checkbox">
-					<input type="checkbox" name="terms" required/>
-					I agree to the <a href="/tos.html" target="_blank">Terms of Service</a> and <a href="/privacy-policy.html" target="_blank">Privacy Policy</a>.
-				</label>
-			</div>
-			<div class="field">
-				<div class="h-captcha" data-sitekey="68be67de-bc74-46d0-ab08-ef320f481552"></div>
-			</div>
-			<div class="field">
-				<div class="control">
-					<button class="button is-primary is-fullwidth is-medium" type="submit">
-						Subscribe
-					</button>
+				<div id="termsField">
+					<label class="flex items-center gap-2 text-sm text-neutral-400 cursor-pointer">
+						<input type="checkbox" name="terms" required class="accent-orange-400"/>
+						I agree to the <a href="/tos.html" target="_blank" class="text-orange-400 hover:text-orange-300 underline underline-offset-2">Terms</a> and <a href="/privacy-policy.html" target="_blank" class="text-orange-400 hover:text-orange-300 underline underline-offset-2">Privacy Policy</a>.
+					</label>
 				</div>
+				<div>
+					<div class="h-captcha" data-sitekey="68be67de-bc74-46d0-ab08-ef320f481552"></div>
+				</div>
+				<button
+					class="font-mono text-sm border border-orange-500 text-orange-400 px-5 py-2 hover:bg-orange-500 hover:text-neutral-950 transition-colors"
+					type="submit"
+				>subscribe</button>
 			</div>
 		</form>
 	}

@@ -1,12 +1,8 @@
 ---
 title: "The $1 Blog Stack: Go, Static HTML, HTMX, and No Regrets"
 slug: go-htmx-blog
-summary: Angular SSR was a slow, half-baked mess so I rebuilt my blog with Go,
-  HTMX, and static HTML. Now it's 10x faster, costs 90% less, and actually
-  scales properly. Turns out, you don't need a bloated SPA framework to render
-  some f*cking text.
+summary: I rebuilt my blog from Angular SSR and Firebase to Go, static HTML, and HTMX. Now it’s 10x faster, costs 90% less, and actually scales properly. Turns out, you don’t need a bloated SPA framework to render some f*cking text.
 date: 2025-04-25T20:53:00.000Z
-headerImage: https://loficode.com/media/go-htmx-blog-3-1.png
 openGraphImage: https://loficode.com/media/go-htmx-blog-16-9.png
 tags:
   - go

@@ -10,51 +10,76 @@ type CommentFormConfig struct {
 }
 
 templ CommentForm(cfg CommentFormConfig) {
-	<form class="box has-background" hx-post={ "/api/posts/" + cfg.Slug + "/comments" } hx-target="this" hx-swap="outerHTML" id="commentForm">
-		<div class="columns">
-			<div class="column">
-				<div class="field">
-					<label class="label">Name</label>
-					<input class="input" type="text" name="name" id="nameInput" placeholder="Lizard King" required maxlength="100" value={ cfg.Name }/>
-				</div>
+	<form
+		class="border border-neutral-800 p-6 space-y-4"
+		hx-post={ "/api/posts/" + cfg.Slug + "/comments" }
+		hx-target="this"
+		hx-swap="outerHTML"
+		id="commentForm"
+	>
+		<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+			<div>
+				<label class="block font-mono text-xs text-neutral-500 mb-1">name</label>
+				<input
+					class="w-full bg-neutral-900 border border-neutral-700 text-neutral-100 px-3 py-2 text-sm focus:border-orange-400 focus:outline-none transition-colors"
+					type="text"
+					name="name"
+					id="nameInput"
+					placeholder="Lizard King"
+					required
+					maxlength="100"
+					value={ cfg.Name }
+				/>
 			</div>
-			<div class="column">
-				<div class="field">
-					<label class="label">Email</label>
-					<input class="input" type="email" name="email" id="emailInput" placeholder="lizard@king.com" required maxlength="254" value={ cfg.Email }/>
-				</div>
+			<div>
+				<label class="block font-mono text-xs text-neutral-500 mb-1">email</label>
+				<input
+					class="w-full bg-neutral-900 border border-neutral-700 text-neutral-100 px-3 py-2 text-sm focus:border-orange-400 focus:outline-none transition-colors"
+					type="email"
+					name="email"
+					id="emailInput"
+					placeholder="lizard@king.com"
+					required
+					maxlength="254"
+					value={ cfg.Email }
+				/>
 			</div>
 		</div>
-		<div class="field">
-			<label class="label">Comment</label>
-			<textarea class="textarea" name="comment" placeholder="..." required maxlength="1000">{ cfg.Comment }</textarea>
+		<div>
+			<label class="block font-mono text-xs text-neutral-500 mb-1">comment</label>
+			<textarea
+				class="w-full bg-neutral-900 border border-neutral-700 text-neutral-100 px-3 py-2 text-sm focus:border-orange-400 focus:outline-none transition-colors h-28 resize-none"
+				name="comment"
+				placeholder="..."
+				required
+				maxlength="1000"
+			>{ cfg.Comment }</textarea>
 		</div>
-		<div class="field" id="mailingListCheckbox">
-			<label class="checkbox">
-				<input type="checkbox" name="mailingList"/>
+		<div id="mailingListCheckbox">
+			<label class="flex items-center gap-2 text-sm text-neutral-400 cursor-pointer">
+				<input type="checkbox" name="mailingList" class="accent-orange-400"/>
 				Sign me up for the mailing list.
 			</label>
 		</div>
-		<div class="field" id="termsField">
-			<label class="checkbox">
-				<input type="checkbox" name="terms" required/>
-				I agree to the <a href="/tos.html" target="_blank">Terms of Service</a> and <a href="/privacy-policy.html" target="_blank">Privacy Policy</a>.
+		<div id="termsField">
+			<label class="flex items-center gap-2 text-sm text-neutral-400 cursor-pointer">
+				<input type="checkbox" name="terms" required class="accent-orange-400"/>
+				I agree to the <a href="/tos.html" target="_blank" class="text-orange-400 hover:text-orange-300 underline underline-offset-2">Terms of Service</a> and <a href="/privacy-policy.html" target="_blank" class="text-orange-400 hover:text-orange-300 underline underline-offset-2">Privacy Policy</a>.
 			</label>
 		</div>
-		<div class="field">
+		<div>
 			<div class="h-captcha" data-sitekey="68be67de-bc74-46d0-ab08-ef320f481552"></div>
 		</div>
-		<div class="field">
-			<div class="control">
-				<button class="button is-primary is-fullwidth" type="submit">Submit Comment</button>
-			</div>
-		</div>
+		<button
+			class="font-mono text-sm border border-orange-500 text-orange-400 px-5 py-2 hover:bg-orange-500 hover:text-neutral-950 transition-colors"
+			type="submit"
+		>submit comment</button>
 		if cfg.Notification != nil {
 			@cfg.Notification
 		}
 		if cfg.Success {
 			<script>
-				console.warn('displatching a commentPosted event');
+				console.warn('dispatching a commentPosted event');
 				document.getElementById("comments-section")
 					?.dispatchEvent(new CustomEvent("commentPosted", { bubbles: true }));
 			</script>

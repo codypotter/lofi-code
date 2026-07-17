@@ -7,18 +7,23 @@ type Breadcrumb struct {
 
 templ Breadcrumbs(breadcrumbs []Breadcrumb) {
 	if len(breadcrumbs) > 0 {
-		<div class="container block mt-5">
-			<nav class="breadcrumb is-large" aria-label="breadcrumbs">
-				<ul>
-					for _, breadcrumb := range breadcrumbs {
-						<li class={ templ.KV("is-active", breadcrumb.Url == "") } style="overflow-wrap: anywhere;">
-							<a href={ templ.URL(breadcrumb.Url) } style="overflow-wrap: anywhere;">
-								{ breadcrumb.Text }
-							</a>
+		<nav class="border-b border-neutral-800 bg-neutral-950" aria-label="breadcrumbs">
+			<div class="max-w-5xl mx-auto px-6 py-2">
+				<ol class="flex items-center gap-1.5 font-mono text-xs text-neutral-500 flex-wrap">
+					for i, breadcrumb := range breadcrumbs {
+						if i > 0 {
+							<li class="text-neutral-700">/</li>
+						}
+						<li>
+							if i == len(breadcrumbs)-1 {
+								<span class="text-neutral-400" style="overflow-wrap: anywhere;">{ breadcrumb.Text }</span>
+							} else {
+								<a href={ templ.URL(breadcrumb.Url) } class="hover:text-orange-400 transition-colors" style="overflow-wrap: anywhere;">{ breadcrumb.Text }</a>
+							}
 						</li>
 					}
-				</ul>
-			</nav>
-		</div>
+				</ol>
+			</div>
+		</nav>
 	}
 }

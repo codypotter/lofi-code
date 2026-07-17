@@ -1,0 +1,18 @@
+{
+  "name": "lofi-code",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build/build.js",
+    "watch": "node build/build.js --watch"
+  },
+  "dependencies": {
+    "htmx.org": "^2.0.4"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.10",
+    "esbuild": "^0.25.5",
+    "tailwindcss": "^4.1.10"
+  }
+}

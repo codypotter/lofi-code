@@ -4,12 +4,12 @@ templ Page(headConfig HeadConfig, breadcrumbs []Breadcrumb, content templ.Compon
 	<!DOCTYPE html>
 	<html lang="en">
 		@Head(headConfig)
-		<body>
+		<body class="bg-neutral-950 text-neutral-100 min-h-screen flex flex-col font-sans">
 			@Navbar()
 			@Breadcrumbs(breadcrumbs)
-			<section>
+			<main class="flex-1">
 				@content
-			</section>
+			</main>
 			@Footer()
 		</body>
 	</html>

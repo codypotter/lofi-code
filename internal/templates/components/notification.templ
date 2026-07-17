@@ -1,7 +1,18 @@
 package components
 
 templ Notification(color string, message string) {
-	<div class={ "notification " + color }>
+	{{
+		var classes string
+		switch color {
+		case "is-success":
+			classes = "border border-neutral-700 bg-neutral-900 text-neutral-300"
+		case "is-danger":
+			classes = "border border-red-800 bg-red-950 text-red-300"
+		default:
+			classes = "border border-neutral-700 bg-neutral-900 text-neutral-300"
+		}
+	}}
+	<div class={ "p-4 text-sm font-mono", classes }>
 		{ message }
 	</div>
 }

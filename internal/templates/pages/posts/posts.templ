@@ -28,32 +28,32 @@ templ content(allTags []string) {
 			const allTags = document.querySelectorAll("[data-tag]");
 			allTags.forEach((el) => {
 				if (el.dataset.tag === tag) {
-					el.classList.add("is-link");
+					el.classList.add("bg-orange-500", "text-neutral-950");
+					el.classList.remove("bg-orange-950", "text-orange-400");
 				} else {
-					el.classList.remove("is-link");
+					el.classList.remove("bg-orange-500", "text-neutral-950");
+					el.classList.add("bg-orange-950", "text-orange-400");
 				}
 			});
 		});
 	</script>
-	<div class="p-3">
+	<div class="max-w-5xl mx-auto px-6 py-10">
 		@components.Tags(components.TagsConfig{
-			Size:             "is-medium",
+			Size:             "",
 			Tags:             allTags,
 			EnableNavigation: true,
 			EnableFetch:      true,
 		})
-		<hr/>
-		// hx-vals is used to pass the tag to the server
-		// https://htmx.org/attributes/hx-vals/
-		<section
-			id="search-results"
-			class="container mt-5"
-			hx-get="/api/search-results"
-			hx-trigger="load"
-			hx-swap="innerHTML"
-			hx-vals='js:{ tag: new URLSearchParams(window.location.search).get("tag") ?? "" }'
-		>
-			Loading...
-		</section>
+		<div class="border-t border-neutral-800 mt-8">
+			<section
+				id="search-results"
+				hx-get="/api/search-results"
+				hx-trigger="load"
+				hx-swap="innerHTML"
+				hx-vals="js:{ tag: new URLSearchParams(window.location.search).get('tag') ?? '' }"
+			>
+				<p class="font-mono text-xs text-neutral-500 py-4">Loading...</p>
+			</section>
+		</div>
 	</div>
 }

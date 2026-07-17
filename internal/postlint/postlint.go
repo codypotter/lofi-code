@@ -43,9 +43,6 @@ func checkFrontmatter(post model.Post) []Finding {
 	if strings.TrimSpace(post.Summary) == "" {
 		findings = append(findings, Finding{Message: "Missing `summary` in frontmatter."})
 	}
-	if strings.TrimSpace(post.HeaderImage) == "" {
-		findings = append(findings, Finding{Message: "Missing `headerImage` in frontmatter."})
-	}
 	if strings.TrimSpace(post.OpenGraphImage) == "" {
 		findings = append(findings, Finding{Message: "Missing `openGraphImage` in frontmatter."})
 	}

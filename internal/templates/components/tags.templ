@@ -31,50 +31,43 @@ func withTagSearch(u url.URL, tag string) string {
 	return u.String()
 }
 
-templ Tags(config TagsConfig) {
-	{{
-	if config.Size == "" {
-		config.Size = "is-medium"
+func tagClasses(size string) string {
+	base := "font-mono bg-orange-950 text-orange-400 hover:bg-orange-900 hover:text-orange-300 transition-colors"
+	switch size {
+	case "lg":
+		return base + " text-sm px-3 py-1.5"
+	case "sm":
+		return base + " text-xs px-2 py-0.5"
+	default:
+		return base + " text-xs px-2.5 py-1"
 	}
-	classes := []string{"tag", "level-item", "is-primary", config.Size}
-	}}
-	<span></span>
-	<div class="container">
-		<div class="tags">
-			for _, tag := range config.Tags {
-				{{
-					pageUrl := templ.URL(getPageUrl(tag))
-					searchResultUrl := getSearchResultsUrl(tag)
-				}}
-				if config.EnableNavigation {
-					if config.EnableFetch {
-						// hx-get is used to fetch the content of the page
-						// https://htmx.org/attributes/hx-get/
-						// hx-push-url is used to update the URL in the address bar
-						// https://htmx.org/attributes/hx-push-url/
-						<a
-							class={ classes }
-							href={ pageUrl }
-							data-tag={ tag }
-							hx-get={ searchResultUrl }
-							hx-target="#search-results"
-							hx-push-url={ string(pageUrl) }
-							hx-swap="innerHTML"
-						>
-							#{ tag }
-						</a>
-					} else {
-						<a
-							class={ classes }
-							href={ pageUrl }
-						>
-							#{ tag }
-						</a>
-					}
+}
+
+templ Tags(config TagsConfig) {
+	<div class="flex flex-wrap gap-2">
+		for _, tag := range config.Tags {
+			{{
+				pageUrl := templ.URL(getPageUrl(tag))
+				searchResultUrl := getSearchResultsUrl(tag)
+				classes := tagClasses(config.Size)
+			}}
+			if config.EnableNavigation {
+				if config.EnableFetch {
+					<a
+						class={ classes }
+						href={ pageUrl }
+						data-tag={ tag }
+						hx-get={ searchResultUrl }
+						hx-target="#search-results"
+						hx-push-url={ string(pageUrl) }
+						hx-swap="innerHTML"
+					>#{ tag }</a>
 				} else {
-					<span class={ classes }>#{ tag }</span>
+					<a class={ classes } href={ pageUrl }>#{ tag }</a>
 				}
+			} else {
+				<span class={ classes }>#{ tag }</span>
 			}
-		</div>
+		}
 	</div>
 }

@@ -1,16 +1,19 @@
 package page
 
 templ Footer() {
-	<footer class="footer">
-		<div class="content has-text-centered">
+	<footer class="border-t border-neutral-800 mt-16 py-8">
+		<div class="max-w-5xl mx-auto px-6 text-center text-neutral-500 text-sm font-mono space-y-2">
 			<p>
-				<em>lofi<strong>code</strong></em> by <a href="http://codypotter.com">Cody Potter</a>. The source code is licensed
-				<a href="http://opensource.org/licenses/mit-license.php">MIT</a>. The website content
-				is licensed <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY NC SA 4.0</a>.
-				Unsubscribe from our <a href="/unsubscribe.html">mailing list</a>.
+				lofi<strong class="text-orange-400">code</strong> by <a href="http://codypotter.com" class="hover:text-orange-400 transition-colors">Cody Potter</a>.
+				Source: <a href="http://opensource.org/licenses/mit-license.php" class="hover:text-orange-400 transition-colors">MIT</a>.
+				Content: <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" class="hover:text-orange-400 transition-colors">CC BY NC SA 4.0</a>.
 			</p>
 			<p>
-				<a href="/privacy-policy.html">Privacy Policy</a> and <a href="/tos.html">Terms of Service</a>
+				<a href="/unsubscribe.html" class="hover:text-orange-400 transition-colors">Unsubscribe</a>
+				<span class="mx-2">·</span>
+				<a href="/privacy-policy.html" class="hover:text-orange-400 transition-colors">Privacy Policy</a>
+				<span class="mx-2">·</span>
+				<a href="/tos.html" class="hover:text-orange-400 transition-colors">Terms of Service</a>
 			</p>
 		</div>
 	</footer>
