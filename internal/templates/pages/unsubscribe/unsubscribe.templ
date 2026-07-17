@@ -9,7 +9,7 @@ templ Unsubscribe() {
 	@page.Page(
 		page.HeadConfig{
 			Title:       "Unsubscribe | loficode",
-			Description: "Unsubscribe",
+			Description: "Unsubscribe from the mailing list",
 			OgImage:     "/assets/images/logo-white.svg",
 			Hcaptcha:    true,
 		},
@@ -19,9 +19,7 @@ templ Unsubscribe() {
 }
 
 templ content() {
-	<section class="section">
-		<div class="container">
-			@components.UnsubscribeForm(components.UnsubscribeFormConfig{})
-		</div>
-	</section>
+	<div class="max-w-5xl mx-auto px-6 py-10">
+		@components.UnsubscribeForm(components.UnsubscribeFormConfig{})
+	</div>
 }

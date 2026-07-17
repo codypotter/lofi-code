@@ -4,35 +4,19 @@ import "loficode/internal/model"
 
 templ SearchResult(post model.Post) {
 	<a
-		class="columns is-clickable"
+		class="flex gap-4 py-5 border-b border-neutral-800 group hover:bg-neutral-900 transition-colors px-2 -mx-2"
 		href={ templ.URL("/posts/" + post.Slug + ".html") }
 	>
-		<div class="column is-one-fifth">
-			<img
-				src={ post.OpenGraphImage }
-				alt={ post.Title }
-				class="image post-thumbnail"
-				loading="lazy"
-			/>
-		</div>
-		<div class="column">
-			<div class="level">
-				<div class="level-left">
-					<h5 class="level-item title is-5">{ post.Title }</h5>
-				</div>
-				<div class="level-right">
-					<div class="level-item">
-						@Tags(TagsConfig{
-							Size:             "is-small",
-							Tags:             post.Tags,
-							EnableNavigation: false,
-						})
-					</div>
-				</div>
-			</div>
-			<h6 class="subtitle is-6">{ post.Title }</h6>
-			<div class="truncated content">{ post.Summary }</div>
+		<img
+			src={ post.OpenGraphImage }
+			alt={ post.Title }
+			class="w-24 h-16 object-cover flex-shrink-0"
+			loading="lazy"
+		/>
+		<div class="min-w-0">
+			<h5 class="text-neutral-100 font-semibold mb-1 group-hover:text-orange-400 transition-colors leading-snug">{ post.Title }</h5>
+			<p class="text-neutral-400 text-sm mb-2 line-clamp-2">{ post.Summary }</p>
+			@Tags(TagsConfig{Size: "sm", Tags: post.Tags})
 		</div>
 	</a>
-	<hr/>
 }

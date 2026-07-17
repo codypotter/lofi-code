@@ -7,7 +7,6 @@ summary: Workers are producing more per hour, but without adjustments to pay or
   lay out employer‑favored paths, then offer practical steps for individuals to
   represent their best interests.
 date: 2025-11-08T15:27:00.000-05:00
-headerImage: https://loficode.com/media/seize-the-means-of-productivity-3-1.png
 openGraphImage: https://loficode.com/media/seize-the-means-of-productivity-16-9.png
 tags:
   - ai

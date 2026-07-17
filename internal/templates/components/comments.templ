@@ -8,39 +8,26 @@ import (
 
 templ Comments(comments []model.Comment) {
 	for i, comment := range comments {
-		<article class="media mb-3">
-			<figure class="media-left">
-				<p class="image is-64x64">
-					<img
-						alt="User's avatar"
-						src={ avatarUrl(comment.Email) }
-					/>
+		<div class="flex gap-4 py-5 border-b border-neutral-800">
+			<img
+				alt="User avatar"
+				src={ avatarUrl(comment.Email) }
+				class="w-10 h-10 rounded-full flex-shrink-0"
+			/>
+			<div class="min-w-0">
+				<p class="text-sm">
+					<strong class="text-neutral-100">{ comment.Name }</strong>
+					<span class="font-mono text-xs text-neutral-500 ml-2" id={ "comment-timestamp-" + strconv.Itoa(i) }>Loading...</span>
+					<script>
+						localizeDate("comment-timestamp-{{ strconv.Itoa(i) }}", {{ comment.Date.Unix() * 1000 }});
+					</script>
 				</p>
-			</figure>
-			<div class="media-content">
-				<div class="content">
-					<p>
-						<strong>{ comment.Name }</strong> <small id={ "comment-timestamp-" + strconv.Itoa(i) }>Loading...</small>
-						<script>
-							localizeDate("comment-timestamp-{{ strconv.Itoa(i) }}", {{ comment.Date.Unix() * 1000 }});
-						</script>
-						<br/>
-						{ comment.Text }
-					</p>
-				</div>
+				<p class="text-neutral-300 text-sm mt-1">{ comment.Text }</p>
 			</div>
-		</article>
+		</div>
 	}
 	if len(comments) == 0 {
-		<article class="media mb-3">
-			<div class="media-content">
-				<div class="content">
-					<p>
-						No comments yet.
-					</p>
-				</div>
-			</div>
-		</article>
+		<p class="text-neutral-500 text-sm font-mono py-4">no comments yet.</p>
 	}
 }
 

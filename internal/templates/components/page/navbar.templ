@@ -1,25 +1,14 @@
 package page
 
 templ Navbar() {
-	<style>
-        .navbar {
-            background: linear-gradient(90deg, #FF0F7B 0%, #f98039 100%);
-        }
-
-        @media (prefers-color-scheme: dark) {
-            .navbar {
-                background: linear-gradient(90deg, #A60950, #BA6423 100%);
-            }
-        }
-
-    </style>
-	<nav class="navbar is-transparent" role="navigation" aria-label="main navigation">
-		<div class="container">
-			<div class="navbar-brand">
-				<a class="navbar-item has-text-white" href="/">
-					<em>lofi<strong>code</strong></em>
-				</a>
-			</div>
+	<header class="border-b border-neutral-800 bg-neutral-950">
+		<div class="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
+			<a href="/" class="font-mono text-sm tracking-wide text-neutral-100 hover:text-orange-400 transition-colors">
+				lofi<strong class="text-orange-400">code</strong>
+			</a>
+			<nav class="flex items-center gap-6">
+				<a href="/posts.html" class="font-mono text-xs text-neutral-400 hover:text-orange-400 transition-colors">posts</a>
+			</nav>
 		</div>
-	</nav>
+	</header>
 }

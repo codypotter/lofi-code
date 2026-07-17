@@ -8,7 +8,6 @@ type Post struct {
 	Summary        string    `json:"summary"`
 	Tags           []string  `json:"tags"`
 	Date           time.Time `json:"date"`
-	HeaderImage    string    `json:"headerImage"`
 	OpenGraphImage string    `json:"openGraphImage"`
 	Content        string    `json:"content"`
 }

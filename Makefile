@@ -2,12 +2,15 @@
 
 ## Local Development
 
-dev: ## Run the dev loop
+dev: ## Run the dev loop (run 'npm run watch' in a separate terminal first)
 	@find . -name '*.templ' | entr -r $(MAKE) generate serve
 
-generate: ## Generate the static files using "go run"
-	@templ generate
+generate: ## Generate static files (assumes assets already built via npm run build or npm run watch)
+	@go tool templ generate
 	@go run ./cmd/generate
+
+build-assets: ## Build CSS/JS assets and write manifest
+	@npm run build
 
 generate-prod: build-generator ## Generate production static files
 	@ENVIRONMENT=production AWS_REGION=us-east-1 ./generate
@@ -71,7 +74,7 @@ cf-deploy: ## Deploy the CloudFormation stack
 			HCaptchaSecret=$$HSECRET \
 		--region us-east-1
 
-deploy: check-clean generate-prod build-lambda push cf-deploy upload-static invalidate-cache ## Full deployment: generate prod assets, build & push image, deploy stack, update static assets, invalidate cache
+deploy: check-clean build-assets generate-prod build-lambda push cf-deploy upload-static invalidate-cache ## Full deployment: build assets, generate prod HTML, build & push image, deploy stack, update static assets, invalidate cache
 
 nuke: ## Delete the CloudFormation stack
 	@aws cloudformation delete-stack --stack-name loficode-blog --region us-east-1

@@ -5,8 +5,8 @@ import "loficode/internal/templates/components/page"
 templ Verified() {
 	@page.Page(
 		page.HeadConfig{
-			Title:       "Verified Email! | loficode",
-			Description: "Verified Email",
+			Title:       "Email Verified | loficode",
+			Description: "Email verified",
 			OgImage:     "/assets/images/logo-white.svg",
 		},
 		[]page.Breadcrumb{},
@@ -15,15 +15,10 @@ templ Verified() {
 }
 
 templ content() {
-	<section class="section">
-		<div class="container notification is-success">
-			<h1 class="title is-4 has-text-centered">Email Verified</h1>
-			<p class="has-text-centered mb-4">
-				Your email address has been successfully verified.
-			</p>
-			<p class="has-text-centered mb-4">
-				<a href="/">Go Home</a>
-			</p>
-		</div>
-	</section>
+	<div class="max-w-5xl mx-auto px-6 py-20">
+		<p class="font-mono text-xs text-neutral-500 mb-4">success</p>
+		<h1 class="text-3xl font-bold text-neutral-100 mb-4">Email Verified</h1>
+		<p class="text-neutral-400 mb-8">Your email address has been successfully verified.</p>
+		<a href="/" class="font-mono text-sm border border-orange-500 text-orange-400 px-5 py-2 hover:bg-orange-500 hover:text-neutral-950 transition-colors">go home</a>
+	</div>
 }

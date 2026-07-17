@@ -4,7 +4,6 @@ slug: go-layered-architecture
 summary: Lets talk about a great pattern for organizing your big go project by
   working in layers of abstraction.
 date: 2023-12-29T11:11:00.000Z
-headerImage: https://loficode.com/media/go-layered-architecture-3-1.png
 openGraphImage: https://loficode.com/media/go-layered-architecture-16-9.png
 tags:
   - go

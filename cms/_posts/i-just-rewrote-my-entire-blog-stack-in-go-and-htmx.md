@@ -6,7 +6,6 @@ summary: Angular SSR was a slow, half-baked mess so I rebuilt my blog with Go,
   scales properly. Turns out, you don't need a bloated SPA framework to render
   some f*cking text.
 date: 2025-04-25T20:53:00.000Z
-headerImage: https://loficode.com/media/go-htmx-blog-3-1.png
 openGraphImage: https://loficode.com/media/go-htmx-blog-16-9.png
 tags:
   - go

@@ -3,11 +3,13 @@ package main
 import (
 	"context"
 	"fmt"
+	"loficode/internal/assets"
 	"loficode/internal/config"
 	"loficode/internal/db"
 	"loficode/internal/logger"
 	"loficode/internal/model"
 	"loficode/internal/postparser"
+	"loficode/internal/templates/components/page"
 	errorpage "loficode/internal/templates/pages/error"
 	"loficode/internal/templates/pages/home"
 	"loficode/internal/templates/pages/notfound"
@@ -41,6 +43,12 @@ func main() {
 	}
 	database.CreateTable()
 
+	resolver, err := assets.NewResolver("public/assets/manifest.json", "/assets")
+	if err != nil {
+		log.Fatal().Err(err).Msg("Error loading asset manifest")
+	}
+	page.AssetURL = resolver.URL
+
 	if err := os.MkdirAll("public/posts", 0755); err != nil {
 		log.Error().Err(err).Msg("Error creating public/posts directory")
 		return
@@ -53,7 +61,7 @@ func main() {
 	}
 	log.Debug().Msg("Parsed markdown files")
 
-	tags := extractTags(ps)
+	tags := append([]string{"all"}, extractTags(ps)...)
 	log.Debug().Msg("Extracted tags")
 
 	recentPosts := extractRecentPosts(ps)

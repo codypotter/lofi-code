@@ -31,7 +31,7 @@ const systemPrompt = `You are an editorial assistant reviewing a draft blog post
 
 Respond using exactly these three tags, in this order, with no other text before, between, or after them:
 
-<summary>A 1-2 sentence suggested value for the post's frontmatter "summary" field, written in the author's voice.</summary>
+<summary>A 1-2 sentence suggested value for the post's frontmatter "summary" field. Lead with the point — no "This post..." or "In this post..." phrasing. Write in the author's voice, direct and opinionated, as if the author is telling a friend what the post is about. Look at the existing summary for tone reference.</summary>
 <tags>1 to 5 comma-separated tags for the post, in kebab-case (e.g. "system-design", not "System Design" or "system_design") to match this blog's existing tag convention.</tags>
 <notes>
 Specific, actionable editorial feedback about clarity, structure, or flow issues you actually noticed in this post, one per line prefixed with "- ". Do not include generic praise or filler. If there is nothing worth flagging, leave this empty.
