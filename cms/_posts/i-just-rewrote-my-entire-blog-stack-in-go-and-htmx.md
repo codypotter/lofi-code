@@ -1,8 +1,11 @@
 ---
 title: "The $1 Blog Stack: Go, Static HTML, HTMX, and No Regrets"
 slug: go-htmx-blog
-summary: I rebuilt my blog from Angular SSR and Firebase to Go, static HTML, and HTMX. Now it’s 10x faster, costs 90% less, and actually scales properly. Turns out, you don’t need a bloated SPA framework to render some f*cking text.
+summary: I rebuilt my blog from Angular SSR and Firebase to Go, static HTML, and
+  HTMX. As it turns out, you don’t need a bloated SPA framework to render some
+  f*cking text.
 date: 2025-04-25T20:53:00.000Z
+headerImage: https://loficode.com/media/go-htmx-blog-16-9.png
 openGraphImage: https://loficode.com/media/go-htmx-blog-16-9.png
 tags:
   - go
@@ -13,64 +16,55 @@ tags:
 ---
 ## Motivation
 
-When I first started building my [blog](https://loficode.com), I wanted to do it the "right" way.
+When I first started building my [blog](https://loficode.com), I tried to build it the most standard way that I knew. At the time, that meant a managed headless CMS and an Angular single page application. I reached for the thing that I was most familiar with without really thinking about whether or not it was the best setup for the use case.
 
-That meant a true headless CMS, a backend that stayed out of my way, and a deployment so simple I could focus on writing, not infrastructure.
+[Firebase](https://firebase.google.com/) checked the boxes early on. It had a free tier and no infra to manage myself. [FireCMS](https://firecms.co/) (back when it was free) made content management with Firebase pretty slick.
 
-[Firebase](https://firebase.google.com/) checked those boxes early on. Free tier. No servers. [FireCMS](https://firecms.co/) (back when it was free) made content management effortless.
+But over time (and experience), the trade-offs started to become a little more evident. FireCMS became a paid product and suddenly my backend depended on some SaaS product I didn't control. The price would have been easier to swallow if their platform was any good. I also didn't like the fact that my backend was on some proprietary system with multiple layers of lock in. 
 
-But over time, the trade-offs became impossible to ignore.
+I hated that I was trading ownership for convenience and the "convenience" wasn't really that convenient. It was almost out of spite that I wanted to move away from FireCMS and Firebase, which everyone knows is always the best reason to build software.
 
-* Lock-in: FireCMS went paid, and suddenly my "free" backend depended on a SaaS product I didn't control. Their platform also left a lot to be desired.
-* Blind trust: My content lived in a proprietary system, hostage to prcing changes and feature rot.
+On top of the backend lock-in, there was also Angular server-side rendering (SSR) which had a ton of other issues. It was surprisingly slow. There were a lot of issues related to cold starts including issues with double renders the initial HTML just not rendering correctly before bootstrapping the SPA.
 
-**I hated that.** It made me realize I had traded ownership for convenience.
+Angular's server side rendering is clearly a second-class citizen, bolted onto a framework that only really cares about single page applications. It fights its own architecture just to deliver basic server-side rendering. 
 
-Then, there was **Angular SSR**.
+To cap it all off, I wanted a blog stack that felt like it was mine and something that could serve as a north star for a simple content-forward web stack. I wanted it to be cheap, easy, and simple. So I burned it all down.
 
-It was slow. *Excruciatingly slow*. Cold starts. Double renders. A node server burning CPU just to serve what should have been static HTML. 
+![Kurt Russell starting a fire](https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExOW55aHNpYnhmaWdteDEzenc0OXJhcnA3cHhyajdqMWNqdDgybzR6eSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/T2vDaYr8yRhrpFe6WE/giphy.gif)
 
-Worst of all? Angular SSR is a second-class citizen, bolted onto a framework that only really cares about SPAs. It fights its own architecture just to deliver basic server-side rendering. 
 
-I didn't just want a blog that "worked". I wanted to build something that could stand as a kind of north star. A blog that was as simple as possible, easy for developers to work with, inexpensive to operate, and scalable enough to handle real traffic without needing a redesign.
-
-So. I decided to burn it all down.
-
-This rebuild was about taking my stack back.
-
-**If you think every project needs a framework, this post might change your mind.**
 
 - - -
 
 ## What's different
 
-[loficode.com](https://loficode.com) runs entirely on AWS, not dogma. Its built to scale not because I need it to, but because **a well-built system does not need to be redesigned just because traffic increases**. 
+[loficode.com](https://loficode.com) runs entirely on AWS. Its built to scale because its stupid simple.
 
-### Static HTML generation
+### Static HTML generation at build time
 
-* Posts are Markdown with front matter.
-* A tiny Go CLI (`./cmd/generate`) uses [Templ](https://templ.guide/) **+** [Goldmark](https://github.com/yuin/goldmark) to render static HTML.
-* Even "dynamic" pages (`/posts`, `/home`) are pre-rendered.
+I decided to take advantage of the fact that the entire website (except for a few bits) are known at build time. The content itself is not dynamic, although there are some bits that live in a database and can be updated at runtime, more on that later.
+
+Posts are Markdown with front matter. A tiny Go CLI (`./cmd/generate`) uses [Templ](https://templ.guide/) and [Goldmark](https://github.com/yuin/goldmark) to render static HTML. Even "dynamic" pages (`/posts`, `/home`) are pre-rendered.
 
 ### CMS workflow
 
-* [Decap CMS](https://decapcms.org/) commits directly to my git repository.
-* No paid tiers. No vendor lock-in. If Decap vanishes tomorrow, I still own every byte.
+I decided to use Decap CMS to lean into this build-time concept, not to say that you couldn't use Decap CMS for runtime content updates. Its the combination of Decap and static generation that make this stack really simple. [Decap CMS](https://decapcms.org/) commits directly to my git repository. There are no paid tiers and technically no vendor lock-in because technically its just a convenience wrapper around basic markdown files tracked by git.
 
 ### Local development flow
 
-* A Go dev server (`./cmd/server`) mimics Lambda locally.
-* Docker Compose + DynamoDB Local for full offline testing.
+For local development I have a separate Go dev server (`./cmd/server`) which mimics Lambda locally. I use Docker Compose and DynamoDB Local for full offline testing.
 
 ### Infrastructure
 
-#### S3 + CloudFront
+Since this is a static website with just a few dynamic bits, the infra reflects that.
 
-For stupid fast static file delivery
+#### S3 and CloudFront
+
+For fast delivery of native web assets (html, css, javascript, images, etc)
 
 #### Lambda
 
-For dynamic bits (comments, search), returning HTML fragments, not JSON payloads
+For dynamic bits (comments, search), returning HTML fragments with HTMX.
 
 #### DynamoDB
 
@@ -78,57 +72,46 @@ For structured data/persistence (posts, emails) with minimal overhead.
 
 #### SES
 
-For email verification, no Firebase Auth, no passwords, no accounts.
+For email verification. No need for accounts like I used to require.
 
 ![infrastructure diagram](https://github.com/codypotter/lofi-code/blob/main/infra.png?raw=true "Infrastructure diagram")
 
 - - -
 
-## Protecting the backend (and my wallet)
+## Protecting the backend (and my AWS bill)
 
-* AWS WAF rate-limiting blocks abuse at the CDN layer—before it hits Lambda or DynamoDB.
-* hCaptcha guards write-heavy endpoints (comments, signups).
-* Every API route is cost-optimized. No surprises.
+I took some precautions to make sure the dynamic bits would stay cheap, since I was already confident about cloudfront static asset delivery. I used AWS WAF rate-limiting to block apparent abuse at the CDN layer before it hits Lambda or DynamoDB, and I used hCaptcha to protect write-heavy endpoints (comments, signups, etc).
 
 - - -
 
 ## Why it matters
 
-This rebuild was not about chasing trends. It was about intentional engineering.
+The rebuild was designed to deliver something simple and cheap but with modern conveniences. I did that by trailblazing a bit where it made sense. To accomplish that I didn't reach for an established framework and instead deliver basic HTML, CSS, and with some super basic HTMX where it made sense. No virtual DOM or page bootstrapping or any weird bullshit like that.
 
-* No frameworks: Just HTML, CSS, and HTMX where needed. No VDOM, no hydration, no bullshit
-* No bloat: No Firebase tax, no node server idling at 100% CPU.
-* No compromises: Fast today and scaleable in the future.
+Since I set up the infra myself I was able to avoid the "managed backend" tax. I avoided an off-the-shelf solution that didn't really suit my needs. I think what I like best is that there are basically no compromises and the end user gets a great experience at any scale.
 
-If I'd asked ChatGPT or Cursor to build this, it would've spat out Next.js, SvelteKit, or WordPress, default choices for people who don't question defaults. 
-
-**Defaults are rarely optimal.**
+If I'd asked ChatGPT or Cursor or whatever to build this, it probably would've spat out Next.js, SvelteKit, or WordPress, but the most common solution isn't always the best solution.
 
 - - -
 
 ## Cost comparison
 
 My old stack started free but crept up to around $10/month.
-My new AWS stack does everything I need for about $1/month — with better speed, better security, and more control.
+My new stack does everything I need for about $1/month with better speed, better security, and more control.
 
-| Category         | Old Stack (Firebase + FireCMS)     | New Stack (AWS)                  |
-|------------------|------------------------------------|----------------------------------|
-| Hosting      | Free tier (limited)                | S3 + CloudFront (~$1.00)         |
-| Auth         | Firebase Auth                      | SES (~$0.00)                     |
-| Database     | Firestore                          | DynamoDB (~$0.01)                |
-| CMS          | FireCMS ($10/month)               | Decap CMS (free)                 |
-| Backend      | Cloud Functions                    | Lambda (~$0.10)                  |
-| Total Monthly| ~$10                               | ~$1                              |
+| Category      | Old Stack (Firebase + FireCMS) | New Stack (AWS)          |
+| ------------- | ------------------------------ | ------------------------ |
+| Hosting       | Free tier (limited)            | S3 + CloudFront (~$1.00) |
+| Auth          | Firebase Auth                  | SES (~$0.00)             |
+| Database      | Firestore                      | DynamoDB (~$0.01)        |
+| CMS           | FireCMS ($10/month)            | Decap CMS (free)         |
+| Backend       | Cloud Functions                | Lambda (~$0.10)          |
+| Total Monthly | ~$10                           | ~$1                      |
 
----
+- - -
 
 ## Final thoughts
 
-I am proud of this rebuild.
-
-Not because its flashy, but because it is thoughtful. It is fast. It's cheap. And it'll keep working no matter how much traffic it gets.
-
-That's the difference between assembling a stack and engineering a system.
-
+I'm super proud of the rebuild, because I thought it through from top to bottom. It's designed to do exactly what it does and nothing more.
 
 And yes, it's all [open source](https://github.com/codypotter/lofi-code).
