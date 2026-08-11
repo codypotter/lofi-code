@@ -32,8 +32,6 @@ To cap it all off, I wanted a blog stack that felt like it was mine and somethin
 
 ![Kurt Russell starting a fire](https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExOW55aHNpYnhmaWdteDEzenc0OXJhcnA3cHhyajdqMWNqdDgybzR6eSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/T2vDaYr8yRhrpFe6WE/giphy.gif)
 
-
-
 - - -
 
 ## What's different
@@ -108,10 +106,14 @@ My new stack does everything I need for about $1/month with better speed, better
 | Backend       | Cloud Functions                | Lambda (~$0.10)          |
 | Total Monthly | ~$10                           | ~$1                      |
 
+It's pretty clear to see that the new stack is just better in every way.
+
 - - -
 
 ## Final thoughts
 
-I'm super proud of the rebuild, because I thought it through from top to bottom. It's designed to do exactly what it does and nothing more.
+I'm super proud of the rebuild, because I thought it through from top to bottom. It's designed to do exactly what it does and nothing more. There's a quote from Antoine de Saint-Exupery that I think captures the takeaway here:
 
-And yes, it's all [open source](https://github.com/codypotter/lofi-code).
+> "Perfection is achieved not when there is nothing more to add, but when there is nothing left to take away."
+
+I'm not saying loficode.com is perfect, but its definitely an improvement and a step in the right direction. Plus its all [open source](https://github.com/codypotter/lofi-code) so you can check it out for yourself.
